@@ -14,7 +14,7 @@ module.exports.config = {
 };
 
 module.exports.run = async function ({ args, event, api }) {
-    const youtube = new simpleytapi('AIzaSyCMWAbuVEw0H26r94BhyFU4mTaP5oUGWRw');
+    const youtube = new simpleytapi('AIzaSyDz2t3q8Mj_kSA7TM79Y7CYD9Dr2WESgGc');
 
     const searchString = args.join(' ');
     if (!searchString) return api.sendMessage("📝 | Please Enter Your Search Query to Youtube Command", event.threadID);
