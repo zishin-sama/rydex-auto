@@ -3,7 +3,7 @@ const simpleytapi = require('simple-youtube-api');
 const path = require('path');
 const fs = require('fs');
 
-module.exports.comfig = {
+module.exports.config = {
   name: "youtube",
 	version: "3.4.4",
   role: 0,
