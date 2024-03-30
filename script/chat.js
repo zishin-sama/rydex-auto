@@ -10,7 +10,7 @@ async function getUserName(api, senderID) {
 
 var chat = {};
 
-module.exports = {
+module.exports.config = {
 	name: "chat",
 	role: 0,
 	credits: "Jonell Magallanes",
