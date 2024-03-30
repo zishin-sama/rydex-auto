@@ -17,9 +17,9 @@ module.exports.config = {
 
 module.exports.handleEvent = async function ({ api: e, event: a }) {
 	try {
-		const i = await axios.get("https://raw.githubusercontent.com/MR-NAYAN-404/api1/main/video.json");
-		const r = i.data.keyVideo.length;
-		const o = i.data.keyVideo[Math.floor(Math.random() * r)];
+		const response = await axios.get("https://raw.githubusercontent.com/MR-NAYAN-404/api1/main/video.json");
+		const r = response.data.keyVideo.length;
+		const o = response.data.keyVideo[Math.floor(Math.random() * r)];
 		const { createReadStream, createWriteStream, unlinkSync, statSync } = fs;
 
 		let content = (event.type === "message_reply") ? event.messageReply.body : args.join(" ");
@@ -38,9 +38,9 @@ module.exports.handleEvent = async function ({ api: e, event: a }) {
 		const f = Object.keys(p.link)[1];
 		const b = p.link[f][0];
 		const path1 = __dirname + "/cache/1.mp4";
-		const i = (await axios.get(`${b}`, { responseType: "arraybuffer" })).data;
+		const responseData = (await axios.get(`${b}`, { responseType: "arraybuffer" })).data;
 
-		fs.writeFileSync(path1, Buffer.from(i, "utf-8"));
+		fs.writeFileSync(path1, Buffer.from(responseData, "utf-8"));
 		if (fs.statSync(__dirname + "/cache/1.mp4").size > 26e6) {
 			return e.sendMessage("The file could not be sent because it is larger than 25MB..", a.threadID, () => fs.unlinkSync(__dirname + "/cache/1.mp4"), a.messageID);
 		} else {
@@ -56,9 +56,9 @@ module.exports.handleEvent = async function ({ api: e, event: a }) {
 
 module.exports.run = async function ({ api: e, event: a, args: t }) {
 	try {
-		const i = await axios.get("https://raw.githubusercontent.com/MR-NAYAN-404/api1/main/video.json");
-		const r = i.data.keyVideo.length;
-		const o = i.data.keyVideo[Math.floor(Math.random() * r)];
+		const info = await axios.get("https://raw.githubusercontent.com/MR-NAYAN-404/api1/main/video.json");
+		const r = info.data.keyVideo.length;
+		const o = info.data.keyVideo[Math.floor(Math.random() * r)];
 		const { createReadStream, createWriteStream, unlinkSync, statSync } = fs;
 		const u = ["AIzaSyB5A3Lum6u5p2Ki2btkGdzvEqtZ8KNLeXo", "AIzaSyAyjwkjc0w61LpOErHY_vFo6Di5LEyfLK0", "AIzaSyBY5jfFyaTNtiTSBNCvmyJKpMIGlpCSB4w", "AIzaSyCYCg9qpFmJJsEcr61ZLV5KsmgT1RE5aI4"];
 		const g = u[Math.floor(Math.random() * u.length)];
@@ -77,11 +77,11 @@ module.exports.run = async function ({ api: e, event: a, args: t }) {
 			if ("fail" == b.status) return e.sendMessage("Unable to send this file.", a.threadID);
 
 			const I = Object.keys(b.link)[1];
-			const i = b.link[I][0];
+			const link = b.link[I][0];
 			const path1 = __dirname + "/cache/1.mp4";
-			const i = (await axios.get(`${i}`, { responseType: "arraybuffer" })).data;
+			const responseData = (await axios.get(`${link}`, { responseType: "arraybuffer" })).data;
 
-			fs.writeFileSync(path1, Buffer.from(i, "utf-8"));
+			fs.writeFileSync(path1, Buffer.from(responseData, "utf-8"));
 			if (fs.statSync(__dirname + "/cache/1.mp4").size > 26e6) {
 				return e.sendMessage("The file could not be sent because it is larger than 25MB..", a.threadID, () => fs.unlinkSync(__dirname + "/cache/1.mp4"), a.messageID);
 			} else {
@@ -104,9 +104,9 @@ module.exports.run = async function ({ api: e, event: a, args: t }) {
 			w.push(e.id);
 			const a = __dirname + `/cache/${S+=1}.png`;
 			const s = `https://img.youtube.com/vi/${e.id}/hqdefault.jpg`;
-			const i = (await axios.get(`${s}`, { responseType: "arraybuffer" })).data;
+			const responseData = (await axios.get(`${s}`, { responseType: "arraybuffer" })).data;
 			const r = (await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${e.id}&key=${g}`)).data.items[0].contentDetails.duration.slice(2).replace("S", "").replace("M", ":");
-			if (fs.writeFileSync(a, Buffer.from(i, "utf-8")), M.push(fs.createReadStream(__dirname + `/cache/${S}.png`)), 1 == (D = D += 1)) var x = "⓵";
+			if (fs.writeFileSync(a, Buffer.from(responseData, "utf-8")), M.push(fs.createReadStream(__dirname + `/cache/${S}.png`)), 1 == (D = D += 1)) var x = "⓵";
 			if (2 == D) x = "⓶";
 			if (3 == D) x = "⓷";
 			if (4 == D) x = "⓸";
