@@ -14,7 +14,6 @@
     "@types/node": "^18.0.6",
     "@xaviabot/fb-downloader": "^1.0.14",
     "1secmail-api": "^1.1.1",
-    "advanced-calculator": "^1.1.1",
     "axios": "^1.6.5",
     "betabotz-tools": "^0.0.7",
     "bluebird": "^2.11.0",
