@@ -964,4 +964,102 @@ async function createDatabase() {
 	}
 	return database;
 }
+async function updateThread(id) {
+	const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
+	const user = database[1]?.Users.find(user => user.id === id);
+	if (!user) {
+		return;
+	}
+	user.exp += 1;
+	await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2));
+}
+const Experience = {
+	async levelInfo(id) {
+		const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
+		const data = database[1].Users.find(user => user.id === id);
+		if (!data) {
+			return;
+		}
+		return data;
+	},
+	async levelUp(id) {
+		const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
+		const data = database[1].Users.find(user => user.id === id);
+		if (!data) {
+			return;
+		}
+		data.level += 1;
+		await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2), 'utf-8');
+		return data;
+	}
+}
+const Currencies = {
+	async update(id, money) {
+		try {
+			const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
+			const data = database[1].Users.find(user => user.id === id);
+			if (!data || !money) {
+				return;
+			}
+			data.money += money;
+			await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2), 'utf-8');
+			return data;
+		} catch (error) {
+			console.error('Error updating Currencies:', error);
+		}
+	},
+	async increaseMoney(id, money) {
+		try {
+			const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
+			const data = database[1].Users.find(user => user.id === id);
+			if (!data) {
+				return;
+			}
+			if (data && typeof data.money === 'number' && typeof money === 'number') {
+				data.money += money;
+			}
+			await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2), 'utf-8');
+			return data;
+		} catch (error) {
+			console.error('Error checking Currencies:', error);
+		}
+	},
+	async decreaseMoney(id, money) {
+		try {
+			const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
+			const data = database[1].Users.find(user => user.id === id);
+			if (!data) {
+				return;
+			}
+			if (data && typeof data.money === 'number' && typeof money === 'number') {
+				data.money -= money;
+			}
+			await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2), 'utf-8');
+			return data;
+		} catch (error) {
+			console.error('Error checking Currencies:', error);
+		}
+	},
+	async getText(langText, ...args) {
+    if (!langText.hasOwnProperty(args[0])) throw `${__filename} - Not found key language: ${args[0]}`;
+    let text = langText[args[0]][args[1]];
+    for (let i = args.length - 1; i > 1; i--) {
+        const regEx = new RegExp(`%${i - 1}`, 'g');
+        text = text.replace(regEx, args[i]);
+    }
+    return text;
+},
+	async getData(id) {
+		try {
+			const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
+			const data = database[1].Users.find(user => user.id === id);
+			if (!data) {
+				return;
+			}
+			return data;
+		} catch (error) {
+			console.error('Error checking Currencies:', error);
+		}
+	}
+};
 main()

@@ -1,44 +1,47 @@
-const fs = require('fs');
-const path = require('path');
-
-module.exports.config = {
+const config = {
 	name: "daily",
-	credits: "Jonell Magallanes",
+	version: "1.0.2",
 	role: 0,
-	description: "Allows a user to receive daily currency",
-	aliases: ["dai"],
-	usage: "bank",
-	cooldown: 24, 
-	hasPrefix: false,
+	credits: "Mirai Team",
+	description: "Get 100000 coins every day!",
+	usage: "[daily]",
+	cooldowns: 5,
+	hasPrefix: false
 };
 
-module.exports.run = async function({ api, event }) {
-	const userId = event.senderID;
-	const userDataFile = path.join(__dirname, '/cache/currencies.json');
-	let userData = JSON.parse(fs.readFileSync(userDataFile, { encoding: 'utf8' }));
-
-	if (!userData[userId]) {
-		userData[userId] = { balance: 0, lastDaily: null };
+const languages = {
+	"en": {
+			"cooldown": "You received today's rewards, please come back after: %1 hours %2 minutes %3 seconds.",
+			"rewarded": "You received %1$, to continue to receive, please try again after 12 hours"
 	}
-
-	const now = new Date();
-	const lastDaily = new Date(userData[userId].lastDaily);
-	const diff = now - lastDaily;
-	const cooldown = 24 * 60 * 60 * 1000;
-
-	if (diff < cooldown) {
-		const remaining = cooldown - diff;
-		const hours = Math.floor(remaining / (60 * 60 * 1000));
-		const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
-		const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
-		api.sendMessage(`You need to wait for ${hours} hours, ${minutes} minutes and ${seconds} seconds to use the bank command again.`, event.threadID);
-		return;
-	}
-
-	userData[userId].balance += 100;
-	userData[userId].lastDaily = now.toISOString();
-
-	fs.writeFileSync(userDataFile, JSON.stringify(userData, null, 2));
-
-	api.sendMessage(`💸 | You have received $100! Your new balance is $${userData[userId].balance}.`, event.threadID);
 };
+
+const run = async ({ event, api, Currencies }) => {
+	const { name, version, cooldowns, rewardCoin, cooldownTime } = config;
+	const { senderID, threadID, messageID } = event;
+
+	let data = (await Currencies.getData(senderID)).data || {};
+	if (typeof data !== "undefined" && cooldownTime - (Date.now() - (data.dailyCoolDown || 0)) > 0) {
+			var time = cooldownTime - (Date.now() - data.dailyCoolDown),
+					seconds = Math.floor( (time/1000) % 60 ),
+					minutes = Math.floor( (time/1000/60) % 60 ),
+					hours = Math.floor( (time/(1000*60*60)) % 24 );
+
+			const cooldownMessage = languages["en"]["cooldown"].replace("%1", hours)
+					.replace("%2", minutes)
+					.replace("%3", (seconds < 10 ? "0" : "") + seconds);
+
+			return api.sendMessage(cooldownMessage, threadID, messageID);
+	} else {
+			const rewardedMessage = languages["en"]["rewarded"].replace("%1", rewardCoin);
+
+			return api.sendMessage(rewardedMessage, threadID, async () => {
+					await Currencies.increaseMoney(senderID, rewardCoin);
+					data.dailyCoolDown = Date.now();
+					await Currencies.setData(senderID, { data });
+					return;
+			}, messageID);
+	}
+};
+
+module.exports = { config, languages, run };
