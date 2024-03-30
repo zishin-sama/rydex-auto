@@ -11,10 +11,10 @@ module.exports.config = {
 	hasPrefix: false,
 	usage: "Send rule34 image",
 	version: "1.00",
-	cooldown: 1, // Changed "cooldowns" to "cooldown" and added a comma after "usage"
+	cooldown: 1
 };
 
-module.exports.run = async function ({ api, event }) {
+module.exports.run = async function ({ api, event, args }) {
 	const parser = new xml2js.Parser();
 	try {
 		const response = await axios.get(`https://rule34.xxx/index.php?page=dapi&s=post&q=index`);
