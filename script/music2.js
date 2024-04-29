@@ -3,7 +3,7 @@ const axios = require("axios");
 const fs = require("fs");
 
 module.exports.config = {
-		name: "spt",
+		name: "music2",
 		version: "1.0.2",
 		role: 0,
 		credits: "joshua deku",
