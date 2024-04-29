@@ -596,7 +596,7 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 																}
 															}
 															if (event.body) {
-							const emojis = ['🦖','🥺','😀','😾','😛','😽','😸'];
+							const emojis = ['','','','','','',''];
 							const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
 							api.setMessageReaction(randomEmoji, event.messageID, () => {}, true);
