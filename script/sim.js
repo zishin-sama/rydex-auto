@@ -3,7 +3,7 @@ module.exports.config = {
 		version: "1.0.0",
 		role: 0,
 		aliases: ["Sim"],
-		credits: "bundas",
+		credits: "jerome",
 		description: "Talk to sim",
 		cooldown: 0,
 		hasPrefix: false
@@ -17,7 +17,7 @@ module.exports.run = async function({ api, event, args }) {
 		const content = encodeURIComponent(args.join(" "));
 		if (!args[0]) return api.sendMessage("Please type a message...", tid, mid);
 		try {
-				const res = await axios.get(`http://fi1.bot-hosting.net:6378/sim?query=${content}`);
+				const res = await axios.get(`https://sim-api-ctqz.onrender.com/sim?query=${content}`);
 				const respond = res.data.respond;
 				if (res.data.error) {
 						api.sendMessage(`Error: ${res.data.error}`, tid, (error, info) => {
