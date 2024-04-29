@@ -1,47 +1,48 @@
 const axios = require('axios');
-const supportedIds = ["rachel", "drew", "clyde", "paul", "domi", "dave", "fin", "sarah", "antoni", "thomas", "charlie", "george", "emily", "elli", "callum", "patrick", "harry", "liam", "dorothy", "josh", "arnold", "charlotte", "alice", "matilda", "matthew", "james", "joseph", "jeremy", "michael", "ethan", "chris", "gigi", "freya", "brian", "grace", "daniel", "lily", "serena", "adam", "nicole", "bill", "jessie", "sam", "glinda", "giovanni", "mimi"];
+const fs = require('fs-extra');
 
 module.exports.config = {
-	name: "voice",
-	version: "1.0.0",
-	credits: "none",
-	role: 0,
-	description: "Generate voice using AI",
-	hasPrefix: false,
-	usages: "{pn} (voice id) | texts\nExample: {pn} rachel | hey there\n{pn} list | Get the list of supported voice IDs",
-	cooldown: 5,
-	aliases: ["v","tts"],
+  name: "remini",
+  version: "2.2",
+  hasPermssion: 0,
+  credits: "Hazeyy",
+  description: "( 𝚁𝚎𝚖𝚒𝚗𝚒 )",
+  commandCategory: "𝚗𝚘 𝚙𝚛𝚎𝚏𝚒𝚡",
+  usages: "( 𝙴𝚗𝚌𝚑𝚊𝚗𝚌𝚎 𝙸𝚖𝚊𝚐𝚎𝚜 )",
+  cooldowns: 2,
 };
 
-module.exports.run = async function ({ api, args, event }) {
-	const command = args.join(" ").split("|");
-	if (command.length !== 2) {
-		if (args[0].toLowerCase() === 'list') {
-			return api.sendMessage(`Supported voice IDs are:\n ${supportedIds.join("\n")}`, event.threadID, event.messageID);
-		}
-		return api.sendMessage(`❌Invalid command format. Use it like this:\nvoice rachel | Hey there`, event.threadID, event.messageID);
-	}
+module.exports.handleEvent = async function ({ api, event }) {
+  if (!(event.body.indexOf("remini") === 0 || event.body.indexOf("Remini") === 0)) return;
+  const args = event.body.split(/\s+/);
+  args.shift();
 
-	const voiceId = command[0].trim().toLowerCase();
-	const text = command[1].trim();
+  const pathie = __dirname + `/cache/zombie.jpg`;
+  const { threadID, messageID } = event;
 
-	if (!supportedIds.includes(voiceId)) {
-		return api.sendMessage(`❌Invalid voice ID. Supported IDs are:\n ${supportedIds.join("\n")}`, event.threadID, event.messageID);
-	}
+  const photoUrl = event.messageReply.attachments[0] ? event.messageReply.attachments[0].url : args.join(" ");
 
-	const apiKey = 'fuck';
-	const apiUrl = `https://for-devs.onrender.com/api/voice?text=${encodeURIComponent(text)}&voiceid=${voiceId}&apikey=${apiKey}`;
+  if (!photoUrl) {
+    api.sendMessage("📸 𝙿𝚕𝚎𝚊𝚜𝚎 𝚛𝚎𝚙𝚕𝚢 𝚝𝚘 𝚊 𝚙𝚑𝚘𝚝𝚘 𝚝𝚘 𝚙𝚛𝚘𝚌𝚎𝚎𝚍 𝚎𝚗𝚑𝚊𝚗𝚌𝚒𝚗𝚐 𝚒𝚖𝚊𝚐𝚎𝚜.", threadID, messageID);
+    return;
+  }
 
-	try {
-		const response = await axios.get(apiUrl, { responseType: 'stream' });
+  api.sendMessage("🕟 | 𝙴𝚗𝚑𝚊𝚗𝚌𝚒𝚗𝚐, 𝙿𝚕𝚎𝚊𝚜𝚎 𝚠𝚊𝚒𝚝 𝚏𝚘𝚛 𝚊 𝚖𝚘𝚖𝚎𝚗𝚝..", threadID, async () => {
+    try {
+      const response = await axios.get(`https://haze-code-merge-0f8f4bbdea12.herokuapp.com/api/try/remini?url=${encodeURIComponent(photoUrl)}`);
+      const processedImageURL = response.data.image_data;
+      const img = (await axios.get(processedImageURL, { responseType: "arraybuffer" })).data;
 
-		if (response && response.data) {
-			return api.sendMessage({ attachment: response.data }, event.threadID, event.messageID);
-		} else {
-			return api.sendMessage('Failed to generate voice.', event.threadID, event.messageID);
-		}
-	} catch (error) {
-		console.error(error);
-		return api.sendMessage('Failed to generate voice.', event.threadID, event.messageID);
-	}
+      fs.writeFileSync(pathie, Buffer.from(img, 'binary'));
+
+      api.sendMessage({
+        body: "✨ 𝙴𝚗𝚑𝚊𝚗𝚌𝚎𝚍 𝚂𝚞𝚌𝚌𝚎𝚜𝚜𝚏𝚞𝚕𝚕𝚢",
+        attachment: fs.createReadStream(pathie)
+      }, threadID, () => fs.unlinkSync(pathie), messageID);
+    } catch (error) {
+      api.sendMessage(`🚫 𝙴𝚛𝚛𝚘𝚛 𝚙𝚛𝚘𝚌𝚎𝚜𝚜𝚒𝚗𝚐 𝚒𝚖𝚊𝚐𝚎: ${error}`, threadID, messageID);
+    }
+  });
 };
+
+module.exports.run = async function ({ api, event }) {};
