@@ -1,46 +1,39 @@
-const path = require('path');
-const fs = require('fs');
-const axios = require('axios');
+  const fs = require("fs");
+  const axios = require("axios");
+  const path = require("path");
 
-module.exports.config = {
-	name: "codm",
-	version: "5",
-	role: 0,
-	hasPrefix: false,
-	credits: "Eugene Aguilar",
-	description: "generate random codm vids",
-	aliases: ["cod"],
-	usage: "codm",
-	cooldown: 4,
-};
+  module.exports.config = {
+      name: "codm",
+      version: "1.9.0",
+      hasPermssion: 0,
+      credits: "Anonymous",
+      description: "Generate random Call of Duty Mobile videos",
+      commandCategory: "other",
+      usages: "[codm]",
+      cooldowns: 9,
+     usePrefix: true,
+    };
+  module.exports.run = async function ({ api, event }) {
+      try {
+        api.sendMessage(`codm is sending please wait...`, event.threadID, event.messageID);
+        const response = await axios.post(`https://codm-cutie.onrender.com/api/request/f`);
+        const video = response.data.url;
+        const username = response.data.username;
+        const nickname = response.data.nickname;
+const title = response.data.title;
 
-module.exports.run = async function ({ api, event }) {
-const { sendMessage: reply } = api;
+        let codmPath = path.join(__dirname, "cache", "codm.mp4");
 
-	try {
-		reply(`⏰ | Video is being sent, please wait...`, event.threadID, event.messageID);
+        const dl = await axios.get(video, { responseType: "arraybuffer" });
 
-		const pp = await axios.post(`https://codm-rbwc.onrender.com/link`);
-		const hh = pp.data.link;
-		const link = hh[Math.floor(Math.random() * hh.length)];
+        fs.writeFileSync(codmPath, Buffer.from(dl.data, "utf-8"));
 
-		const dl = await axios.get(`https://www.tikwm.com/api/?url=${link}`);
-		const username = dl.data.data.author.unique_id || "Anonymous";
-		const nickname = dl.data.data.author.nickname || "Anonymous";
-		const title = dl.data.data.title || "N/A";
-		const v = dl.data.data.play;
-
-		const stream = await axios.get(v, { responseType: "arraybuffer" });
-
-		let filePath = path.join(__dirname, 'cache', 'codm.mp4');
-		fs.writeFileSync(filePath, Buffer.from(stream.data, 'binary'));
-
-		await  reply({
-			body: `Call of Duty Mobile 💫\n\nUsername: @${username}\nNickname: ${nickname}\nDescription: ${title}`,
-			attachment: fs.createReadStream(filePath),
-		}, event.threadID, () => fs.unlinkSync(filePath), event.messageID);
-	} catch (e) {
-		console.error(e);
-		reply(`Error fetching Call of Duty Mobile. Contact https://www.facebook.com/localhost.dev09 to fix this API!!`, event.threadID, event.messageID);
-	}
-};
+        api.sendMessage({
+          body: `Call of Duty Mobile\n\nUsername: ${username}\nNickname: ${nickname}\nTitle: ${title}`,
+          attachment: fs.createReadStream(codmPath)
+        }, event.threadID, event.messageID);
+      } catch (err) {
+        console.error(err);
+        api.sendMessage(`Error occurred while processing your request.`, event.threadID, event.messageID);
+      }
+  };
