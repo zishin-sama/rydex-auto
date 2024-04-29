@@ -42,7 +42,7 @@ module.exports.run = async function({ api, event, args }) {
   fs.appendFileSync("warn_logs.txt", logMessage + "\n");
 
   // Send a warning message to the user
-  api.sendMessage(`You have been warned for: ${reason}`, userId);
+  api.sendMessage(`<@${userId}> You have been warned for: ${reason}`, threadID, messageID);
 
   // Check the number of warnings for the user
   const warnings = getWarnings(userId);
@@ -51,23 +51,43 @@ module.exports.run = async function({ api, event, args }) {
   if (warnings >= 3) {
     // Remove the user from the group
     api.removeUserFromGroup(userId, threadID);
-    return api.sendMessage(`User ${userId} has been removed from the group due to multiple warnings.`, threadID);
+    return api.sendMessage(`User <@${userId}> has been removed from the group due to multiple warnings.`, threadID);
   }
 
-  return api.sendMessage(`User ${userId} has been warned for: ${reason}. This is their ${warnings} warning(s).`, threadID);
+  return api.sendMessage(`User <@${userId}> has been warned for: ${reason}. This is their ${warnings} warning(s).`, threadID);
 };
 
 // Function to check if the user is an admin
 function isAdmin(userId) {
   // Your logic to check if the user is an admin
+  // For example, you can use an array of admin IDs and check if the user ID is in that array
+  const adminIds = [100087212564100]; // Replace this with an array of actual admin IDs if needed
+  return adminIds.includes(userId);
 }
 
 // Function to extract user ID from mention or provided ID
 function extractUserId(input) {
-  // Your logic to extract the user ID
+  // Extract user ID from a mention
+  if (input.startsWith("@")) {
+    const mention = input.slice(1);
+    const mentionedUser = api.getCurrentUserID(mention);
+    return mentionedUser.id;
+  }
+
+  // If it's not a mention, assume it's a user ID
+  return input;
 }
 
 // Function to get the number of warnings for a user
 function getWarnings(userId) {
   // Your logic to retrieve the number of warnings for the user
+  // For example, you can use an object to store warnings for each user
+  const warnings = {
+    12345678: 2, // Replace 12345678 with the actual user ID
+    23456789: 1, // Replace 23456789 with the actual user ID
+    // Add more user IDs and their corresponding warning counts as needed
+  };
+
+  return warnings[userId] || 0;
 }
+``
