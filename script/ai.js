@@ -1,34 +1,35 @@
-const { get } = require('axios');
+const axios = require("axios");
 
 module.exports.config = {
-    name: "ai",
-    version: "1.0.0",
-    role: 0,
-    hasPrefix: false,
-    credits: "Deku",
-    description: "Talk to AI with continuous conversation.",
-    aliases:  [],
-    usages: "[prompt]",
-    cooldown: 0,
+  name: "ai",
+  version: "1.0.0",
+  permission: 0,
+  credits: "churchill",//api by hazey
+  description: "snowhite api by hazey",
+  commandCategory: "utility",
+  usage: "ai <question>",
+  cooldown: 5,
 };
 
-module.exports.run = async function({ api, event, args }) {
-    function sendMessage(msg) {
-        api.sendMessage(msg, event.threadID, event.messageID);
-    }
+module.exports.handleEvent = async function ({ api, event, args }) {
+  // Check if the user provided a question
+  if (args.length === 0) {
+    return api.sendMessage("Please provide a question.", event.threadID);
+  }
 
-    if (!args[0]) return sendMessage('Please provide a question first.');
+  // Join the arguments into a single string
+  const question = args.join(" ");
 
-    const prompt = args.join(" ");
-    const url = `https://deku-rest-api.replit.app/gpt4?prompt=${encodeURIComponent(prompt)}&uid=${event.senderID}`;
+  try {
+    // Call the AI API with the provided question
+    const response = await axios.get(`https://haze-llm-model-74e9fe205264.herokuapp.com/snow?question=${encodeURIComponent(question)}`);
 
-    try {
-        const response = await get(url);
-        const data = response.data;
-        const botOwnerProfileLink = "https://www.facebook.com/Churchill.Dev4100"; // Replace this with the bot owner's Facebook profile link
-        const messageWithLink = `${data.gpt4}\n𝐂𝐫𝐞𝐝𝐢𝐭𝐬 𝐭𝐨 𝐭𝐡𝐞 𝐛𝐨𝐭 𝐨𝐰𝐧𝐞𝐫:  ${botOwnerProfileLink}`;
-        return sendMessage(messageWithLink);
-    } catch (error) {
-        return sendMessage(error.message);
-    }
-}
+    // Send the AI's response back to the user
+    api.sendMessage(response.data.response, event.threadID);
+  } catch (error) {
+    console.error("Error fetching AI response:", error);
+    api.sendMessage("An error occurred while fetching the response from the AI.", event.threadID);
+  }
+};
+
+module.exports.run = async function ({ api, event }) {};
