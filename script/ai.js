@@ -22,7 +22,11 @@ module.exports.run = async function ({ api, event, args }) {
         const response = await axios.get(`https://haze-llm-model-74e9fe205264.herokuapp.com/snow?question=${encodeURIComponent(question)}`);
         const answer = response.data.answer;
 
-        await api.sendMessage(`\`\`\`${answer}\`\`\`\nThe bot was created by Churchill: https://www.facebook.com/Churchill.Dev4100`, event.threadID);
+        if (answer === undefined || answer === null) {
+            await api.sendMessage("Sorry, I couldn't find an answer to that question.", event.threadID);
+        } else {
+            await api.sendMessage(`${answer}\nThe bot was created by Churchill: https://www.facebook.com/Churchill.Dev4100`, event.threadID);
+        }
     } catch (error) {
         console.error("Error:", error.message);
     }
