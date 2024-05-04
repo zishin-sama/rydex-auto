@@ -1,8 +1,10 @@
+const request = require("request");
+
 module.exports.config = {
     name: "women",
     version: "1.0.0",
     role: 0,
-    credits: "ChatGPT",
+    credits: "churchill",
     description: "Send a video of women",
     hasPrefix: true,
     usage: "",
