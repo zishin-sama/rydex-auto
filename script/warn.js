@@ -1,3 +1,5 @@
+let warnings = {}; // Object para sa pag-iimbak ng bilang ng warnings para sa bawat user
+
 module.exports.config = {
     name: "warn",
     version: "1.0.0",
@@ -26,28 +28,29 @@ module.exports.run = async function ({ api, event, args }) {
 
     const userID = args[0].replace("@", "").replace(" ", ""); // Kunin ang UID ng user na na-mention
 
-    // I-retrieve ang bilang ng warnings na nakuha ng user
-    const warnings = getWarnings(userID);
+    // Initialize ang bilang ng warnings para sa user kung hindi pa ito na-initialize
+    if (!warnings[userID]) {
+        warnings[userID] = 0;
+    }
 
     // Perform warn
     try {
+        // Tumaas ang bilang ng warnings para sa user
+        warnings[userID]++;
+
         // Gagawin ang warning action dito (hal. i-send ang warning message sa user)
-        await api.sendMessage(`You have been warned by the admin. This is your ${warnings + 1} warning.`, userID);
+        await api.sendMessage(`You have been warned by the admin. This is your ${warnings[userID]} warning.`, userID);
         await api.sendMessage(`User has been warned successfully.`, threadID, messageID);
 
         // Check kung nakatatlong warning na ang user
-        if (warnings + 1 >= 3) {
+        if (warnings[userID] >= 3) {
             // Kick ang user
             await api.removeUserFromGroup(userID, threadID);
             await api.sendMessage(`User has been kicked from the group due to multiple warnings.`, threadID);
+            // I-reset ang bilang ng warnings para sa user pagkatapos niyang ma-kick
+            warnings[userID] = 0;
         }
     } catch (error) {
         return api.sendMessage(`Failed to warn user.`, threadID, messageID);
     }
 };
-
-// Ito ay isang placeholder function. I-update mo ito depende sa iyong data structure para sa pag-iimbak ng warnings.
-function getWarnings(userID) {
-    // I-return ang bilang ng warnings para sa user
-    return 0; // Placeholder value, dapat ito ay base sa tunay na bilang ng warnings
-}
