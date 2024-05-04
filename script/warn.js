@@ -2,7 +2,7 @@ module.exports.config = {
     name: "warn",
     version: "1.0.0",
     role: 0,
-    credits: "ChatGPT",
+    credits: "chilli",
     description: "Warn a user in the group chat",
     hasPrefix: false,
     usage: "[@user]",
