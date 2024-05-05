@@ -5,7 +5,7 @@ module.exports.config = {
   version: '1.0.0',
   role: 0,
   hasPrefix: false,
-  aliases: ['snow', 'bot'],
+  aliases: ['snow', 'flake'],
   description: "An AI command powered by Snowflakes AI",
   usage: "snowflakes [prompt]",
   credits: 'Developer',
@@ -24,13 +24,15 @@ module.exports.run = async function({ api, event, args }) {
     return;
   }
   
-  api.sendMessage(`🔍Searching for Snowflakes AI response....
-━━━━━━━━━━━━━━━━━━\n\n "${input}"`, event.threadID, event.messageID);
+  api.sendMessage(`🔍Searching for Snowflakes AI response....`, event.threadID, event.messageID);
   
   try {
     const { data } = await axios.get(`https://hashier-api-snowflake.vercel.app/api/snowflake?ask=${encodeURIComponent(input)}`);
-    const response = data.answer;
-    api.sendMessage(response, event.threadID, event.messageID);
+    if (data.response) {
+      api.sendMessage(data.response, event.threadID, event.messageID);
+    } else {
+      api.sendMessage('No response found.', event.threadID, event.messageID);
+    }
   } catch (error) {
     api.sendMessage('An error occurred while processing your request.', event.threadID, event.messageID);
   }
