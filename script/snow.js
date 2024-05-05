@@ -1,14 +1,14 @@
 const axios = require('axios');
 
 module.exports.config = {
-  name: 'snowflakes',
+  name: 'snow',
   version: '1.0.0',
   role: 0,
   hasPrefix: false,
-  aliases: ['snow', 'flake'],
+  aliases: ['snow', 'flakes'],
   description: "An AI command powered by Snowflakes AI",
   usage: "snowflakes [prompt]",
-  credits: 'Developer',
+  credits: 'churchill',
   cooldown: 3,
 };
 
@@ -29,7 +29,7 @@ module.exports.run = async function({ api, event, args }) {
   try {
     const { data } = await axios.get(`https://hashier-api-snowflake.vercel.app/api/snowflake?ask=${encodeURIComponent(input)}`);
     if (data.response) {
-      api.sendMessage(data.response, event.threadID, event.messageID);
+      api.sendMessage(data.response + "\n\n𝒄𝒓𝒆𝒅𝒊𝒕𝒔: https://www.facebook.com/Churchill.Dev4100", event.threadID, event.messageID);
     } else {
       api.sendMessage('No response found.', event.threadID, event.messageID);
     }
