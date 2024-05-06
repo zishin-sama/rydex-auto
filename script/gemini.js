@@ -1,5 +1,4 @@
 const axios = require("axios");
-let fontEnabled = false;
 
 module.exports.config = {
   name: "gemini",
