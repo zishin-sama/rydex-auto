@@ -1,13 +1,12 @@
 const axios = require('axios');
 
 module.exports.config = {
-  name: 'ai',
+  name: 'snow',
   version: '1.0.0',
   role: 0,
   hasPrefix: false,
-  aliases: ['snow', 'ai'],
   description: "An AI command powered by Snowflakes AI",
-  usage: "ai [prompt]",
+  usage: "snow [prompt]",
   credits: 'churchill',
   cooldown: 3,
 };
@@ -27,7 +26,9 @@ module.exports.run = async function({ api, event, args }) {
   api.sendMessage(`🔍Searching for Snowflakes AI response....`, event.threadID, event.messageID);
   
   try {
-    const { data } = await axios.get(`https://haze-llm-model-74e9fe205264.herokuapp.com/snow?question=${encodeURIComponent(input)}`);
+    const response = await axios.get(`https://haze-llm-model-74e9fe205264.herokuapp.com/snow?question=${encodeURIComponent(input)}`);
+    const { data } = response;
+
     if (data.response) {
       api.sendMessage(data.response + "\n\n𝒄𝒓𝒆𝒅𝒊𝒕𝒔: https://www.facebook.com/Churchill.Dev4100", event.threadID, event.messageID);
     } else {
