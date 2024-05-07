@@ -5,32 +5,30 @@ module.exports.config = {
   version: '1.0.0',
   role: 0,
   hasPrefix: false,
-  aliases: ['gpt', 'openai'],
-  description: "An AI command powered by SnowAi",
-  usage: "Ai [prompt]",
+  description: "AI-like command using the Snow API",
+  usage: "ai [message]",
   credits: 'Developer',
   cooldown: 3,
 };
 
 module.exports.run = async function({ api, event, args }) {
-  const input = args.join(' ');
+  const message = args.join(' ');
 
-  if (!input) {
-    api.sendMessage("Please provide a question/query.", event.threadID, event.messageID);
+  if (!message) {
+    api.sendMessage("Please provide a message.", event.threadID, event.messageID);
     return;
   }
 
-  api.sendMessage(`Searching, please wait...\n\n"${input}"`, event.threadID, event.messageID);
+  api.sendMessage(`Thinking...`, event.threadID, event.messageID);
 
   try {
-    const response = await axios.get(`https://haze-llm-model-74e9fe205264.herokuapp.com/snow?question=${encodeURIComponent(input)}`);
-    const answer = response.data.response; // Adjust this line according to the actual property name from the API response
+    const response = await axios.get(`https://haze-llm-model-74e9fe205264.herokuapp.com/snow?question=${encodeURIComponent(message)}`);
+    const answer = response.data.response;
 
     if (answer) {
-      const messageWithCredits = `${answer}\n\n𝗰𝗿𝗲𝗱𝗶𝘁𝘀: https://www.facebook.com/Churchill.Dev4100`;
-      api.sendMessage(messageWithCredits, event.threadID, event.messageID);
+      api.sendMessage(answer, event.threadID, event.messageID);
     } else {
-      api.sendMessage("I didn't get a response.", event.threadID, event.messageID);
+      api.sendMessage("I couldn't understand that.", event.threadID, event.messageID);
     }
   } catch (error) {
     console.error(error);
