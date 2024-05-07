@@ -6,7 +6,7 @@ module.exports.config = {
   role: 0,
   hasPrefix: false,
   aliases: ['gpt', 'openai'],
-  description: "An AI command powered by GPT-4",
+  description: "An AI command powered by SnowAi",
   usage: "Ai [prompt]",
   credits: 'Developer',
   cooldown: 3,
@@ -24,7 +24,7 @@ module.exports.run = async function({ api, event, args }) {
 
   try {
     const response = await axios.get(`https://haze-llm-model-74e9fe205264.herokuapp.com/snow?question=${encodeURIComponent(input)}`);
-    const answer = response.data.responseProperty; // Replace 'responseProperty' with the actual property name from the API response
+    const answer = response.data.response; // Adjust this line according to the actual property name from the API response
 
     if (answer) {
       const messageWithCredits = `${answer}\n\n𝗰𝗿𝗲𝗱𝗶𝘁𝘀: https://www.facebook.com/Churchill.Dev4100`;
