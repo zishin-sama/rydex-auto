@@ -5,30 +5,29 @@ module.exports.config = {
   version: '1.0.0',
   role: 0,
   hasPrefix: false,
-  description: "AI-like command using the Snow API",
-  usage: "ai [message]",
+  description: "An AI command powered by GPT-4",
+  usage: "ai [query]",
   credits: 'Developer',
   cooldown: 3,
 };
 
 module.exports.run = async function({ api, event, args }) {
-  const message = args.join(' ');
+  const query = args.join(' ');
 
-  if (!message) {
-    api.sendMessage("Please provide a message.", event.threadID, event.messageID);
+  if (!query) {
+    api.sendMessage("Please provide a query.", event.threadID, event.messageID);
     return;
   }
 
   api.sendMessage(`Thinking...`, event.threadID, event.messageID);
 
   try {
-    const response = await axios.get(`https://haze-llm-model-74e9fe205264.herokuapp.com/snow?question=${encodeURIComponent(message)}`);
-    const answer = response.data.response;
+    const model = 'gpt-4'; // Ito ang tukuyin ang modelo na gagamitin (mula sa API)
+    const response = await axios.get(`https://gpt4withcustommodel.onrender.com/gpt?query=${encodeURIComponent(query)}&model=${model}`);
+    const answer = response.data;
 
     if (answer) {
       api.sendMessage(answer, event.threadID, event.messageID);
-    } else {
-      api.sendMessage("I couldn't understand that.", event.threadID, event.messageID);
     }
   } catch (error) {
     console.error(error);
