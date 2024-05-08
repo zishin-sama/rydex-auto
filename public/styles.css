@@ -1,9 +1,14 @@
+/* Reset default browser styles */
 body {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', BlinkMacSystemFont, sans-serif;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+/* Gradient background animation */
+body {
     background: linear-gradient(135deg, #f8d3f5, #a6f3f3, #a2e3f8, #ff9e9e);
     animation: gradient 15s ease infinite;
     background-size: 400% 400%;
@@ -22,6 +27,7 @@ body {
     }
 }
 
+/* Common container styles */
 .container {
     color: #fff;
     background: rgba(0, 0, 0, 0.7);
@@ -33,16 +39,16 @@ body {
     outline: 2px solid #fff;
 }
 
+/* Heading styles */
 h1 {
     color: #fff;
     font-size: 24px;
     margin-bottom: 15px;
 }
 
+/* Textarea styles */
 .centered-textarea {
     color: #fff;
-    display: flex;
-    margin: 0 auto;
     width: 100%;
     min-height: 150px;
     padding: 10px;
@@ -52,11 +58,13 @@ h1 {
     resize: none;
 }
 
+/* Button styles */
 .btn-primary {
     background-color: #00ff00;
     border: 1px solid #007bff;
     color: #261a1a;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    width: 100%;
 }
 
 .btn-primary:hover {
@@ -64,6 +72,7 @@ h1 {
     border: 1px solid #0056b3;
 }
 
+/* Footer styles */
 .footer {
     background-color: #5c6bc0;
     padding: 10px;
@@ -83,6 +92,7 @@ h1 {
     margin-right: 30px;
 }
 
+/* Checkbox styles */
 .form-check input[type="checkbox"] {
     color: #FFF;
     margin-right: 10px;
@@ -95,10 +105,7 @@ h1 {
     padding: 22px;
 }
 
-#submitButton {
-    width: 100%;
-}
-
+/* Media query for smaller screens */
 @media (max-width: 576px) {
     .form-check-label {
         font-size: 12px;
