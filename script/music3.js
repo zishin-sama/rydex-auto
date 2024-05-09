@@ -1,10 +1,10 @@
 module.exports.config = {
- name: "sing",
+ name: "music3",
  version: "2.0.4",
  role: 0,
  credits: "cliff",
  description: "Play a song",
- aliases: ["sing"],
+ aliases: ["music3"],
 cooldowns: 0,
 cooldown: 0,
 hasPrefix: false,
