@@ -5,7 +5,7 @@ module.exports.config = {
   version: '1.0.0',
   role: 0,
   hasPrefix: false,
-  aliases: ['snow', 'ai'],
+  aliases: ['snow', 'ai4'],
   description: "An AI command powered by Snowflakes AI",
   usage: "snowflakes [prompt]",
   credits: 'churchill',
