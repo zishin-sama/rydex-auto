@@ -1,11 +1,11 @@
 const axios = require('axios');
 
 module.exports.config = {
-  name: 'ai',
+  name: 'ai3',
   version: '1.0.0',
   role: 0,
   hasPrefix: false,
-  aliases: ['snow', 'ai4'],
+  aliases: ['snow', 'ai3'],
   description: "An AI command powered by Snowflakes AI",
   usage: "snowflakes [prompt]",
   credits: 'churchill',
