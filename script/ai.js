@@ -10,7 +10,7 @@ const backupApiUrl = 'https://jonellccapisprojectv2-a62001f39859.herokuapp.com/a
 let isPrimaryApiStable = true;
 
 module.exports.config = {
-		name: "ai3",
+		name: "ai",
 		version: "1.0.0",
 		role: 0,
 		credits: "Jonell Magallanes",
