@@ -122,7 +122,7 @@ const routes = [{
 	path: '/online_user',
 	file: 'online.html'
 },{
-	path: '/contact',
+  path: '/contact',
 	file: 'contact.html'
 },{
 	path: '/random_shoti',
@@ -134,7 +134,7 @@ const routes = [{
 	path: '/clock',
 	file: 'clock.html'
 },{
-	path: '/time',
+  path: '/time',
 	file: 'crazy.html'
 },{
 	path: '/developer',
@@ -142,9 +142,6 @@ const routes = [{
 },{
 	path: '/random',
 	file: 'random.html'
-},{
-	path: '/spotify',
-	file: 'spotify.html'
 }, ];
 routes.forEach(route => {
 	app.get(route.path, (req, res) => {
@@ -230,62 +227,10 @@ app.post('/login', async (req, res) => {
 		});
 	}
 });
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-	console.log(`
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⠿⠛⢉⣉⣠⣤⣤⣤⣴⣦⣤⣤⣀⡉⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⠋⢁⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⡟⠁⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠿⠿⠂⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⡟⠀⣼⣿⣿⡏⢉⣁⣀⣀⣤⣤⣄⠀⣴⣿⣿⡇⢠⣶⣶⠒⠲⡆⢀⠈⢿⣿⣿⣿⣿⣿⣿⣿
-⣿⠁⣼⣿⣿⣿⠀⢿⣿⣿⣏⣀⣹⠟⢀⣿⣿⣿⣷⡈⠛⠿⠃⢀⣠⣿⣆⠈⣿⣿⣿⣿⣿⣿⣿
-⡇⢠⣿⣿⣿⣿⣧⣀⠉⠛⠛⠉⣁⣠⣾⣿⣿⣿⣿⣿⣷⣶⠾⠿⠿⣿⣿⡄⢸⣿⣿⣿⣿⣿⣿
-⡇⢸⣿⣿⣿⣿⡿⠿⠟⠛⠛⠛⢉⣉⣉⣉⣉⣩⣤⣤⣤⣤⠀⣴⣶⣿⣿⡇⠀⣿⣿⣿⣿⣿⣿
-⠅⢸⣿⣿⣿⣷⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢸⣿⣿⣿⠃⢸⣿⣿⣿⠛⢻⣿
-⣇⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠉⣿⡟⢀⣾⣿⠟⠁⣰⣿⣿⣿⡿⠀⠸⣿
-⣿⣆⠀⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠙⣠⣾⠟⠁⣠⣾⣿⣿⣿⣿⠀⣶⠂⣽
-⣿⣿⣷⣄⡈⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⣴⠆⠀⠋⢀⣴⣿⣿⡿⠟⠛⠉⠀⢂⣡⣾⣿
-⣿⣿⣿⣿⣿⠇⢀⣄⣀⡉⠉⠉⠉⠉⠉⣉⠤⠈⢁⣤⣶⠀⠾⠟⣋⡡⠔⢊⣠⣴⣾⣿⣿⣿⣿
-⣿⣿⣿⣿⠏⢠⣿⣿⡿⠛⢋⣠⠴⠚⢉⣥⣴⣾⣿⣿⣿⠀⠴⠛⣉⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⡏⢀⣿⣿⣯⠴⠛⠉⣠⣴⣾⣿⣿⣿⣿⣿⣿⣿⠀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⡟⠀⣼⣿⣿⣧⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⠃⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⡟⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⠃⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱
-
-███████╗██╗░░░██╗░█████╗░██╗░░██╗
-██╔════╝██║░░░██║██╔══██╗██║░██╔╝
-█████╗░░██║░░░██║██║░░╚═╝█████═╝░
-██╔══╝░░██║░░░██║██║░░██╗██╔═██╗░
-██║░░░░░╚██████╔╝╚█████╔╝██║░╚██╗
-╚═╝░░░░░░╚═════╝░░╚════╝░╚═╝░░╚═╝
-
-██╗░░░██╗░█████╗░██╗░░░██╗
-╚██╗░██╔╝██╔══██╗██║░░░██║
-░╚████╔╝░██║░░██║██║░░░██║
-░░╚██╔╝░░██║░░██║██║░░░██║
-░░░██║░░░╚█████╔╝╚██████╔╝
-░░░╚═╝░░░░╚════╝░░╚═════╝░ 
-
-"✖ [░░░░░░░░░░░░░░░]",
-"✖ [■░░░░░░░░░░░░░░]",
-"✖ [■■░░░░░░░░░░░░░]",
-"✖ [■■■░░░░░░░░░░░░]",
-"✖ [■■■■░░░░░░░░░░░]",
-"✖ [■■■■■░░░░░░░░░░]",
-"✖ [■■■■■■░░░░░░░░░]",
-"✖ [■■■■■■■░░░░░░░░]",
-"✖ [■■■■■■■■░░░░░░░]",
-"✖ [■■■■■■■■■░░░░░░]",
-"✖ [■■■■■■■■■■░░░░░]",
-"✖ [■■■■■■■■■■■░░░░]",
-"✖ [■■■■■■■■■■■■░░░]",
-"✖ [■■■■■■■■■■■■■░░]",
-"✖ [■■■■■■■■■■■■■■░]",
-"✖ [■■■■■■■■■■■■■■■]"
-${port}`);
+	console.log(`CONNECTED AUTOBOT BY VINCENT MAGTOLIS DEV${port}`);
 });
 process.on('unhandledRejection', (reason) => {
 	console.error('Unhandled Promise Rejection:', reason);
@@ -394,20 +339,16 @@ async function accountLogin(state, enableCommands = [], prefix, admin = []) {
 							const { threadID } = event;
 
 					if (event.logMessageData.addedParticipants && Array.isArray(event.logMessageData.addedParticipants) && event.logMessageData.addedParticipants.some(i => i.userFbId == userid)) {
-					api.changeNickname(`》 ${prefix} 《 ❃ ➠ 𝒄𝒉𝒖𝒓𝒄𝒉𝒊𝒍𝒍𝒃𝒐𝒕`, threadID, userid);
+					api.changeNickname(`》 ${prefix} 《 ❃ ➠ 𝘤𝘩𝘶𝘳𝘤𝘩𝘪𝘭𝘭𝘵𝘰𝘴 𝘣𝘰𝘵`, threadID, userid);
 
 let gifUrls = [
-	'https://i.imgur.com/209z0iM.mp4',
-	'https://i.imgur.com/VTZWEmH.mp4',
-	'https://i.imgur.com/FO3UI1c.mp4',
-	'https://i.imgur.com/X34qKhJ.mp4',
-	'https://i.imgur.com/WK22w8v.mp4',
-	'https://i.imgur.com/tvVDuo6.mp4',
-	'https://i.imgur.com/3tgiqQd.mp4',
-	'https://i.imgur.com/AfkKH9h.mp4',
-	'https://i.imgur.com/wIGJBXq.mp4',
-	'https://i.imgur.com/lmMWsR8.mp4',
-  'https://i.imgur.com/x0c92nj.mp4'
+	  'https://i.imgur.com/l0cT2mf.mp4',
+		'https://i.imgur.com/x1NvBkN.mp4',
+		'https://i.imgur.com/D9KKg2F.mp4',
+		'https://i.imgur.com/wJBbgsa.mp4',
+		'https://i.imgur.com/mz1GdrL.mp4',
+		'https://i.imgur.com/H3f2Re5.mp4',
+		'https://i.imgur.com/gBYZHdw.mp4'
 ];
 
 let randomIndex = Math.floor(Math.random() * gifUrls.length);
@@ -419,7 +360,7 @@ axios.get(gifUrl, { responseType: 'arraybuffer' })
 				fs.writeFileSync(gifPath, response.data); 
 				return api.sendMessage("𝗖𝗢𝗡𝗡𝗘𝗖𝗧𝗜𝗡𝗚...", event.threadID, () => 
 						api.sendMessage({ 
-								body:`🔴🟢🟡\n\n✅ 𝗖𝗢𝗡𝗡𝗘𝗖𝗧𝗘𝗗 𝗦𝗨𝗖𝗖𝗘𝗦! \n➭ Bot Prefix: ${prefix}\n➭ Admin: ‹𝐂𝐡𝐮𝐫𝐜𝐡𝐢𝐥𝐥 𝐀𝐛𝐢𝐧𝐠›\n➭ Facebook: ‹https://www.facebook.com/Churchill.Dev4100›\n➭ Use ${prefix}help to view command details\n➭ Added bot at: ⟨ ${time} ⟩〈 ${thu} 〉`, 
+								body:`🔴🟢🟡\n\n✅ 𝗖𝗢𝗡𝗡𝗘𝗖𝗧𝗘𝗗 𝗦𝗨𝗖𝗖𝗘𝗦! \n➭ Bot Prefix: ${prefix}\n➭ Admin: ‹𝘤𝘩𝘶𝘳𝘤𝘩𝘪𝘭𝘭 𝘢𝘣𝘪𝘯𝘨›\n➭ Facebook: ‹https://www.facebook.com/Churchill.Dev4100›\n➭ Use ${prefix}help to view command details\n➭ Added bot at: ⟨ ${time} ⟩〈 ${thu} 〉`, 
 								attachment: fs.createReadStream(gifPath)
 						}, event.threadID)
 				);
@@ -432,7 +373,7 @@ axios.get(gifUrl, { responseType: 'arraybuffer' })
 									const fs = require("fs-extra");
 									let { threadName, participantIDs } = await api.getThreadInfo(threadID);
 
-									var mentions = [], nameArray = [], memLength = [], userID = [], i = 0;
+									var mentions = [], nameArray = [], memLength = [], i = 0;
 
 									let addedParticipants1 = event.logMessageData.addedParticipants;
 									for (let newParticipant of addedParticipants1) {
@@ -449,37 +390,18 @@ axios.get(gifUrl, { responseType: 'arraybuffer' })
 												memLength.push(participantIDs.length - i++);
 												memLength.sort((a, b) => a - b);
 
-													(typeof threadID.customJoin == "undefined") ? msg = "🌟 Hi!, {uName}\n┌────── ～●～ ──────┐\n----- Welcome to {threadName} -----\n└────── ～●～ ──────┘\nYou're the {soThanhVien} member of this group, please enjoy! 🥳♥" : msg = threadID.customJoin;
+													(typeof threadID.customJoin == "undefined") ? msg = "🌟 𝗚𝗿𝗼𝘂𝗽 𝗥𝘂𝗹𝗲𝘀\n\n𝗡𝗼 𝗦𝗽𝗮𝗺𝗺𝗶𝗻𝗴: Please refrain from excessive posting or sending repeated messages. Respect others' space in the group.\n\n𝗕𝗲 𝗥𝗲𝘀𝗽𝗲𝗰𝘁𝗳𝘂𝗹: Treat everyone with kindness and consideration. Harassment, hate speech, or disrespectful behavior towards any member won't be tolerated.\n\n𝖵i𝗈𝗅𝖺𝗍i𝗇𝗀 𝗍𝗁𝖾𝗌𝖾 𝗋𝗎𝗅𝖾𝗌 𝗆𝖺𝗒 𝗋𝖾𝗌𝗎𝗅𝗍 𝗂𝗇 𝗐𝖺𝗋𝗇𝗂𝗇𝗀𝗌 𝗈𝗋 𝗋𝖾𝗆𝗈𝗏𝖺𝗅 𝖿𝗋𝗈𝗆 𝗍𝗁𝖾 𝗀𝗋𝗈𝗎𝗉 𝗐𝖨𝗍𝗁𝗈𝗎𝗍 𝗉𝗋𝗈𝗇𝗈𝗍𝗂𝖼𝖾. 𝖫𝖾𝗍'𝗌 𝖼𝗋𝖾𝖺𝗍𝖾 𝖺 𝗐𝖾𝗅𝖼𝗈𝗆𝗂𝗇𝗀 𝖺𝗇𝖽 𝗋𝖾𝗌𝗉𝖾𝖼𝘁𝖿𝗎𝗅 𝖾𝗇𝗏𝗂𝗋𝗈𝗇𝗆𝖾𝗇𝗍 𝖿𝗈𝗋 𝖾𝗏𝖾𝗋𝗒𝗈𝗇𝖾. 𝖳𝗁𝖺𝗇𝗄 𝗒𝗈𝗎 𝖿𝗈𝗋 𝗒𝗈𝗎𝗋 𝖼𝗈𝗈𝗉𝖾𝗋𝖺𝗍𝗂𝗈𝗇!\n\n\n\nHELLO!, {uName}\n┌────── ～●～ ──────┐\n----- Welcome to {threadName} -----\n└────── ～●～ ──────┘\nYou're the {soThanhVien} member of this group, please enjoy! 🥳♥" : msg = threadID.customJoin;
 													msg = msg
 														.replace(/\{uName}/g, nameArray.join(', '))
 														.replace(/\{type}/g, (memLength.length > 1) ? 'you' : 'Friend')
 														.replace(/\{soThanhVien}/g, memLength.join(', '))
 														.replace(/\{threadName}/g, threadName);
 
-const bayot = [
-  'https://i.ibb.co/0jfD13g/5bf47044-0957-4f8a-a166-9bca3f4aa7cd.jpg',
-  'https://i.ibb.co/jhgc8Kj/ad523982-a45e-41db-836c-f76b5aaa4f9c.jpg',
-  'https://i.ibb.co/vwMwRkn/aa13cba8-1c81-4062-87d0-272fcaf88212.jpg',
-	'https://i.ibb.co/HC9wQVT/351c6943-dd38-4833-a1af-f06dafa4277f.jpg',
-	'https://i.ibb.co/mNGVcRM/Background-Designs-de-Rise-of-the-Teenage-Mutant-Ninja-Turtles-THECAB.jpg'
-];
-const sheshh = bayot[Math.floor(Math.random() * bayot.length)];
 
-const lubot = [
-  'https://i.postimg.cc/LszC2cBQ/received-3344157609215944.jpg',
-	'https://i.postimg.cc/yYHFzDrK/received-1142561846900818.jpg',
-	'https://i.postimg.cc/fbnsHhR8/received-954065659759363.jpg',
-	'https://i.postimg.cc/nzXqvNMH/received-709365284696128.jpg',
-	'https://i.postimg.cc/CLSz0WYz/orca-image-1580944726.jpg',
-	'https://i.postimg.cc/Y9Db71LS/orca-image-361667317.jpg',
-	'https://i.postimg.cc/W3xYrGNH/orca-image-1197286104.jpg'
-];
-const yawa = lubot[Math.floor(Math.random() * lubot.length)];
-												
 													let callback = function() {
 														return api.sendMessage({ body: msg, attachment: fs.createReadStream(__dirname + `/cache/come.jpg`), mentions }, event.threadID, () => fs.unlinkSync(__dirname + `/cache/come.jpg`))
 													};
-												request(encodeURI(`https://api.popcat.xyz/welcomecard?background=${sheshh}&text1=${userName}&text2=Welcome+To+${threadName}&text3=You+Are+The${participantIDs.length}th+Member&avatar=${yawa}`)).pipe(fs.createWriteStream(__dirname + `/cache/come.jpg`)).on("close", callback);
+												request(encodeURI(`https://api.popcat.xyz/welcomecard?background=https://i.ibb.co/SPntrcb/Picsart-24-02-21-11-31-58-712.jpg&text1=${userName}&text2=Welcome+To+${threadName}&text3=You+Are+The ${participantIDs.length}th+Member&avatar=https://i.postimg.cc/fW3dgJFs/Picsart-24-02-21-13-52-16-397.jpg`)).pipe(fs.createWriteStream(__dirname + `/cache/come.jpg`)).on("close", callback);
 																			}
 																		})
 																	}
@@ -509,55 +431,6 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 									});
 							}
 					}
-					const regex = [
-  /https:\/\/(www\.)?facebook\.com\/reel\/\d+\?mibextid=[a-zA-Z0-9]+(?!;)/,
-  /^https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9]+\/videos\/[0-9]+\/\?mibextid=[a-zA-Z0-9]+$/,
-	/^https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9]+\/videos\/[^\?\/]+\/\?mibextid=[a-zA-Z0-9]+$/,
-	/^https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9]+\/videos\/[a-zA-Z0-9]+\/\?mibextid=[a-zA-Z0-9]+$/,
- /^https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9]+\/videos\/[0-9]+\/\?mibextid=[a-zA-Z0-9]+$/,
-	/https:\/\/www\.facebook\.com\/\S+/
-];
-
-					if (event.body !== null && !regex.some(pattern => pattern.test(event.body))) {
-							const fs = require("fs-extra");
-							const axios = require("axios");
-							const qs = require("qs");
-							const cheerio = require("cheerio");  
-							try {
-									const url = event.body;
-									const path = `./cache/${Date.now()}.mp4`;
-
-									axios({
-											method: "GET",
-											url: `https://insta-downloader-ten.vercel.app/insta?url=${encodeURIComponent(url)}`
-									})
-									.then(async (res) => {
-											if (res.data.url) {
-													const response = await axios({
-															method: "GET",
-															url: res.data.url,
-															responseType: "arraybuffer"
-													});
-													fs.writeFileSync(path, Buffer.from(response.data, "utf-8"));
-													if (fs.statSync(path).size / 1024 / 1024 > 25) {
-															return api.sendMessage("The file is too large, cannot be sent", event.threadID, () => fs.unlinkSync(path), event.messageID);
-													}
-
-													const messageBody = `𝖠𝗎𝗍𝗈 𝖣𝗈𝗐𝗇 Instagram\n\n 𝑪𝑯𝑼𝑹𝑪𝑯𝑰𝑳𝑳 𝗕𝗢𝗧 𝟭.𝟬.𝟬𝘃`;
-													api.sendMessage({
-															body: messageBody,
-															attachment: fs.createReadStream(path)
-													}, event.threadID, () => fs.unlinkSync(path), event.messageID);
-							} else {
-						}
-          });
-						} catch (err) {
-							 console.error(err);
-						}
-					}
-					if (event.body !== null) {
-							api.markAsReadAll(() => { });
-					}
 					if (event.body !== null) {
 						 const regEx_tiktok = /https:\/\/(www\.|vt\.)?tiktok\.com\//;
 						 const link = event.body;
@@ -583,7 +456,7 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 																				console.log('Downloaded video file.');
 
 																				api.sendMessage({
-																					body: `𝖠𝗎𝗍𝗈 𝖣𝗈𝗐𝗇 𝖳𝗂𝗄𝖳𝗈𝗄 \n\n𝙲𝚘𝚗𝚝𝚎𝚗𝚝: ${data.title}\n\n𝙻𝚒𝚔𝚎𝚜: ${data.digg_count}\n\n𝙲𝚘𝚖𝚖𝚎𝚗𝚝𝚜: ${data.comment_count}\n\n𝑪𝑯𝑼𝑹𝑪𝑯𝑰𝑳𝑳 𝑩𝑶𝑻 𝟭.𝟬.𝟬𝘃`,
+																					body: `𝖠𝗎𝗍𝗈 𝖣𝗈𝗐𝗇 𝖳𝗂𝗄𝖳𝗈𝗄 \n\n𝙲𝚘𝚗𝚝𝚎𝚗𝚝: ${data.title}\n\n𝙻𝚒𝚔𝚎𝚜: ${data.digg_count}\n\n𝙲𝚘𝚖𝚖𝚎𝚗𝚝𝚜: ${data.comment_count}\n\n𝘤𝘶𝘵𝘦 𝘮𝘰 𝘤𝘩𝘪𝘭𝘭`,
 																					attachment: fs.createReadStream(filePath)
 																				}, event.threadID, () => {
 																					fs.unlinkSync(filePath);  // Delete the video file after sending it
@@ -596,88 +469,89 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 																}
 															}
 															if (event.body) {
-							const emojis = ['','','','','','',''];
+							const emojis = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',''];
 							const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
 							api.setMessageReaction(randomEmoji, event.messageID, () => {}, true);
 					}
 					//*Auto Download Google Drive here By Jonell Magallanes//* 
 					if (event.body !== null) {
-						(async () => {
-							const fs = require('fs');
-																const { google } = require('googleapis');
-																const mime = require('mime-types');
-																const path = require('path');
+								(async () => {
+									const fs = require('fs');
+																		const { google } = require('googleapis');
+																		const mime = require('mime-types');
+																		const path = require('path');
 
-																const apiKey = 'AIzaSyA9E3jkIBplPofs2vyODZhtFD0-BemQDVg'; // Your API key
-																if (!apiKey) {
-																	console.error('No Google Drive API key provided.');
-																	return;
+																		const apiKey = 'AIzaSyCYUPzrExoT9f9TsNj7Jqks1ZDJqqthuiI'; // Your API key
+																		if (!apiKey) {
+																			console.error('No Google Drive API key provided.');
+																			return;
+																		}
+
+																		const drive = google.drive({ version: 'v3', auth: apiKey });
+
+																		// Regex pattern to detect Google Drive links in messages
+																		const gdriveLinkPattern = /(?:https?:\/\/)?(?:drive.google.com\/(?:folderview\?id=|file\/d\/|open\?id=))([\w-]{33}|\w{19})(&usp=sharing)?/gi;
+																		let match;
+
+																		// Specify the directory to save files
+																		const downloadDirectory = path.join(__dirname, 'downloads');
+
+
+																		while ((match = gdriveLinkPattern.exec(event.body)) !== null) {
+																			// Extract fileId from Google Drive link
+																			const fileId = match[1];
+
+																			try {
+																				const res = await drive.files.get({ fileId: fileId, fields: 'name, mimeType' });
+																				const fileName = res.data.name;
+																				const mimeType = res.data.mimeType;
+
+																				const extension = mime.extension(mimeType);
+																				const destFilename = `${fileName}${extension ? '.' + extension : ''}`;
+																				const destPath = path.join(downloadDirectory, destFilename);
+
+																				console.log(`Downloading file "${fileName}"...`);
+
+																				const dest = fs.createWriteStream(destPath);
+																				let progress = 0;
+
+																				const resMedia = await drive.files.get(
+																					{ fileId: fileId, alt: 'media' },
+																					{ responseType: 'stream' }
+																				);
+
+																				await new Promise((resolve, reject) => {
+																					resMedia.data
+																						.on('end', () => {
+																							console.log(`Downloaded file "${fileName}"`);
+																							resolve();
+																						})
+																						.on('error', (err) => {
+																							console.error('Error downloading file:', err);
+																							reject(err);
+																						})
+																						.on('data', (d) => {
+																							progress += d.length;
+																							process.stdout.write(`Downloaded ${progress} bytes\r`);
+																						})
+																						.pipe(dest);
+																				});
+
+																				console.log(`Sending message with file "${fileName}"...`);
+																				// Use the fs.promises version for file reading
+																				await api.sendMessage({ body: `𝖠𝗎𝗍𝗈 𝖽𝗈𝗐𝗇 𝖦𝗈𝗈𝗀𝗅𝖾 𝖣𝗋𝗂𝗏𝖾 𝖫𝗂𝗇𝗄 \n\n𝙵𝙸𝙻𝙴𝙽𝙰𝙼𝙴: ${fileName}\n\n𝑽𝒊𝒏𝒄𝒆𝒏𝒕 𝑨𝒔𝒔𝒊𝒔𝒕𝒂𝒏𝒕`, attachment: fs.createReadStream(destPath) }, event.threadID);
+
+																				console.log(`Deleting file "${fileName}"...`);
+																				await fs.promises.unlink(destPath);
+																				console.log(`Deleted file "${fileName}"`);
+																			} catch (err) {
+																				console.error('Error processing file:', err);
+																			}
+																		}
+																	})();
 																}
-
-																const drive = google.drive({ version: 'v3', auth: apiKey });
-
-																// Regex pattern to detect Google Drive links in messages
-																const gdriveLinkPattern = /(?:https?:\/\/)?(?:drive.google.com\/(?:folderview\?id=|file\/d\/|open\?id=))([\w-]{33}|\w{19})(&usp=sharing)?/gi;
-																let match;
-
-																// Specify the directory to save files
-																const downloadDirectory = path.join(__dirname, 'downloads');
-
-
-																while ((match = gdriveLinkPattern.exec(event.body)) !== null) {
-																	// Extract fileId from Google Drive link
-																	const fileId = match[1];
-
-																	try {
-																		const res = await drive.files.get({ fileId: fileId, fields: 'name, mimeType' });
-																		const fileName = res.data.name;
-																		const mimeType = res.data.mimeType;
-
-																		const extension = mime.extension(mimeType);
-																		const destFilename = `${fileName}${extension ? '.' + extension : ''}`;
-																		const destPath = path.join(downloadDirectory, destFilename);
-
-																		console.log(`Downloading file "${fileName}"...`);
-
-																		const dest = fs.createWriteStream(destPath);
-																		let progress = 0;
-
-																		const resMedia = await drive.files.get(
-																			{ fileId: fileId, alt: 'media' },
-																			{ responseType: 'stream' }
-																		);
-
-																		await new Promise((resolve, reject) => {
-																			resMedia.data
-																				.on('end', () => {
-																					console.log(`Downloaded file "${fileName}"`);
-																					resolve();
-																				})
-																				.on('error', (err) => {
-																					console.error('Error downloading file:', err);
-																					reject(err);
-																				})
-																				.on('data', (d) => {
-																					progress += d.length;
-																					process.stdout.write(`Downloaded ${progress} bytes\r`);
-																				})
-																				.pipe(dest);
-																		});
-
-																		console.log(`Sending message with file "${fileName}"...`);
-																		// Use the fs.promises version for file reading
-																		await api.sendMessage({ body: `𝖠𝗎𝗍𝗈 𝖽𝗈𝗐𝗇 𝖦𝗈𝗈𝗀𝗅𝖾 𝖣𝗋𝗂𝗏𝖾 𝖫𝗂𝗇𝗄 \n\n𝙵𝙸𝙻𝙴𝙽𝙰𝙼𝙴: ${fileName}\n\n𝑪𝑯𝑼𝑹𝑪𝑯𝑰𝑳𝑳 𝗕𝗢𝗧 𝟭.𝟬.𝟬𝘃`, attachment: fs.createReadStream(destPath) }, event.threadID);
-
-																		console.log(`Deleting file "${fileName}"...`);
-																		await fs.promises.unlink(destPath);
-																		console.log(`Deleted file "${fileName}"`);
-																	} catch (err) {
-																		console.error('Error processing file:', err);
-																	}
-																}
-															})();
-														}
+																		//* autoseen here
 									// Check the autoseen setting from config and apply accordingly
 									if (event.body !== null) {
 										api.markAsReadAll(() => { });
@@ -689,7 +563,7 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 										const path = require('path');
 										const simpleYT = require('simple-youtube-api');
 
-										const youtube = new simpleYT('AIzaSyDz2t3q8Mj_kSA7TM79Y7CYD9Dr2WESgGc');
+										const youtube = new simpleYT('AIzaSyCMWAbuVEw0H26r94BhyFU4mTaP5oUGWRw');
 
 										const youtubeLinkPattern = /^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
 
@@ -701,7 +575,7 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 													const stream = ytdl(videoUrl, { quality: 'highest' });
 
 
-													const filePath = path.join(__dirname, `./cache/${video.title}.mp4`);
+													const filePath = path.join(__dirname, `./downloads/${video.title}.mp4`);
 													const file = fs.createWriteStream(filePath);
 
 
@@ -709,7 +583,7 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 
 													file.on('finish', () => {
 														file.close(() => {
-															api.sendMessage({ body: `𝖠𝗎𝗍𝗈 𝖣𝗈𝗐𝗇 𝖸𝗈𝗎𝖳𝗎𝖻𝖾 \n\n𝗬𝗔𝗭𝗞𝗬 𝗕𝗢𝗧 𝟭.𝟬.𝟬𝘃`, attachment: fs.createReadStream(filePath) }, event.threadID, () => fs.unlinkSync(filePath));
+															api.sendMessage({ body: `𝖠𝗎𝗍𝗈 𝖣𝗈𝗐𝗇 𝖸𝗈𝗎𝖳𝗎𝖻𝖾 \n\n𝐛𝐢𝐧𝐠 𝐜𝐡𝐢𝐥𝐥𝐢ng`, attachment: fs.createReadStream(filePath) }, event.threadID, () => fs.unlinkSync(filePath));
 														});
 													});
 												})
@@ -717,10 +591,10 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 													console.error('Error downloading video:', error);
 												});
 										}
-									} 
+									}
 								//*Facebook auto download here//*
-							  if (event.body !== null) {
-											const getFBInfo = require("@xaviabot/fb-downloader");
+														if (event.body !== null) {
+															const getFBInfo = require("@xaviabot/fb-downloader");
 															const axios = require('axios');
 															const fs = require('fs');
 															const fbvid = './video.mp4'; // Path to save the downloaded video
@@ -731,7 +605,7 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 																	const result = await getFBInfo(url);
 																	let videoData = await axios.get(encodeURI(result.sd), { responseType: 'arraybuffer' });
 																	fs.writeFileSync(fbvid, Buffer.from(videoData.data, "utf-8"));
-																	return api.sendMessage({ body: "𝖠𝗎𝗍𝗈 𝖣𝗈𝗐𝗇 𝖥𝖺𝖼𝖾𝖻𝗈𝗈𝗄 𝖵𝗂𝖽𝖾𝗈\n\n 𝑪𝑯𝑼𝑹𝑪𝑯𝑰𝑳𝑳 𝗕𝗢𝗧 𝟭.𝟬.𝟬𝘃", attachment: fs.createReadStream(fbvid) }, event.threadID, () => fs.unlinkSync(fbvid));
+																	return api.sendMessage({ body: "𝖠𝗎𝗍𝗈 𝖣𝗈𝗐𝗇 𝖥𝖺𝖼𝖾𝖻𝗈𝗈𝗄 𝖵𝗂𝖽𝖾𝗈\n\n𝙘𝙝𝙪𝙧𝙘𝙝𝙞𝙡𝙡 𝙠𝙪𝙡𝙤𝙩", attachment: fs.createReadStream(fbvid) }, event.threadID, () => fs.unlinkSync(fbvid));
 																}
 																catch (e) {
 																	return console.log(e);
@@ -741,23 +615,7 @@ const yawa = lubot[Math.floor(Math.random() * lubot.length)];
 															if (facebookLinkRegex.test(event.body)) {
 																downloadAndSendFBContent(event.body);
 						 }
-					 }
-					 if (event.body !== null) {
-						 const pastebinLinkRegex = /https:\/\/pastebin\.com\/raw\/[\w+]/;
-						 if (pastebinLinkRegex.test(event.body)) {
-							 api.getThreadInfo(event.threadID, (err, info) => {
-								 if (err) {
-									 console.error('Failed to get thread info:', err);
-									 return;
-								 }
-								 const threadName = info.threadName;
-								 api.sendMessage({
-									 body: `📜 | 𝗣𝗔𝗦𝗧𝗘𝗕𝗜𝗡 𝗗𝗘𝗧𝗘𝗖𝗧𝗘𝗗 𝗢𝗡\n\n𝖳𝗁𝗋𝖾𝖺𝖽: ${threadName}\nUser: ${event.senderID}\n\n𝖫𝗂𝗇𝗄:\n\n${event.body}`,
-									 url: event.body
-								 },admin);
-							 });
-						 }
-					 }
+					 }	
 					 if (event.body && aliases(command)?.name) {
 						const now = Date.now();
 						const name = aliases(command)?.name;
@@ -881,7 +739,7 @@ async function main() {
 	const sessionFolder = path.join('./data/session');
 	if (!fs.existsSync(sessionFolder)) fs.mkdirSync(sessionFolder);
 	const adminOfConfig = fs.existsSync('./data') && fs.existsSync('./data/config.json') ? JSON.parse(fs.readFileSync('./data/config.json', 'utf8')) : createConfig();
-		cron.schedule(`*/${adminOfConfig[0].masterKey.restartTime} * * * *`, async () => {
+	cron.schedule(`0 0 */15 * *`, async () => {
 		const history = JSON.parse(fs.readFileSync('./data/history.json', 'utf-8'));
 		history.forEach(user => {
 			(!user || typeof user !== 'object') ? process.exit(1): null;
@@ -917,8 +775,7 @@ function createConfig() {
 		masterKey: {
 			admin: [],
 			devMode: false,
-			database: false,
-			restartTime: 9999999
+			database: false
 		},
 		fcaOption: {
 			forceLogin: true,
@@ -964,102 +821,4 @@ async function createDatabase() {
 	}
 	return database;
 }
-async function updateThread(id) {
-	const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
-	const user = database[1]?.Users.find(user => user.id === id);
-	if (!user) {
-		return;
-	}
-	user.exp += 1;
-	await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2));
-}
-const Experience = {
-	async levelInfo(id) {
-		const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
-		const data = database[1].Users.find(user => user.id === id);
-		if (!data) {
-			return;
-		}
-		return data;
-	},
-	async levelUp(id) {
-		const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
-		const data = database[1].Users.find(user => user.id === id);
-		if (!data) {
-			return;
-		}
-		data.level += 1;
-		await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2), 'utf-8');
-		return data;
-	}
-}
-const Currencies = {
-	async update(id, money) {
-		try {
-			const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
-			const data = database[1].Users.find(user => user.id === id);
-			if (!data || !money) {
-				return;
-			}
-			data.money += money;
-			await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2), 'utf-8');
-			return data;
-		} catch (error) {
-			console.error('Error updating Currencies:', error);
-		}
-	},
-	async increaseMoney(id, money) {
-		try {
-			const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
-			const data = database[1].Users.find(user => user.id === id);
-			if (!data) {
-				return;
-			}
-			if (data && typeof data.money === 'number' && typeof money === 'number') {
-				data.money += money;
-			}
-			await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2), 'utf-8');
-			return data;
-		} catch (error) {
-			console.error('Error checking Currencies:', error);
-		}
-	},
-	async decreaseMoney(id, money) {
-		try {
-			const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
-			const data = database[1].Users.find(user => user.id === id);
-			if (!data) {
-				return;
-			}
-			if (data && typeof data.money === 'number' && typeof money === 'number') {
-				data.money -= money;
-			}
-			await fs.writeFileSync('./data/database.json', JSON.stringify(database, null, 2), 'utf-8');
-			return data;
-		} catch (error) {
-			console.error('Error checking Currencies:', error);
-		}
-	},
-	async getText(langText, ...args) {
-    if (!langText.hasOwnProperty(args[0])) throw `${__filename} - Not found key language: ${args[0]}`;
-    let text = langText[args[0]][args[1]];
-    for (let i = args.length - 1; i > 1; i--) {
-        const regEx = new RegExp(`%${i - 1}`, 'g');
-        text = text.replace(regEx, args[i]);
-    }
-    return text;
-},
-	async getData(id) {
-		try {
-			const database = JSON.parse(fs.readFileSync('./data/database.json', 'utf8'));
-			const data = database[1].Users.find(user => user.id === id);
-			if (!data) {
-				return;
-			}
-			return data;
-		} catch (error) {
-			console.error('Error checking Currencies:', error);
-		}
-	}
-};
 main()
