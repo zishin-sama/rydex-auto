@@ -3,7 +3,7 @@ const axios = require('axios');
 module.exports.config = {
     name: "voicevox",
     version: "1.0.0",
-    credits: "none",
+    credits: "chilli mansi",
     role: 0,
     description: "Generate voice using Voicevox Speaker API",
     hasPrefix: false,
