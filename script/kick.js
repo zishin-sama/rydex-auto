@@ -1,13 +1,12 @@
 module.exports.config = {
 	name: "kick",
 	version: "0.0.1",
-	hasPermssion: 1,
+	role: 2,
 	credits: "Cliff",//do not change credits
 	description: "kick @tag multiple",
-	commandCategory: "Group",
 	usages: "kick @mention",
-	usePrefix: false,
-	cooldowns: 5,
+	hasPrefix: false,
+	cooldown: 5,
 	info: [
 		{
 			key: '[tag] or [reply message] "reason"',
