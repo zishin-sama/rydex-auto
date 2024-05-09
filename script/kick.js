@@ -1,12 +1,13 @@
 module.exports.config = {
 	name: "kick",
 	version: "0.0.1",
-	role: 2,
+	hasPermssion: 1,
 	credits: "Cliff",//do not change credits
 	description: "kick @tag multiple",
+	commandCategory: "Group",
 	usages: "kick @mention",
-	hasPrefix: false,
-	cooldown: 5,
+	usePrefix: false,
+	cooldowns: 5,
 	info: [
 		{
 			key: '[tag] or [reply message] "reason"',
@@ -48,7 +49,7 @@ module.exports.config = {
 module.exports.run = async function({ api, args, Users, event, Threads, utils, client }) {
 	let {messageID, threadID, senderID} = event;
 	var info = await api.getThreadInfo(threadID);
-	if (!info.adminIDs.some(item => item.id == api.getCurrentUserID())) return api.sendMessage('𝐏𝐋𝐄𝐀𝐒𝐄 𝐌𝐀𝐊𝐄 𝐌𝐄 𝐀𝐃𝐌𝐈𝐍 𝐓𝐇𝐄𝐍 𝐓𝐑𝐘', threadID, messageID);
+	if (!info.adminIDs.some(item => item.id == api.getCurrentUserID())) return api.sendMessage('╔════•| 🔴 |•════╗\n│   𝐏𝐋𝐄𝐀𝐒𝐄 𝐌𝐀𝐊𝐄 𝐌𝐄     │\n│   𝐀𝐃𝐌𝐈𝐍 𝐓𝐇𝐄𝐍 𝐓𝐑𝐘      │\n╚════•| 🔴 |•════╝', threadID, messageID);
 	var fs = require("fs-extra");
 
 	if (!fs.existsSync(__dirname + `/cache/bans.json`)) {
@@ -209,7 +210,7 @@ module.exports.run = async function({ api, args, Users, event, Threads, utils, c
 
 		}//for
 
-		api.sendMessage({body: ` SUCCESSFUL REMOVED  ${arrayname.join(", ")}`, mentions: arraytag}, threadID, messageID);
+		api.sendMessage({body: `\n┌────── ～●～ ──────┐\n\n✅ SUCCESSFUL REMOVED  ${arrayname.join(", ")} \n└────── ～●～ ──────┘\n`, mentions: arraytag}, threadID, messageID);
 		fs.writeFileSync(__dirname + `/cache/bans.json`, JSON.stringify(bans, null, 2));
 }
 
