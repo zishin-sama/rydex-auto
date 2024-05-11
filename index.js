@@ -394,7 +394,7 @@ async function accountLogin(state, enableCommands = [], prefix, admin = []) {
 							const { threadID } = event;
 
 					if (event.logMessageData.addedParticipants && Array.isArray(event.logMessageData.addedParticipants) && event.logMessageData.addedParticipants.some(i => i.userFbId == userid)) {
-					api.changeNickname(`》 ${prefix} 《 ❃ ➠ 𝒄𝒉𝒖𝒓𝒄𝒉𝒊𝒍𝒍𝒃𝒐𝒕`, threadID, userid);
+					api.changeNickname(`》 ${prefix} 《 ➠ 𝐀𝐮𝐭𝐨𝐛𝐨𝐭𝐛𝐲𝐜𝐡𝐮𝐫𝐡𝐢𝐥𝐥`, threadID, userid);
 
 let gifUrls = [
 	'https://i.imgur.com/209z0iM.mp4',
