@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 module.exports.config = {
-  name: "sim",
+  name: "bot",
   version: "1.1.0",
   hasPermssion: 0,
   credits: "Yan Maglinte",
