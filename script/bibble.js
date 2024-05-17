@@ -16,7 +16,7 @@ module.exports.run = async function({ api, event }) {
     try {
         api.sendMessage("⏱️ | Fetching a random Bible verse, please wait...", event.threadID);
 
-        const response = await axios.get("https://joshweb.click/bible");
+        const response = await axios.get("https://deku-rest-api.vercel.app/bible");
         const verse = response.data.verse;
         const reference = response.data.reference;
 
