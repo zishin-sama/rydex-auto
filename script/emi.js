@@ -2,7 +2,7 @@ const { get } = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-const url = "https://deku-rest-api.replit.app";
+const url = "https://liaspark.chatbotcommunity.ltd/api/genimg";
 const cacheDir = path.join(__dirname, 'cache');
 const filePath = path.join(cacheDir, 'emi.png');
 
@@ -29,7 +29,7 @@ module.exports.run = async function ({ api, event, args }) {
 	if (!prompt) return sendMessage('Missing prompt!');
 
 	try {
-		const response = await get(`${url}/emi?prompt=${encodeURIComponent(prompt)}`, {
+		const response = await get(`${url}?query=${encodeURIComponent(prompt)}`, {
 			responseType: 'arraybuffer'
 		});
 
@@ -37,7 +37,7 @@ module.exports.run = async function ({ api, event, args }) {
 			if (!fs.existsSync(cacheDir)) {
 				fs.mkdirSync(cacheDir, { recursive: true });
 			}
-			fs.writeFileSync(filePath, Buffer.from(response.data, "utf8"));
+			fs.writeFileSync(filePath, Buffer.from(response.data));
 			return sendMessage({ attachment: fs.createReadStream(filePath) });
 		} else {
 			return sendMessage("Failed to generate image.");
