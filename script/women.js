@@ -36,7 +36,7 @@ module.exports.run = async ({ api, event }) => {
 		fs.writeFileSync(filePath, Buffer.from(response.data, 'binary'));
 
 		const message = {
-			body: "WOMEN KAPE!",
+			body: "KAPE☕",//bingchilling
 			attachment: fs.createReadStream(filePath)
 		};
 
