@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports.config = {
-	name: "periodictable",
+	name: "element",
 	role: 0,
 	credits: "Jonell Magallanes",
 	description: "search periodical table",
