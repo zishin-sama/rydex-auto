@@ -4,14 +4,13 @@ const path = require('path');
 
 module.exports.config = {
     name: "bing",
+    version: 1.0.0,
     author: "Kaizenji | DEKU API",
-    description: { en: "Fetch and download images from Bing" },
-    commandCategory: "image",
+    role: 0,
     cooldown: 20,
     credits: "cliff",//moddified by churchill
     usages: "[query]",
-    usePrefix: false,
-    hasPermission: 0
+    hasPrefix: false,
 };
 
 module.exports.run = async function ({ api, event, args }) {
