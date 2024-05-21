@@ -7,6 +7,7 @@ module.exports.config = {
 	role: 0,
 	credits: "Jonell Magallanes",
 	description: "search periodical table",
+	aliases: ["element", "pt"]
 	usage: "[element]",
 	cooldown: 5,
 	hasPrefix: false,
