@@ -24,11 +24,7 @@ module.exports.run = async function({ api, event, args }) {
     const response = await axios.get(`${mistralApiUrl}?ask=${encodeURIComponent(query)}`);
     const data = response.data.response;
 
-    const formattedResponse = `
-🔮 **Mistral AI Response** 🔮\n
-Query: ${query}
-Response: ${data}
-    `;
+    const formattedResponse = `${data}`;
 
     api.sendMessage(formattedResponse, event.threadID, event.messageID);
   } catch (error) {
