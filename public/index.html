@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Churchill</title>
+    <title>Autobot</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
@@ -51,20 +51,12 @@
         </form>
         <p style="margin-top: 10px; color: #FFFFFF">Greetings! Begin by entering your cookie scroll down to see the other features.</p>
     </div>
-    <div class="container">
-        <h1 class="col text-center" style="font-size: 20px; color: #FFFFFF; padding: 10px">𝘊𝘏𝘐𝘓𝘓 𝘒𝘈 𝘔𝘜𝘕𝘈</h1>
-        <!-- Video source inserted here -->
-        <video controls style="max-width: 100%;">
-            <source src="https://i.imgur.com/4WT9tDo.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    <div class="container" id="listOfCommands">
+      <div class="container" id="listOfCommands">
         <h1 style="font-size: 16px; padding: 10px;">𝗣𝗹𝗲𝗮𝘀𝗲 𝗰𝗵𝗼𝗼𝘀𝗲 𝘆𝗼𝘂𝗿 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗯𝘆 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝘁𝗵𝗲 𝗿𝗲𝘀𝗽𝗲𝗰𝘁𝗶𝘃𝗲 𝗼𝗽𝘁𝗶𝗼𝗻𝘀.</h1>
         <button class="btn btn-primary" onclick="selectAllCommands()">Select all commands</button>
     </div>
     <div class="container" id="listOfCommandsEvent">
-        <h1 style="font-size: 16px; padding: 10px;">𝗣𝗹𝗲𝗮𝘀𝗲 𝗰𝗵𝗼𝗼𝘀𝗲 𝘆𝗼𝘂𝗿 𝗲𝘃𝗲𝗻𝘁 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗯𝘆 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝘁𝗵𝗲 𝗿𝗲𝘀𝗽𝗲𝗰𝘁𝗶𝘃𝗲 𝗼𝗽𝘁𝗶𝗼𝗻𝘀.</h1>
+        <h1 style="font-size: 16px; padding: 10px;">𝗣𝗹𝗲𝗮𝘀𝗲 𝗰𝗵𝗼𝗼𝘀𝗲 𝘆𝗼𝘂𝗿 𝗲𝘃𝗲𝗻𝘁 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗯𝘆 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝘁𝗵𝗲 𝗿𝗲𝘀𝗽𝗲𝗰𝘁𝗶𝘃𝗲 𝙤𝙥𝙩𝙞𝙤𝙣𝙨.</h1>
         <button class="btn btn-primary" onclick="selectAllEvents()">Select all events</button>
     </div>
     <div class="container" id="prefixOfCommands">
@@ -72,7 +64,7 @@
         <input type="text" id="inputOfPrefix">
     </div>
     <div class="container" id="adminOfCommands">
-        <h1 style="font-size: 16px; padding: 10px;">𝗣𝗹𝗲𝗮𝘀𝗲 𝗽𝗿𝗼𝘃𝗶𝗱𝗲 𝗮𝗻 𝘂𝗶𝗱 (𝗼𝗽𝘁𝗶𝗼𝗻𝗮𝗹). 𝗜𝗳 𝘆𝗼𝘂 𝗰𝗵𝗼𝗼𝘀𝗲 𝗻𝗼𝘁 𝘁𝗼, 𝗲𝗻𝘁𝗲𝗿𝗶𝗻𝗴 '𝗱𝗲𝗳𝗮𝘂𝗹𝘁' 𝘄𝗶𝗹𝗹 𝗯𝗲 𝗰𝗼𝗻𝘀𝗶𝗱𝗲𝗿𝗲𝗱 𝗮𝘀 𝘆𝗼𝘂𝗿 𝗶𝗻𝗽𝘂𝘁</h1>
+        <h1 style="font-size: 16px; padding: 10px;">𝙋𝙡𝙚𝙖𝙨𝙚 𝙥𝙧𝙤𝙫𝙞𝙙𝙚 𝙖𝙣 𝙪𝙞𝙙 (𝙤𝙥𝙩𝙞𝙤𝙣𝙖𝙡) 𝙛𝙤𝙧 𝙖𝙙𝙢𝙞𝙣 𝙘𝙤𝙣𝙩𝙧𝙤𝙡𝙨.</h1>
         <input type="text" id="inputOfAdmin">
     </div>
     <label style="font-size: 14px; display: flex; align-items: center; padding: 22px;">
@@ -93,12 +85,3 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 </body>
 </html>
-<!-- AUTOBOT BY CHURCHILL -->
-<div class="container" style="margin-top: 50px;">
-    <h1 class="col text-center" style="font-size: 20px; padding: 10px;">𝘈𝘜𝘛𝘖 𝘉𝘖𝘛 𝘉𝘠 𝘊𝘏𝘜𝘙𝘊𝘏𝘐𝘓𝘓</h1>
-    <img src="https://i.imgur.com/EsQfCS7.jpeg" alt="Developer Image" style="max-width: 100%;">
-    <p style="margin-top: 10px">
-        <p>𝘊𝘰𝘯𝘵𝘢𝘤𝘵 𝘤𝘩𝘶𝘳𝘤𝘩𝘪𝘭𝘭 𝘪𝘧 𝘵𝘩𝘦𝘳𝘦'𝘴 𝘴𝘰𝘮𝘦 𝘦𝘳𝘳𝘰𝘳 𝘤𝘭𝘪𝘤𝘬 𝘵𝘩𝘦 𝘧𝘣 𝘰𝘳 𝘮𝘦𝘴𝘴𝘦𝘯𝘨𝘦𝘳 𝘪𝘤𝘰𝘯</p>
-        <p><a href="https://www.facebook.com/Churchill.Dev4100" target="_blank"><img src="https://i.imgur.com/wICMefd.jpeg" alt="Facebook Icon" style="max-width: 30px;"></a> | <a href="https://m.me/Churchill.Dev4100" target="_blank"><img src="https://i.imgur.com/5IJTciO.jpeg" alt="Messenger Icon" style="max-width: 30px;"></a></p>
-    </p>
-</div>

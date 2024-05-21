@@ -1,15 +1,16 @@
 const axios = require("axios");
 const fs = require('fs')
-module.exports = {
-  config: {
-    name: "stalk" ,
-    usePrefix: true,
-     credits:"1SOY DEV",
-     usage:`stalk @user`,
-    description: "stalk the tag user",
-    permission: 1, 
+
+  module.exports.config = {
+    name: "stalk",
+    version: "1.0.0",
+    role: 0,
+    hasPrefix: false,
+    credits:"1SOY DEV",
+    usage:`stalk @user`,
+    description: "stalk the tag user", 
   },
-  run: async function({ api, event, args, commandModules }) {
+  module.exports.run async ({ api, event, args, commandModules }) {
  try{
 if (Object.keys(event.mentions).length === 0) {
   api.sendMessage('Please Mention A User', event.threadID, event.messageID);
@@ -31,10 +32,7 @@ gender = "Male";
     else if(gendernum ==1){
       gender = "Female";
     }
-    if(mentionedUID == 100039366339941){
-      gender= "Bading";
-    }
-    fs.writeFileSync('cache/avt.png', Buffer.from(Avatar, 'binary'));
+  fs.writeFileSync('cache/avt.png', Buffer.from(Avatar, 'binary'));
 
     const formattedMention = {
       body: `Name: ${fname}\nUID: ${mentionedUID} \n profile URL: ${acculr} \n Gender: ${gender}`,
