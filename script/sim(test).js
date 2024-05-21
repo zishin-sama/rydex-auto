@@ -1,5 +1,5 @@
 module.exports.config = {
-    name: "sim",
+    name: "sim1",
     version: "1.0.0",
     role: 0,
     aliases: ["Sim"],
