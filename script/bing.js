@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports.config = {
     name: "bing",
-    version: 1.0.0,
+    version: "1.0.0",
     author: "Kaizenji | DEKU API",
     role: 0,
     cooldown: 20,
