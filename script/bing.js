@@ -22,7 +22,7 @@ module.exports.run = async function ({ api, event, args }) {
             return api.sendMessage('Please provide a search query.', event.threadID, messageID);
         }
 
-        const apiUrl = `https://deku-rest-api.vercel.app/bing?prompt=${encodeURIComponent(query)}&mode=1`;
+        const apiUrl = `https://deku-rest-api-3ijr.onrender.com/bing?prompt=${encodeURIComponent(query)}&mode=1`;
         api.sendMessage('Fetching images, please wait...', event.threadID);
 
         const response = await axios.get(apiUrl);
