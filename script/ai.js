@@ -1,12 +1,11 @@
-module.exports = {
-  config: {
+module.exports.config = {
     name: "ai",
     description: "Talk to GPT (conversational)",
     hasPrefix: false,
     usage: "[ask]",
     role: 0
-  },
-  start: async function ({ text, reply, react, event}) {
+  };
+  module.exports.run async function ({ text, reply, react, event}) {
     let p = text.join(' '), uid = event.senderID;
     const axios = require('axios');
     if (!p) return reply('Please enter a prompt.');
