@@ -1,4 +1,4 @@
-module.exports = {
+module.exports.config = {
   name: 'help',
   version: '1.0.0',
   role: 0,
@@ -7,7 +7,8 @@ module.exports = {
   description: 'Display a list of commands or information about a specific command.',
   usage: 'help [command] or [page number]',
   credits: 'Developer',
-  run: async function ({ api, event, enableCommands, args, Utils }) {
+};
+module.exports.run = async function ({ api, event, enableCommands, args, Utils }) {
     const input = args.join(' ');
     const senderName = (await api.getUserInfo(event.senderID))[event.senderID].name;
     const { commands } = enableCommands[0];
@@ -78,5 +79,4 @@ module.exports = {
       }
     } catch (error) {
     	}
-     }
-   };
+     };
