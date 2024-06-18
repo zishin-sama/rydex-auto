@@ -150,12 +150,14 @@ body {
         .events-list {
             flex: 1;
             margin: 10px;
+            color: #cc0000;
         }
 
         .commands-list p,
         .events-list p {
             margin-top: 20px;
             margin-bottom: 10px;
+            color: #cc0000;
         }
         input::placeholder, textarea::placeholder {
         	color: #cc0000;
