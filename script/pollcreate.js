@@ -3,6 +3,10 @@
 module.exports.config = {
   name: "poll",
   hasPrefix: true,
+  description: "create poll",
+  usage: "",
+  aliases: [],
+  cooldown: 120
 };
 
 module.exports.run = async function({ api, event, args }) {
