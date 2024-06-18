@@ -3,6 +3,12 @@
 module.exports.config = {
   name: "creategc",
   hasPrefix: true,
+  credits: "aze kagenou",
+  description: "create new group",
+  cooldown: 200,
+  usage: "creategc @mention",
+  aliases: ["newgc"],
+
 };
 
 module.exports.run = async function({ api, event, args }) {
