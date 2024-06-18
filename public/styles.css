@@ -1,113 +1,167 @@
-/* Reset default browser styles */
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', BlinkMacSystemFont, sans-serif;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+            background-color: #111;
+            color: #cc0000; 
+            font-family:"New Courier",Courier,monospace;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* Gradient background animation */
-body {
-    background: linear-gradient(135deg, #f8d3f5, #a6f3f3, #a2e3f8, #ff9e9e);
-    animation: gradient 15s ease infinite;
-    background-size: 400% 400%;
-    background-attachment: fixed;
-}
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #111;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-@keyframes gradient {
-    0% {
-        background-position: 0% 0%;
-    }
-    50% {
-        background-position: 100% 100%;
-    }
-    100% {
-        background-position: 0% 0%;
-    }
-}
+        h2 {
+            text-align: center;
+        }
 
-/* Common container styles */
-.container {
-    color: #fff;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 .5rem #fff, 0 0 .5rem #fff, 0 0 2rem #1F51FF, 0 0 1rem #1F51FF, 0 0 3rem #1F51FF, inset 0 0 1.5rem #1F51FF;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    outline: 2px solid #fff;
-}
+        .input-group {
+            margin-bottom: 20px;
+        }
 
-/* Heading styles */
-h1 {
-    color: #fff;
-    font-size: 24px;
-    margin-bottom: 15px;
-}
+        .form-control {
+            width: 100%;
+            height: 150px;
+            resize: none;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cc0000;
+            background-color: #111;
+            color: #cc0000;
+            outline: none;
+            font-family: "New Courier",Courier,monospace;
+        }
 
-/* Textarea styles */
-.centered-textarea {
-    color: #fff;
-    width: 100%;
-    min-height: 150px;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #00ffff;
-    border-radius: 5px;
-    resize: none;
-}
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
 
-/* Button styles */
-.btn-primary {
-    background-color: #00ff00;
-    border: 1px solid #007bff;
-    color: #261a1a;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    width: 100%;
-}
+        .settings {
+            margin-bottom: 20px;
+        }
 
-.btn-primary:hover {
-    background-color: #76d674;
-    border: 1px solid #0056b3;
-}
+        .setting-item {
+            margin-bottom: 10px;
+        }
 
-/* Footer styles */
-.footer {
-    background-color: #5c6bc0;
-    padding: 10px;
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    margin-top: 50px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-}
+        label {
+            display: block;
+            color: #cc0000;
+        }
 
-.footer p {
-    margin: 0;
-    display: inline-block;
-    margin-right: 30px;
-}
+        input[type="text"],
+        input[type="checkbox"],input[type="fuck"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #cc0000; 
+            background-color: #111;
+            color: #cc0000;
+            outline: none;
+            font-family: "New Courier",Courier,monospace;
+        }
 
-/* Checkbox styles */
-.form-check input[type="checkbox"] {
-    color: #FFF;
-    margin-right: 10px;
-}
+        button {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #cc0000;
+            background-color: #111; 
+            color: #cc0000; 
+            cursor: pointer;
+            font-family: "New Courier",Courier, monospace;
+        }
 
-.form-check-label {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    padding: 22px;
-}
+        button:hover {
+            background-color: #111;
+        }
 
-/* Media query for smaller screens */
-@media (max-width: 576px) {
-    .form-check-label {
-        font-size: 12px;
-    }
-}
+        button:disabled {
+            background-color: transparent;
+            border: none;
+            width: 100%;
+            color: #111;
+            border-radius: 5px;
+            cursor: not-allowed;
+            padding: 8px;
+        }
+
+        footer {
+            background-color: #111;
+            color: #cc0000;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .footer-content p {
+            margin: 0;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;        
+        }
+
+        .checkbox-label {
+            margin-left: 5px;
+            flex: 1;
+        }
+
+        .checkbox-input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            border: 1px solid #cc0000; 
+            background-color: #111; 
+            cursor: pointer;
+            outline: none;
+            position: relative;
+        }
+
+        .checkbox-input[type="checkbox"]:checked::after {
+            content: '\2713';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #cc0000; 
+        }
+
+        .commands-events-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .commands-list,
+        .events-list {
+            flex: 1;
+            margin: 10px;
+        }
+
+        .commands-list p,
+        .events-list p {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        input::placeholder, textarea::placeholder {
+        	color: #cc0000;
+            font-family: "New Courier",Courier,monospace;
+        }
+        .checkbox-label {
+        	color: #cc0000;
+            font-family: "New Courier",Courier,monospace
+        }
