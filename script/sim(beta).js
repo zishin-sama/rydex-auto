@@ -9,7 +9,7 @@ module.exports.handleEvent = async function({ api, event }) {
   if (event.type === "message_reply" && event.messageReply && event.messageReply.senderID === api.getCurrentUserID()) {
     try {
       const query = encodeURIComponent(event.body);
-      const res = await axios.get(`http://fi1.bot-hosting.net:6378/sim?query=${query}`);
+      const res = await axios.get(`https://sim-api-ctqz.onrender.com/sim?query=${query}`);
       const respond = res.data.respond;
       
         api.sendMessage(respond, event.threadID, event.messageID);
