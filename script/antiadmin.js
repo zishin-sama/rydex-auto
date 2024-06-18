@@ -20,10 +20,11 @@ module.exports.config = {
 	version: "1.0.0",
 	role: 2,
 	credits: "cliff",
-	hasPrefix: false,
+	aliases: [],
+	hasPrefix: true,
 	description: "anti gc admin: If someone removes you from admin, the bot will add you again as admin. If the bot is removed from admin, moye moye",
-	usage: "{pn} off or on - current state always on",
-	cooldowns: 5
+	usage: "{prefix}antiadmin off or on - current state always on",
+	cooldown: 5
 };
 
 module.exports.run = async function ({ api, event, args }) {
@@ -36,7 +37,7 @@ module.exports.run = async function ({ api, event, args }) {
 		s(a);
 		return api.sendMessage(`Enabled.`, event.threadID);
 	} else {
-		return api.sendMessage(`Usage: {pn} off to turn off`, event.threadID);
+		return api.sendMessage(`How to use: {prefix}antiadmin off to turn off`, event.threadID);
 	}
 };
 

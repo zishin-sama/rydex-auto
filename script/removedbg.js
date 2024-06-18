@@ -4,11 +4,11 @@ const fs = require('fs-extra');
 module.exports.config = {
   name: "removebg",
   version: "1.0.",
-  hasPermssion: 0,
+  role: 0,
   credits: "Mark Hitsuraan",
-  description: "tete ",
-  usePrefix: true,
-  commandCategory: "image",
+  description: "tete",
+  hasPrefix: true,
+  aliases: [],
   usages: "< reply image >",
   cooldowns: 2,
 };
@@ -21,7 +21,7 @@ module.exports.run = async ({ api, event, args }) => {
 
   try {
     api.sendMessage("Removing background...", threadID, messageID);
-    const response = await axios.get(`https://allinoneapis-jgyx.onrender.com/api/try/removebg?url=${encodeURIComponent(mark)}`);
+    const response = await axios.get(`https://markdevs-last-api-a4sm.onrender.com/api/try/removebg?url=${encodeURIComponent(mark)}`);
     const processedImageURL = response.data.image_data;
 
     const img = (await axios.get(processedImageURL, { responseType: "arraybuffer"})).data;

@@ -4,9 +4,9 @@ module.exports.config = {
 	credits: "Mirai Team",
 	description: "Get the user's Facebook UID.",
 	hasPrefix: false,
-	usages: "{p}uid {p}uid @mention",
+	usage: "{prefix}uid or {prefix}uid @mention",
 	cooldown: 5,
-	aliases: ["id","ui"]
+	aliases: ["id"]
 };
 
 module.exports.run = async function({ api, event }) {

@@ -3,7 +3,7 @@ module.exports.config = {
   version: "1.0.0",
   role: 0,
   hasPrefix: false,
-  aliases: ['unsent','un', 'del', 'rm'],
+  aliases: ['unsent','un'],
   usage: 'Unsent [reply]',
   description: "Unsend bot's message",
   credits: 'Deveploper',

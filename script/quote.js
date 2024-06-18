@@ -3,9 +3,10 @@ module.exports.config = {
   name: "quote",
   version: "1.0.0",
   role: 0,
-  hasPrefix: false,
+  hasPrefix: true,
   description: "Get a random inspirational quote.",
-  usage: "quote",
+  aliases: [],
+  usage: "{prefix}quote",
   credits: "Developer",
   cooldown: 0
 };

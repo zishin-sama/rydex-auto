@@ -4,11 +4,12 @@ module.exports.config = {
   name: 'mistral',
   version: '1.0.0',
   role: 0,
-  hasPrefix: false,
+  hasPrefix: true,
   description: "Get response from Mistral AI",
-  usage: "mistral [query]",
+  usage: "{prefix}mistral [query]",
   credits: 'churchill',
   cooldown: 3,
+  aliases: []
 };
 
 module.exports.run = async function({ api, event, args }) {

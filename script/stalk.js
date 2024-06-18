@@ -5,10 +5,11 @@ const fs = require('fs')
     name: "stalk",
     version: "1.0.0",
     role: 0,
-    hasPrefix: false,
+    hasPrefix: true,
+    aliases: [],
     credits:"1SOY DEV",
-    usage:`stalk @user`,
-    description: "stalk the tag user", 
+    usage:" {prefix}stalk @user",
+    description: "stalk the tagged user", 
   },
   module.exports.run async ({ api, event, args, commandModules }) {
  try{

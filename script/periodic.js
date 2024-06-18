@@ -8,9 +8,9 @@ module.exports.config = {
 	credits: "Jonell Magallanes",
 	description: "search periodical table",
 	aliases: ["element", "pt"]
-	usage: "[element]",
+	usage: "{prefix}element [element]",
 	cooldown: 5,
-	hasPrefix: false,
+	hasPrefix: true,
 };
 
 module.exports.run = async function({ api, event, args }) {

@@ -2,9 +2,9 @@ module.exports.config = {
   name: "trans",
   version: "1.0.0",
   role: 0,
-  hasPrefix: false,
+  hasPrefix: true,
   description: "Text translation",
-  usages: "trans [tl, en] [promt]",
+  usages: "{prefix}trans [tl, en] [text]",
   credits: "Developer",
   cooldowns: 5,
 };

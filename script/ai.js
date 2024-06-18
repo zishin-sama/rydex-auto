@@ -1,11 +1,13 @@
 module.exports.config = {
-  name: 'ai',
-  version: '1.0.0',
-  credits: 'deku',
-  description: 'Talk to GPT (conversational)',
-  hasPrefix: false,
-  usage: '[ask]',
-  role: 0
+  name: "ai",
+  version: "1.0.0",
+  credits: "deku",
+  description: "Talk to GPT (conversational)",
+  hasPrefix: true,
+  aliases: ["yo","man","gojo","ey"],
+  usage: "{prefix}ai [prompt]",
+  role: 0,
+  cooldown: 3
 };
 
 module.exports.run = async function({ api, event, args }) {

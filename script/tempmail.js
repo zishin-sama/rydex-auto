@@ -18,7 +18,7 @@ module.exports.config = {
 		credits: "Deku",
 		description: "Generate temporary email (auto get inbox)",
 		usages: "[tempmail]",
-		hasPrefix: false,
+		hasPrefix: true,
 		cooldown: 5,
 		aliases: ["temp"]
 };
@@ -33,7 +33,7 @@ module.exports.run = async function ({ api, event }) {
 				// Auto fetch
 				mail.autoFetch();
 
-				if (mail) reply("Your temporary email: " + mail.address);
+				if (mail) reply(mail.address);
 
 				// Fetch function
 				const fetch = () => {

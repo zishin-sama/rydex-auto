@@ -3,11 +3,12 @@ const handleReply = [];
 module.exports.config = {
 	name: "listfriend",
 	version: "1.0.0",
-	role: 2,
-	hasPrefix: false,
+	role: 1,
+	hasPrefix: true,
 	credits: "cliff",
+	aliases: ["listfr"],
 	description: "View friends information/Delete friends by replying",
-	usages: "",
+	usage: "{prefix}listfriend",
 	cooldown: 5
 };
 
@@ -29,11 +30,11 @@ module.exports.handleReply = async function ({ api, args, Users, event }) {
 				const uid = uidUser[index];
 
 				api.unfriend(uid);
-				msg += `- ${name}\n🌐ProfileUrl: ${url}\n`;
+				msg += `- ${name}\nProfileUrl: ${url}\n`;
 			}
 		});
 
-		api.sendMessage(`💢Delete Friends💢\n\n${msg}`, threadID, () =>
+		api.sendMessage(`Delete Friends\n\n${msg}`, threadID, () =>
 			api.unsendMessage(messageID));
 	}
 };
@@ -59,21 +60,21 @@ module.exports.run = async function ({ event, api, args }) {
 		let page = parseInt(args[0]) || 1;
 		page = Math.max(page, 1);
 		const limit = 10;
-		let msg = `🎭DS INCLUDES ${countFr} FRIENDS🎭\n\n`;
+		let msg = `DS INCLUDES ${countFr} FRIENDS\n\n`;
 		const numPage = Math.ceil(listFriend.length / limit);
 
 		for (let i = limit * (page - 1); i < limit * page; i++) {
 			if (i >= listFriend.length) break;
 			const infoFriend = listFriend[i];
-			msg += `${i + 1}. ${infoFriend.name}\n🙇‍♂️ID: ${infoFriend.uid}\n🧏‍♂️Gender: ${infoFriend.gender}\n❄️Vanity: ${infoFriend.vanity}\n🌐Profile Url: ${infoFriend.profileUrl}\n\n`;
+			msg += `${i + 1}. ${infoFriend.name}\nID: ${infoFriend.uid}\nGender: ${infoFriend.gender}\nVanity: ${infoFriend.vanity}\nProfile Url: ${infoFriend.profileUrl}\n\n`;
 			nameUser.push(infoFriend.name);
 			urlUser.push(infoFriend.profileUrl);
 			uidUser.push(infoFriend.uid);
 		}
 
-		msg += `✎﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏\n--> Page ${page}/${numPage} <--\nUse .friend page number/all\n\n`;
+		msg += `Page ${page}/${numPage} <--\nUse .friend page number/all\n\n`;
 
-		return api.sendMessage(msg + '🎭Reply number in order (from 1->10), can rep multiple numbers, separated by way sign to delete that friend from the list!', threadID, (e, data) =>
+		return api.sendMessage(msg + 'Reply number in order (from 1->10), can reply multiple numbers, separated by way sign to delete that friend from the list!', threadID, (e, data) =>
 			handleReply.push({
 				author: senderID,
 				messageID: data.messageID,

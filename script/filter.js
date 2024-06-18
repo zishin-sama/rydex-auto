@@ -4,9 +4,9 @@ module.exports.config = {
 		role: 2,
 	credits: "Marjhun Baylon and Miko Mempin",
 		description: "Filter Faceboook User",
-		hasPrefix: false,
-		usages: "",
-		cooldowns: 5
+		hasPrefix: true,
+		usage: "{prefix}filter",
+		cooldown: 5
 };
 
 module.exports.run = async function ({ api, event }) {

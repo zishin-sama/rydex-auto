@@ -1,18 +1,19 @@
 module.exports.config = {
 	name: "kick",
-	version: "0.0.1",
+	version: "1",
 	role: 2,
-	credits: "Cliff",//do not change credits
+	credits: "Cliff",
 	description: "kick @tag multiple",
-	usages: "kick @mention",
-	hasPrefix: false,
+	usages: "{prefix} kick @mention",
+	hasPrefix: true,
 	cooldown: 5,
+	aliases: ["remove"],
 	info: [
 		{
-			key: '[tag] or [reply message] "reason"',
+			key: '<tag> or <reply message> "reason"',
 			prompt: '1 more warning user',
 			type: '',
-			example: 'ban [tag] "reason for warning"'
+			example: 'ban <tag> "reason for warning"'
 			},
 
 		{
@@ -32,7 +33,7 @@ module.exports.config = {
 			key: 'view',
 			prompt: '"tag" or "blank" or "view all", respectively used to see how many times the person tagged or yourself or a member of the box has been warned ',
 			type: '',
-			example: 'ban view [@tag] / warns view'
+			example: 'ban view <@tag> / warns view'
 			},
 
 		{
@@ -48,7 +49,7 @@ module.exports.config = {
 module.exports.run = async function({ api, args, Users, event, Threads, utils, client }) {
 	let {messageID, threadID, senderID} = event;
 	var info = await api.getThreadInfo(threadID);
-	if (!info.adminIDs.some(item => item.id == api.getCurrentUserID())) return api.sendMessage('╔════•| 🔴 |•════╗\n│   𝐏𝐋𝐄𝐀𝐒𝐄 𝐌𝐀𝐊𝐄 𝐌𝐄     │\n│   𝐀𝐃𝐌𝐈𝐍 𝐓𝐇𝐄𝐍 𝐓𝐑𝐘      │\n╚════•| 🔴 |•════╝', threadID, messageID);
+	if (!info.adminIDs.some(item => item.id == api.getCurrentUserID())) return api.sendMessage('Make me admin then try again.', threadID, messageID);
 	var fs = require("fs-extra");
 
 	if (!fs.existsSync(__dirname + `/cache/bans.json`)) {
@@ -119,7 +120,7 @@ module.exports.run = async function({ api, args, Users, event, Threads, utils, c
 		if(!id) return api.sendMessage("❎Need to enter the id of the person to be removed from the banned list of the group", threadID, messageID);
 		bans.banned;
 		if(!mybox.includes(id)) return api.sendMessage("✅This person hasn't been banned from your group yet", threadID, messageID);
-			api.sendMessage(`┏•━•━•━ ◎ ━•━•━•┓\n𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋𝐋 𝐑𝐄𝐌𝐎𝐕𝐄𝐃 ${id} \n┗•━•━•━ ◎ ━•━•━•┛  `, threadID, messageID);
+			api.sendMessage(`Successful removed ${id}`, threadID, messageID);
 			mybox.splice(mybox.indexOf(id), 1);
 			delete bans.warns[threadID][id]
 			fs.writeFileSync(__dirname + `/cache/bans.json`, JSON.stringify(bans, null, 2));
@@ -130,7 +131,7 @@ module.exports.run = async function({ api, args, Users, event, Threads, utils, c
 		var msg = "";
 		for(let iduser of mybox) {
 			var name = (await api.getUserInfo(iduser))[iduser].name;
-			msg += "╔Name: " + name + "\n╚ID: " + iduser + "\n";
+			msg += "Name: " + name + "\nID: " + iduser + "\n";
 		}
 		msg == "" ? api.sendMessage("", threadID, messageID) : api.sendMessage("\n"+msg, threadID, messageID);
 	}
@@ -209,7 +210,7 @@ module.exports.run = async function({ api, args, Users, event, Threads, utils, c
 
 		}//for
 
-		api.sendMessage({body: `\n┌────── ～●～ ──────┐\n\n✅ SUCCESSFUL REMOVED  ${arrayname.join(", ")} \n└────── ～●～ ──────┘\n`, mentions: arraytag}, threadID, messageID);
+		api.sendMessage({body: `✅ SUCCESSFUL REMOVED  ${arrayname.join(", ")}`, mentions: arraytag}, threadID, messageID);
 		fs.writeFileSync(__dirname + `/cache/bans.json`, JSON.stringify(bans, null, 2));
 }
 

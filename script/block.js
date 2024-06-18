@@ -9,20 +9,15 @@ async function getUserName(api, senderID, mentionID) {
 }
 
 module.exports.config = {
-  name: "Block",
-  version: "•.•",
-  role: 2,
-  hasPermision: 2,
+  name: "block",
+  version: "1",
+  role: 1,
   credits: "cliff",
   description: "Block a user",
-  hasPrefix: false,
-  usePrefix: false,
-  commandCategory: "Admin",
-  usages: "{p}{n} @mention, reply, senderID",
+  hasPrefix: true,
   aliases: ["block","ban"],
-  usage: "{p}{n} @mention, reply, senderID",
+  usage: "{prefix}block @mention/reply/senderID",
   cooldown: 0,
-  cooldowns: 5,
 };
 
 module.exports.run = async function({ api, event, args }) {
@@ -33,13 +28,13 @@ module.exports.run = async function({ api, event, args }) {
   }
 
   if (mentionID) {
-    api.sendMessage("🛡️ | You have been blocked.", mentionID);
-    api.sendMessage(`🚫 | ${await getUserName(api, mentionID)} has been blocked Successful.`, threadID, messageID);
+    api.sendMessage("You have been blocked.", mentionID);
+    api.sendMessage(`🚫 | ${await getUserName(api, mentionID)} has been blocked successfully.`, threadID, messageID);
     api.changeBlockedStatus(mentionID, true);
   } else if (messageReply) {
     const replySenderID = messageReply.senderID;
-    api.sendMessage("🛡️ | You have been blocked.", replySenderID);
-    api.sendMessage(`🚫 | ${await getUserName(api, replySenderID)} has been blocked Successful.`, threadID, messageID);
+    api.sendMessage("You have been blocked.", replySenderID);
+    api.sendMessage(`🚫 | ${await getUserName(api, replySenderID)} has been blocked successfully.`, threadID, messageID);
     api.changeBlockedStatus(replySenderID, true);
   }
 };

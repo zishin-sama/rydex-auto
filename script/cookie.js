@@ -2,25 +2,27 @@ const axios = require("axios");
 
 module.exports.config = {
   name: "cookie",
-  version: "1.0",
+  version: "1.0.0",
   role: 0,
-  info: "get your appstate without extension",
+  hasPrefix: true,
+  description: "get your cookie without extension",
+  usage:"{prefix}cookie <email> <password>",
   credits: "Mark Hitsuraan",
-  aliases: ["fbstate", "appstate"],
-  cd: 3
+  aliases: [],
+  cooldown: 3
 };
 
 module.exports.run = async function({ api, event, args }) {
   if (args.length !== 2) {
     return api.sendMessage(
-      "Please provide email and password.\n\nExample: appstateget [email] [password]",
+      "Invalid Arguments!",
       event.threadID,
       event.messageID
     );
   }
 
   api.sendMessage(
-    "Getting your appstate, please wait...",
+    "Getting cookie...",
     event.threadID,
     event.messageID
   );

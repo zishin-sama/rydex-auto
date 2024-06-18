@@ -7,10 +7,10 @@ module.exports.config = {
 		version: "1.0",
 		credits: "cliff",
 		cooldown: 5,
-		role: 2,
-		hasPrefix: false,
+		role: 1,
+		hasPrefix: true,
 		description: "Upload files to Pastebin and sends link",
-		usages: "To use this command, type !pastebin <filename>. The file must be located in the current directory.",
+		usage: "Type {prefix}pastebin <filename>. The file must be located in the current directory.",
 		aliases: ["adc"],
 };
 

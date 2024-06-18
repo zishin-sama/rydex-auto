@@ -6,10 +6,10 @@ module.exports.config = {
   role: 1,
   credits: "Kshitiz",
   description: "Join the specified group chat",
-  commandCategory: "System",
-  usages: "[threadID]",
-  cooldowns: 0,
-  hasPrefix: false
+  usage: "{prefix}join <threadID>",
+  aliases: [],
+  cooldown: 0,
+  hasPrefix: true
 };
 
 module.exports.run = async function({ api, event, args }) {
@@ -22,9 +22,9 @@ module.exports.run = async function({ api, event, args }) {
         api.sendMessage('No group chats found.', event.threadID);
       } else {
         const formattedList = filteredList.map((group, index) =>
-          `│${index + 1}. ${group.threadName}\n│𝐓𝐈𝐃: ${group.threadID}\n│𝐓𝐨𝐭𝐚𝐥 𝐦𝐞𝐦𝐛𝐞𝐫𝐬: ${group.participantIDs.length}\n│`
+          `│${index + 1}. ${group.threadName}\n│TID: ${group.threadID}\n│Total members: ${group.participantIDs.length}\n│`
         );
-        const message = `╭─╮\n│𝐋𝐢𝐬𝐭 𝐨𝐟 𝐠𝐫𝐨𝐮𝐩 𝐜𝐡𝐚𝐭𝐬:\n${formattedList.map(line => `${line}`).join("\n")}\n╰───────────ꔪ\n𝐌𝐚𝐱𝐢𝐦𝐮𝐦 𝐌𝐞𝐦𝐛𝐞𝐫𝐬 = 250\n\nTo join on the group, reply to this message "join {thread id}"\n\n example "join 6799332630181479"`;
+        const message = `╭─╮\n│List of group chats:\n${formattedList.map(line => `${line}`).join("\n")}\n╰───────────ꔪ\nMaximum Members = 250\n\nTo join on the group, reply to this message\n\n example: join 6799332630181479`;
 
         const sentMessage = await api.sendMessage(message, event.threadID);
         // global.GoatBot.onReply.set(sentMessage.messageID, {

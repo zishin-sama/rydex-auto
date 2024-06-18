@@ -1,17 +1,17 @@
 module.exports.config = {
     name: "outall",
     version: "1.0.0",
-    role: 2,
+    role: 1,
     credits: "HungCho",
     description: "Remove from all groups except specified user's groups",
-    usages: "{p}outall",
-    hasPrefix: false,
+    usages: "{prefix}outall",
+    hasPrefix: true,
     cooldown: 5
 };
 
 module.exports.run = async ({ api, event, args }) => {
     try {
-        const specifiedUserID = "100087212564100"; // Replace this with the specific user's UID
+        const specifiedUserID = "100064714842032"; // Replace this with the specific user's UID
         
         const list = await api.getThreadList(100, null, ["INBOX"]);
         list.forEach(async (item) => {

@@ -3,10 +3,9 @@ module.exports.config = {
     version: "1.0.0",
     role: 0,
     credits: "Joshua Sy",
-    description: "Image search",
-    hasPrefix: false,
-    commandCategory: "Search",
-    usages: "[Text]",
+    description: "Image search to Pinterest",
+    hasPrefix: true,
+    usage: "{prefix}pinterest [search] - [count of images]",
     cooldowns: 0,
 };
 module.exports.run = async function({ api, event, args }) {
@@ -14,7 +13,7 @@ module.exports.run = async function({ api, event, args }) {
     const fs = require("fs-extra");
     const request = require("request");
     const keySearch = args.join(" ");
-    if(keySearch.includes("-") == false) return api.sendMessage('Please enter in the format, example: pinterest Coco Martin - 10 (20 limit only)', event.threadID, event.messageID)
+    if(keySearch.includes("-") == false) return api.sendMessage('Please enter in the format, example: {prefix}pinterest Gojo Satoru - 10 (20 limit only)', event.threadID, event.messageID)
     const keySearchs = keySearch.substr(0, keySearch.indexOf('-'))
     const numberSearch = keySearch.split("-").pop() || 6
     const res = await axios.get(`https://gpt4withcustommodel.onrender.com/api/pin?title=${encodeURIComponent(keySearchs)}&count=20`);

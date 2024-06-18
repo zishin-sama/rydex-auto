@@ -7,7 +7,8 @@ module.exports.config = {
 		role: 0,
 		credits: "cliff",
 		description: "uptime",
-		hasPrefix: false,
+		hasPrefix: true,
+		usage: "",
 		cooldowns: 5,
 		aliases: ["up"]
 };
@@ -43,7 +44,7 @@ module.exports.run = async ({ api, event }) => {
 		};
 
 		const timeStart = Date.now();
-		const returnResult = `BOT has been working for ${hours} hour(s) ${minutes} minute(s) ${seconds} second(s).\n\n❖ Cpu usage: ${usage.cpu.toFixed(1)}%\n❖ RAM usage: ${byte2mb(usage.memory)}\n❖ Cores: ${os.cpus().length}\n❖ Ping: ${Date.now() - timeStart}ms\n❖ Operating System Platform: ${osInfo.platform}\n❖ System CPU Architecture: ${osInfo.architecture}`;
+		const returnResult = `BOT has been working for ${days} day(s) ${hours} hour(s) ${minutes} minute(s) ${seconds} second(s).\n\nCpu usage: ${usage.cpu.toFixed(1)}%\nRAM usage: ${byte2mb(usage.memory)}\nCores: ${os.cpus().length}\nPing: ${Date.now() - timeStart}ms\nOperating System Platform: ${osInfo.platform}\nSystem CPU Architecture: ${osInfo.architecture}`;
 
 		return api.sendMessage(returnResult, event.threadID, event.messageID);
 };
