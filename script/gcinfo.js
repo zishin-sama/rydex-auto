@@ -3,6 +3,11 @@
 module.exports.config = {
   name: "gcinfo",
   hasPrefix: true,
+  role: 0,
+  description: "get thread info",
+  aliases: [],
+  usage: "",
+  cooldown: 3,
 };
 
 module.exports.run = async function ({ api, event, args }) {
@@ -17,7 +22,7 @@ module.exports.run = async function ({ api, event, args }) {
   try {
     const threadInfo = await api.getThreadInfoGraphQL(targetThreadID);
     if (!threadInfo) {
-      api.sendMessage(`Thread with ID ${targetThreadID} not found.`, threadID, messageID);
+      api.sendMessage(`Thread not found.`, threadID, messageID);
       return;
     }
 
