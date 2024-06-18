@@ -3,6 +3,12 @@
 module.exports.config = {
   name: "setgcname",
   hasPrefix: true,
+  description: "set name of thread",
+  credits: "aze kagenou",
+aliases: [],
+  usage: "",
+  cooldown: 10
+
 };
 
 module.exports.run = async function({ api, event, args }) {
