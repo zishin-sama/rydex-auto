@@ -5,7 +5,7 @@ const path = require("path");
 module.exports.config = {
 	name: "sendnoti",
 	version: "1.1.0",
-	role: 2,
+	role: 1,
 	description: "Sends a message to all groups and can only be done by the admin.",
 	hasPrefix: false,
 	aliases: ["noti"],
@@ -21,7 +21,7 @@ module.exports.run = async function ({ api, event, args, admin }) {
 	async function sendMessage(thread) {
 		try {
 			await api.sendMessage(
-`🟢🟡🔴\n ----------------\n『 𝐍𝐎𝐓𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍 』\n\n ----------------\n𝑴𝒆𝒔𝒔𝒂𝒈𝒆 𝒇𝒓𝒐𝒎 𝒂𝒅𝒎𝒊𝒏:「${custom}」\n 𝐟𝐨𝐥𝐥𝐨𝐰 𝐝𝐞𝐯:https://www.facebook.com/Churchill.Dev4100\n _________________________`,
+`Message from admin:${custom}`,
 				thread.threadID
 			);
 			sentCount++;
