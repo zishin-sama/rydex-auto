@@ -2,12 +2,12 @@ const axios = require('axios');
 
 module.exports.config = {
 	name: "box",
-	version: "9",
+	version: "1",
 	role: 0,
 	hasPrefix: true,
 	usage: "{prefix}box <prompt>",
 	credits: "Eugene Aguilar",
-	description: "AI powered by blackbox",
+	description: "blackbox AI",
 	aliases: [],
 	cooldowns: 0,
 };
@@ -19,7 +19,7 @@ module.exports.run = async function ({api, event, args}) {
 	}
 
 	const query = encodeURIComponent(args.join(" "));
-	const apiUrl = `https://api.easy-api.online/api/blackbox?query=${query}`;
+	const apiUrl = `https://deku-rest-api-ywad.onrender.com/blackbox?prompt=${query}`;
 
 	try {
 		const response = await axios.get(apiUrl);
