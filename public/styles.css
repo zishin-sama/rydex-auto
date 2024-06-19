@@ -150,14 +150,12 @@ body {
         .events-list {
             flex: 1;
             margin: 10px;
-            color: #cc0000;
         }
 
         .commands-list p,
         .events-list p {
             margin-top: 20px;
             margin-bottom: 10px;
-            color: #cc0000;
         }
         input::placeholder, textarea::placeholder {
         	color: #cc0000;
@@ -166,4 +164,50 @@ body {
         .checkbox-label {
         	color: #cc0000;
             font-family: "New Courier",Courier,monospace
-        }
+            }
+            
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-input {
+  margin-right: 10px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.form-check-input {
+  margin-right: 10px;
+}
+
+.form-check-input.commands {
+  accent-color: #cc0000;
+}
+
+.form-check-label.commands {
+  background-color: #111;
+  color: #cc0000;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.form-check-input.handleEvent {
+  accent-color: #cc0000;
+}
+
+.form-check-label.handleEvent {
+  background-color: #111;
+  color: #cc0000;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.form-check-label.disable {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
