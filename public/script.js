@@ -257,3 +257,4 @@ function submitForm(event) {
   console.log('Form data submitted:', data);
 
 		}
+commandList();
