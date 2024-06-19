@@ -88,151 +88,172 @@ function showResult(message) {
 	resultContainer.style.display = 'block';
 }
 async function commandList() {
-	try {
-		const [listOfCommands, listOfCommandsEvent] = [document.getElementById('listOfCommands'), document.getElementById('listOfCommandsEvent')];
-		const response = await fetch('/commands');
-		const {
-			commands,
-			handleEvent,
-			aliases
-		} = await response.json();
-		[commands, handleEvent].forEach((command, i) => {
-			command.forEach((command, index) => {
-				const container = createCommand(i === 0 ? listOfCommands : listOfCommandsEvent, index + 1, command, i === 0 ? 'commands' : 'handleEvent', aliases[index] || []);
-				i === 0 ? listOfCommands.appendChild(container) : listOfCommandsEvent.appendChild(container);
-			});
-		});
-	} catch (error) {
-		console.log(error);
-	}
+  try {
+    const [listOfCommands, listOfCommandsEvent] = [
+      document.getElementById('listOfCommands'),
+      document.getElementById('listOfCommandsEvent')
+    ];
+    const response = await fetch('/commands');
+    const { commands, handleEvent, aliases } = await response.json();
+
+    [commands, handleEvent].forEach((commandList, i) => {
+      commandList.forEach((command, index) => {
+        const container = createCommand(
+          i === 0 ? listOfCommands : listOfCommandsEvent,
+          index + 1,
+          command,
+          i === 0 ? 'commands' : 'handleEvent',
+          aliases[index] || []
+        );
+        i === 0 ? listOfCommands.appendChild(container) : listOfCommandsEvent.appendChild(container);
+      });
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function createCommand(element, order, command, type, aliases) {
-	const container = document.createElement('div');
-	container.classList.add('form-check', 'form-switch');
-	container.onclick = toggleCheckbox;
-	const checkbox = document.createElement('input');
-	checkbox.classList.add('form-check-input', type === 'handleEvent' ? 'handleEvent' : 'commands');
-	checkbox.type = 'checkbox';
-	checkbox.role = 'switch';
-	checkbox.id = `flexSwitchCheck_${order}`;
-	const label = document.createElement('label');
-	label.classList.add('form-check-label', type === 'handleEvent' ? 'handleEvent' : 'commands');
-	label.for = `flexSwitchCheck_${order}`;
-	label.textContent = `${order}. ${command}`;
-	container.appendChild(checkbox);
-	container.appendChild(label);
-	/*
-	if (aliases.length > 0 && type !== 'handleEvent') {
-		const aliasText = document.createElement('span');
-		aliasText.classList.add('aliases');
-		aliasText.textContent = ` (${aliases.join(', ')})`;
-		label.appendChild(aliasText);
-	}
-	*/
-	return container;
+  const container = document.createElement('div');
+  container.classList.add('form-check', 'form-switch');
+  container.onclick = toggleCheckbox;
+
+  const checkbox = document.createElement('input');
+  checkbox.classList.add('form-check-input', type === 'handleEvent' ? 'handleEvent' : 'commands');
+  checkbox.type = 'checkbox';
+  checkbox.role = 'switch';
+  checkbox.id = `flexSwitchCheck_${order}`;
+
+  const label = document.createElement('label');
+  label.classList.add('form-check-label', type === 'handleEvent' ? 'handleEvent' : 'commands');
+  label.htmlFor = `flexSwitchCheck_${order}`;
+  label.textContent = `${order}. ${command}`;
+
+  container.appendChild(checkbox);
+  container.appendChild(label);
+
+  return container;
 }
 
 function toggleCheckbox() {
-	const box = [{
-		input: '.form-check-input.commands',
-		label: '.form-check-label.commands',
-		array: Commands[0].commands
-	}, {
-		input: '.form-check-input.handleEvent',
-		label: '.form-check-label.handleEvent',
-		array: Commands[1].handleEvent
-	}];
-	box.forEach(({
-		input,
-		label,
-		array
-	}) => {
-		const checkbox = this.querySelector(input);
-		const labelText = this.querySelector(label);
-		if (checkbox) {
-			checkbox.checked = !checkbox.checked;
-			if (checkbox.checked) {
-				labelText.classList.add('disable');
-				const command = labelText.textContent.replace(/^\d+\.\s/, '').split(" ")[0];
-				array.push(command);
-			} else {
-				labelText.classList.remove('disable');
-				const command = labelText.textContent.replace(/^\d+\.\s/, '').split(" ")[0];
-				const removeCommand = array.indexOf(command);
-				if (removeCommand !== -1) {
-					array.splice(removeCommand, 1);
-				}
-			}
-		}
-	});
+  const box = [
+    {
+      input: '.form-check-input.commands',
+      label: '.form-check-label.commands',
+      array: Commands[0].commands,
+    },
+    {
+      input: '.form-check-input.handleEvent',
+      label: '.form-check-label.handleEvent',
+      array: Commands[1].handleEvent,
+    },
+  ];
+
+  box.forEach(({ input, label, array }) => {
+    const checkbox = this.querySelector(input);
+    const labelText = this.querySelector(label);
+    if (checkbox) {
+      checkbox.checked = !checkbox.checked;
+      if (checkbox.checked) {
+        labelText.classList.add('disable');
+        const command = labelText.textContent.replace(/^\d+\.\s/, '').split(' ')[0];
+        array.push(command);
+      } else {
+        labelText.classList.remove('disable');
+        const command = labelText.textContent.replace(/^\d+\.\s/, '').split(' ')[0];
+        const removeCommand = array.indexOf(command);
+        if (removeCommand !== -1) {
+          array.splice(removeCommand, 1);
+        }
+      }
+    }
+  });
 }
 
 function selectAllCommands() {
-	const box = [{
-		input: '.form-check-input.commands',
-		array: Commands[0].commands
-	}];
-	box.forEach(({
-		input,
-		array
-	}) => {
-		const checkboxes = document.querySelectorAll(input);
-		const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-		checkboxes.forEach((checkbox) => {
-			if (allChecked) {
-				checkbox.checked = false;
-				const labelText = checkbox.nextElementSibling;
-				labelText.classList.remove('disable');
-				const command = labelText.textContent.replace(/^\d+\.\s/, '').split(" ")[0];
-				const removeCommand = array.indexOf(command);
-				if (removeCommand !== -1) {
-					array.splice(removeCommand, 1);
-				}
-			} else {
-				checkbox.checked = true;
-				const labelText = checkbox.nextElementSibling;
-				labelText.classList.add('disable');
-				const command = labelText.textContent.replace(/^\d+\.\s/, '').split(" ")[0];
-				if (!array.includes(command)) {
-					array.push(command);
-				}
-			}
-		});
-	});
+  const box = [
+    {
+      input: '.form-check-input.commands',
+      array: Commands[0].commands,
+    },
+  ];
+  
+  box.forEach(({ input, array }) => {
+    const checkboxes = document.querySelectorAll(input);
+    const allChecked = Array.from(checkboxes).every((checkbox) => checkbox.checked);
+    checkboxes.forEach((checkbox) => {
+      const labelText = checkbox.nextElementSibling;
+      const command = labelText.textContent.replace(/^\d+\.\s/, '').split(' ')[0];
+      if (allChecked) {
+        checkbox.checked = false;
+        labelText.classList.remove('disable');
+        const removeCommand = array.indexOf(command);
+        if (removeCommand !== -1) {
+          array.splice(removeCommand, 1);
+        }
+      } else {
+        checkbox.checked = true;
+        labelText.classList.add('disable');
+        if (!array.includes(command)) {
+          array.push(command);
+        }
+      }
+    });
+  });
 }
 
 function selectAllEvents() {
-	const box = [{
-		input: '.form-check-input.handleEvent',
-		array: Commands[1].handleEvent
-	}];
-	box.forEach(({
-		input,
-		array
-	}) => {
-		const checkboxes = document.querySelectorAll(input);
-		const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-		checkboxes.forEach((checkbox) => {
-			if (allChecked) {
-				checkbox.checked = false;
-				const labelText = checkbox.nextElementSibling;
-				labelText.classList.remove('disable');
-				const event = labelText.textContent.replace(/^\d+\.\s/, '').split(" ")[0];
-				const removeEvent = array.indexOf(event);
-				if (removeEvent !== -1) {
-					array.splice(removeEvent, 1);
-				}
-			} else {
-				checkbox.checked = true;
-				const labelText = checkbox.nextElementSibling;
-				labelText.classList.add('disable');
-				const event = labelText.textContent.replace(/^\d+\.\s/, '').split(" ")[0];
-				if (!array.includes(event)) {
-					array.push(event);
-				}
-			}
-		});
-	});
+  const box = [
+    {
+      input: '.form-check-input.handleEvent',
+      array: Commands[1].handleEvent,
+    },
+  ];
+
+    box.forEach(({ input, array }) => {
+    const checkboxes = document.querySelectorAll(input);
+    const allChecked = Array.from(checkboxes).every((checkbox) => checkbox.checked);
+    checkboxes.forEach((checkbox) => {
+      const labelText = checkbox.nextElementSibling;
+      const event = labelText.textContent.replace(/^\d+\.\s/, '').split(' ')[0];
+      if (allChecked) {
+        checkbox.checked = false;
+        labelText.classList.remove('disable');
+        const removeEvent = array.indexOf(event);
+        if (removeEvent !== -1) {
+          array.splice(removeEvent, 1);
+        }
+      } else {
+        checkbox.checked = true;
+        labelText.classList.add('disable');
+        if (!array.includes(event)) {
+          array.push(event);
+        }
+      }
+    });
+  });
 }
-commandList();
+
+function toggleSubmitButton() {
+  const agreeCheckbox = document.getElementById('agreeCheckbox');
+  const submitButton = document.getElementById('submitButton');
+  submitButton.disabled = !agreeCheckbox.checked;
+}
+
+function submitForm(event) {
+  event.preventDefault();
+  const jsonData = document.getElementById('json-data').value;
+  const inputOfPrefix = document.getElementById('inputOfPrefix').value;
+  const inputOfAdmin = document.getElementById('inputOfAdmin').value;
+
+  const data = {
+    jsonData,
+    prefix: inputOfPrefix,
+    adminID: inputOfAdmin,
+    commands: Commands[0].commands,
+    events: Commands[1].handleEvent
+  };
+
+  console.log('Form data submitted:', data);
+
+		}
