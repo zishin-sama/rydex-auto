@@ -26,4 +26,4 @@ const facebookLinkRegex = /https:\/\/www\.facebook\.com\/\S+/;
 															
 															if (facebookLinkRegex.test(event.body)) {
 																downloadAndSendFBContent(event.body);
-						 }
+																					    }
