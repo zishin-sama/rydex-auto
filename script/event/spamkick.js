@@ -1,6 +1,7 @@
 const fs = require('fs');
 let messageCounts = {};
 const spamThreshold = 10;
+const spamTimeFrame = 5000; // 5 seconds
 
 try {
     messageCounts = JSON.parse(fs.readFileSync('messageCounts.json'));
@@ -20,18 +21,28 @@ module.exports.handleEvent = async function({ api, event }) {
         return api.sendMessage("", threadID);
     }
 
+    const currentTime = new Date().getTime();
+
     if (!messageCounts[threadID]) {
         messageCounts[threadID] = {};
     }
 
     if (!messageCounts[threadID][senderID]) {
-        messageCounts[threadID][senderID] = { count: 1 };
+        messageCounts[threadID][senderID] = { count: 1, timestamp: currentTime };
     } else {
-        messageCounts[threadID][senderID].count++;
-
-        if (messageCounts[threadID][senderID].count > spamThreshold) {
-            api.removeUserFromGroup(senderID, threadID);
-            api.sendMessage({ body: "Detected spamming. The user has been removed from the group.", mentions: [{ tag: senderID, id: senderID }] }, threadID, messageID);
+        const timeDifference = currentTime - messageCounts[threadID][senderID].timestamp;
+        
+        if (timeDifference <= spamTimeFrame) {
+            messageCounts[threadID][senderID].count++;
+            if (messageCounts[threadID][senderID].count > spamThreshold) {
+                api.removeUserFromGroup(senderID, threadID);
+                api.sendMessage({
+                    body: "Spamming detected. The user has been removed from the group.",
+                    mentions: [{ tag: senderID, id: senderID }]
+                }, threadID, messageID);
+            }			
+        } else {
+            messageCounts[threadID][senderID] = { count: 1, timestamp: currentTime };
         }
     }
 
