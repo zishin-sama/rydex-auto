@@ -11,7 +11,7 @@ module.exports.handleEvent = async function({ api, event }) {
         	return;
         }
      }
-        const response = await axios.get('https://sim-api-ctqz.onrender.com/sim?query=${encodeURIComponent(query)}');
+        const response = await axios.get(`https://sim-api-ctqz.onrender.com/sim?query=${encodeURIComponent(query)}`);
             api.sendMessage(response.data, event.threadID, event.messageID);
     } catch (error) {
         console.error("An error occurred:", error);
