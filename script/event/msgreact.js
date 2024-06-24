@@ -1,11 +1,11 @@
-module.exports = { 
+module.exports.config = { 
    name: "msgreact", 
    version: "1.0.0",
    credits: "Aze Kagenou"
 };
 const cooldowns = new Map();
 
-handleEvent = async function({api, event}) {
+module.exports.handleEvent = async function({api, event}) {
 	const name = (await api.getUserInfo(event.senderID))[event.senderID].name;
     const message = event.message.toLowerCase();
     
@@ -74,4 +74,4 @@ handleEvent = async function({api, event}) {
     api.setMessageReaction(random, event.messageID, () => { }, true);
 };
 
-   cooldowns.set(event.senderID), Date.now() + 60000; 
+   cooldowns.set(event.senderID); Date.now() + 60000; 
