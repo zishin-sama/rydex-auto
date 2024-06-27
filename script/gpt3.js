@@ -1,5 +1,5 @@
 module.exports.config = {
-  name: "gpt3",
+  name: "gpt4",
   version: "1.0.0",
   role: 0,
   credits: "Aze",
@@ -7,7 +7,7 @@ module.exports.config = {
   description: "This module provides AI-powered responses using GPT-3.",
   usage: "<question>",
   cooldown: 5,
-  aliases: []
+  aliases: ["g4"]
 };
 
 module.exports.run = async function ({ api, event, args }) {
@@ -21,7 +21,7 @@ module.exports.run = async function ({ api, event, args }) {
     ];
     const options = {
       provider: g4f.providers.GPT,
-      model: "gpt-3.5-turbo",
+      model: "gpt-4",
       debug: true,
       proxy: ""
     };
