@@ -15,10 +15,10 @@ let gpt4 = false;
 module.exports.run = async function({ api, event, args }) {
   if (args[0] === "on") {
     gpt4 = true;
-    api.sendMessage("GPT-4 activated", event.threadID);
+    api.sendMessage("GPT-4 reply active mode", event.threadID);
   } else if (args[0] === "off") {
     gpt4 = false;
-    api.sendMessage("GPT-4 activated", event.threadID);
+    api.sendMessage("GPT-4 deactivated reply mode", event.threadID);
   } else {
     api.sendMessage("Invalid command. Please use 'on' or 'off'.", event.threadID);
   }
