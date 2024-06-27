@@ -5,7 +5,7 @@ module.exports.config = {
   version: "1.0.0",
   description: "accept friend request of user",
   usage: "acp list / number",
-  aliases: "acp",
+  aliases: ["acp"],
   hasPrefix: true,
   role: 1,
   cooldown: 10
