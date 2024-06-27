@@ -10,7 +10,7 @@ module.exports.config = {
   credits: "Aze Kagenou"
 };
 
-let gpt4 = true;
+let gpt4 = false;
 
 module.exports.run = async function({ api, event, args }) {
   if (args[0] === "on") {
