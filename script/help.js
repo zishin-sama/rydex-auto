@@ -62,7 +62,9 @@ module.exports.run = async function ({ api, event, enableCommands, args, Utils, 
                 api.sendMessage(helpMessage, event.threadID, event.messageID);
             } 
             else {
-                const command = [...Utils.handleEvent, ...Utils.commands].find(([key]) => key.toLowerCase().includes(input))?.[1];
+                const command = [...Utils.handleEvent, ...Utils.commands].find(([key]) => {
+return key.toLowerCase().includes(input) || value.aliases.includes(input);
+})?.[1];
 
                 if (command) {
                     const { name, version, role, aliases = [], description, usage, credits, cooldown, hasPrefix } = command;
