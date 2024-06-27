@@ -1,47 +1,28 @@
 const axios = require('axios');
 module.exports.config = {
   name: "ai",
-  version: "3.1.0",
-  description: "GPT-4(conversational)",
+  version: "1.0.0",
+  credits: "deku",
+  description: "Talk to GPT (conversational)",
+  hasPrefix: true,
   aliases: [],
-  usage: "ai",
+  usage: "ai [prompt]",
   role: 0,
-  cooldown: 0,
-  credits: "Aze Kagenou"
+  cooldown: 3
 };
-
-let gpt4 = false;
 
 module.exports.run = async function({ api, event, args }) {
-  if (args[0] === "on") {
-    gpt4 = true;
-    api.sendMessage("GPT-4 reply active mode", event.threadID);
-  } else if (args[0] === "off") {
-    gpt4 = false;
-    api.sendMessage("GPT-4 deactivated reply mode", event.threadID);
-  } else {
-    api.sendMessage("Invalid command. Please use 'on' or 'off'.", event.threadID);
-  }
-};
-
-module.exports.handleEvent = async function({ api, event }) {
-  if (!gpt4) {
-    return;
-  }
-  
-  const prompt = encodeURIComponent(event.body);
+  const prompt = args.join(' ');
   const uid = event.senderID;
   
+  if (!prompt) {
+    return api.sendMessage('How can I help you? Please provide a prompt.', event.threadID);
+  }
+
   try {
-    if (event.type === "message_reply") {
-      if (event.senderID === event.messageReply.senderID) {
-        return;
-      }
-    }
-    
     const response = await axios.get(`https://joshweb.click/gpt4?prompt=${prompt}&uid=${uid}`);
-    api.sendMessage(response.data.gpt4, event.threadID, event.messageID);
+    return api.sendMessage(response.data.gpt4, event.threadID);
   } catch (error) {
-    console.error("An error occurred:", error);
+    return api.sendMessage(error.message, event.threadID);
   }
 };
