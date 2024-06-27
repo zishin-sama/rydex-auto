@@ -698,9 +698,5 @@ const Currencies = {
 		}
 	}
 };
-main()
-const { start } = require("./script/event/autogreet");
-
-// Start the bot here
-start();
+main() 
 				      
