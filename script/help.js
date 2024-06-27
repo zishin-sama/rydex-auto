@@ -24,7 +24,7 @@ module.exports.run = async function ({ api, event, enableCommands, args, Utils, 
             let helpMessage = `「 COMMAND LIST 」\n\n`;
 
             for (let i = start; i < end; i++) {
-                helpMessage += `\t${i + 1}. 『 ${prefix}${commands[i]} 』\n`;
+                helpMessage += `\t${i + 1}. 「 ${prefix}${commands[i]} 」\n`;
             }
 
             helpMessage += `\nPage: 1/${pages}\nTo view information about a specific command, type ${prefix}help [command]`;
@@ -35,13 +35,13 @@ module.exports.run = async function ({ api, event, enableCommands, args, Utils, 
             let helpMessage = `「 COMMAND LIST 」\n\n`;
 
             commands.forEach((command, index) => {
-                helpMessage += `\t${index + 1}. 『 ${prefix}${command} 』\n`;
+                helpMessage += `\t${index + 1}. 「 ${prefix}${command} 」\n`;
             });
 
             helpMessage += `\n「 EVENT LIST 」\n\n`;
 
             eventCommands.forEach((eventCommand, index) => {
-                helpMessage += `\t${index + 1}. 『 ${prefix}${eventCommand} 』\n`;
+                helpMessage += `\t${index + 1}. 「 ${prefix}${eventCommand} 」\n`;
             });
 
             api.sendMessage(helpMessage, event.threadID, event.messageID);
@@ -54,7 +54,7 @@ module.exports.run = async function ({ api, event, enableCommands, args, Utils, 
                 let helpMessage = `「 COMMAND LIST 」\n\n`;
 
                 for (let i = start; i < end; i++) {
-                    helpMessage += `\t${i + 1}. 『 ${prefix}${commands[i]} 』\n`;
+                    helpMessage += `\t${i + 1}. 「 ${prefix}${commands[i]} 」\n`;
                 }
 
                 helpMessage += `\nPage: ${page}/${pages}\nTo view information about a specific command, type ${prefix}help [command]`;
@@ -62,9 +62,7 @@ module.exports.run = async function ({ api, event, enableCommands, args, Utils, 
                 api.sendMessage(helpMessage, event.threadID, event.messageID);
             } 
             else {
-                const command = [...Utils.handleEvent, ...Utils.commands].find(([key]) => {
-return key.toLowerCase() === input || Utils.aliases.includes(input);
-})?.[1];
+                const command = [...Utils.handleEvent, ...Utils.commands].find(([key]) => key.includes(input?.toLowerCase()))?.[1];
 
                 if (command) {
                     const { name, version, role, aliases = [], description, usage, credits, cooldown, hasPrefix } = command;
