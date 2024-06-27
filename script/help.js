@@ -63,7 +63,7 @@ module.exports.run = async function ({ api, event, enableCommands, args, Utils, 
             } 
             else {
                 const command = [...Utils.handleEvent, ...Utils.commands].find(([key]) => {
-return key.toLowerCase().includes(input) || value.aliases.includes(input);
+return key.toLowerCase() === input || Utils.aliases.includes(input);
 })?.[1];
 
                 if (command) {
