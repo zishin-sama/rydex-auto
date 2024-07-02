@@ -1,4 +1,4 @@
-const Currencies = require('./index');
+
 const outcomes = ['🍒', '🍋', '🍊', '🍇', '🔔', '💰'];
 
 function spinSlot() {
