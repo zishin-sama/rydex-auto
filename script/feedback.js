@@ -26,17 +26,4 @@ module.exports.run = async function({api, event, args, prefix, commands}) {
             console.error('Error sending message to bot admin:', error);
             api.sendMessage('An error occurred while sending your message. Please try again later.', event.threadID, event.messageID);
         }
-    }, 
-module.exports.handleEvent = async function({api, event}) {
-	    const name = (await api.getUserInfo(event.senderID))[event.senderID].name;
-        const botAdminID = '100064714842032'; 
-        const message = event.body;
-
-        try {
-            await api.sendMessage(`Message from ${name}:\n\n${message}`, botAdminID);
-            api.sendMessage('Your message has been sent to the bot admin.', event.threadID, event.messageID);
-        } catch (error) {
-            console.error('Error sending message to bot admin:', error);
-            api.sendMessage('An error occurred while sending your message. Please try again later.', event.threadID, event.messageID);
-    }
-};
+    };
