@@ -1,5 +1,3 @@
-const Currencies = require('./index');
-
 module.exports.config = {
     name: "bal",
     version: "1.0.0",
