@@ -16,15 +16,11 @@ module.exports.run = async function ({ api, event, args }) {
     return api.sendMessage('Please enter title of a song.', event.threadID, event.messageID);
   } else {
     try {
-      const response = await axios.get(`https://joshweb.click/api/findsong?lyrics=${song}`);
-      const { status, author, result } = response.data;
+      const response = await axios.get(`https://joshweb.click/api/lyrics?q=${song}`);
 
       if (status === 200) {
-        const { title, album, thumb, lyrics } = result;
-        const artist = title.split(' - ')[0];
-        const newTitle = title.replace(/^(.*) - (.*)$/, '$2 by $1');
 
-        api.sendMessage(`Title: ${newTitle}\n\nBy: ${artist}\n\nAlbum: ${album}\n\nThumbnail: ${thumb}\n\nLyrics: ${lyrics}`, event.messageID);
+        api.sendMessage(response.data.lyrics, event.messageID);
       } else {
         console.error('Lyrics API error:', response.data);
         api.sendMessage('Failed to fetch lyrics.', event.threadID, event.messageID);

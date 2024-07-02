@@ -210,7 +210,7 @@ module.exports.run = async function({ api, args, Users, event, Threads, utils, c
 
 		}//for
 
-		api.sendMessage({body: ` SUCCESSFUL REMOVED  ${arrayname.join(", ")}`, mentions: arraytag}, threadID, messageID);
+		api.sendMessage({body: `Success remove ${arrayname.join(", ")}`, mentions: arraytag}, threadID, messageID);
 		fs.writeFileSync(__dirname + `/cache/bans.json`, JSON.stringify(bans, null, 2));
 }
 
