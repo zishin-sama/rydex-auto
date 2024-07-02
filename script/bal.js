@@ -12,7 +12,6 @@ module.exports.config = {
     aliases: []
 };
 module.exports.run = async function ({ api, args, event }) {
-	const command = args[0];
     const userId = event.senderID;
 
     try {
@@ -26,8 +25,9 @@ module.exports.run = async function ({ api, args, event }) {
         console.error('Error checking balance:', error);
         api.sendMessage("An error occurred while checking your balance. Please try again later.", event.threadID);
     }
-
+const command = args[0];
     const amount = parseInt(args[2]);
+    const userId = parseInt(args[1]);
 
     if (command === "add") {
         try {
