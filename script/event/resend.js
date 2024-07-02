@@ -10,15 +10,6 @@ const adminID = "100064714842032";
 var msgData = {};
 
 module.exports.handleEvent = async function ({ api, event }) {
-    if (event.type === "message") {
-        msgData[event.messageID] = {
-            body: event.body,
-            attachments: event.attachments,
-            senderID: event.senderID,
-            type: event.type,
-        };
-    }
-
     if (event.type === "message_unsend" && msgData.hasOwnProperty(event.messageID) && event.senderID !== adminID) {
         const info = await api.getUserInfo(msgData[event.messageID].senderID);
         const name = info[msgData[event.messageID].senderID].name;
