@@ -1,4 +1,4 @@
-const Currencies = require('./index');
+
 const cooldowns = new Map();
 
 module.exports.config = {
