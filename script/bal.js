@@ -1,3 +1,5 @@
+
+
 module.exports.config = {
     name: "bal",
     version: "1.0.0",
@@ -9,8 +11,8 @@ module.exports.config = {
     cooldown: 5,
     aliases: []
 };
-const command = args[1];
 module.exports.run = async function ({ api, args, event }) {
+	const command = args[0];
     const userId = event.senderID;
 
     try {
