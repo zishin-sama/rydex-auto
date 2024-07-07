@@ -15,19 +15,19 @@ module.exports.handleEvent = async function({ api, event }) {
     const morning = ["good morning","goodmorning","gomo", "ohayo"]
     const hi = ["hi","hello","konnichiwa"]
     const naol = ["sanaall","naol","sanaol"]
-    if (cry.some(word => body.includes.toLowerCase()(word))) {
-    	api.setMessageReaction("😢", mid, () => {}, true);
-    } else if (morning.some(word => body.includes.toLowerCase(word))) {
-    	api.setMessageReaction("❤", mid, () => {}, true);
-    api.sendMessage("Good morning, ${name}, eat your breakfast, have a nice day! 🥰", mid, tid);
-    } else if (hi.some(word => body.includes.toLowerCase()(word))) {
-    	api.setMessage("🤩", mid,() => {}, true);
-    api.sendMessage("Hello, ${name}", mid, tid);
-    } else if (naol.some(word => body.includes.toLowerCase()(word))) {
-    	api.setMessageReaction("2⃣", mid, () => { }, true);
-    api.sendMessage ("(2)",mid, tid);
-    } else {
+if (cry.some(word => body.toLowerCase().includes(word))) {
+    api.setMessageReaction("😢", mid, () => {}, true);
+} else if (morning.some(word => body.toLowerCase().includes(word))) {
+    api.setMessageReaction("❤", mid, () => {}, true);
+    api.sendMessage(`Good morning, ${name}, eat your breakfast, have a nice day! 🥰`, mid, tid);
+} else if (hi.some(word => body.toLowerCase().includes(word))) {
+    api.setMessage("🤩", mid, () => {}, true);
+    api.sendMessage(`Hello, ${name}`, mid, tid);
+} else if (naol.some(word => body.toLowerCase().includes(word))) {
+    api.setMessageReaction("2⃣", mid, () => {}, true);
+    api.sendMessage("(2)", mid, tid);
+} else {
     const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
     api.setMessageReaction(randomReaction, mid, () => {}, true);
     }
-};
+  }

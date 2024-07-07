@@ -30,9 +30,7 @@ module.exports.handleEvent = async function ({ api, event }) {
                 for (const attachment of msgData[event.messageID].attachments) {
                     const attachmentPath = path.join(__dirname, `${event.messageID}-${attachment.id}`);
 
-                    // Update the api.getFile check to handle different attachment types
                     if (attachment.type === "photo" || attachment.type === "animated_image" || attachment.type === "audio" || attachment.type === "video" || attachment.type === "file") {
-                        // Send message based on attachment type
                         api.sendMessage({ body: `${name} unsent this ${attachment.type}`, attachment: attachment.url }, event.threadID, adminID);
                     } else if (attachment.type === "sticker" || attachment.type === "emoji") {
                         api.sendMessage({ stickerId: attachment.id, body: `${name} unsent this sticker` }, event.threadID, adminID);
