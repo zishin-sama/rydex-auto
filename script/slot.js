@@ -1,4 +1,4 @@
-
+const { Currencies } = require('./index');
 const outcomes = ['🍒', '🍋', '🍊', '🍇', '🔔', '💰'];
 
 function spinSlot() {
@@ -21,7 +21,7 @@ module.exports.config = {
     aliases: []
 };
 
-module.exports.run = async function ({ api, args, event }) {
+module.exports.run = async function ({ api, args, event, Currencies }) {
     const bet = parseInt(args[0]);
 
     const userData = await Currencies.getData(event.senderID);

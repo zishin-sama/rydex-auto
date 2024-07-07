@@ -1,36 +1,44 @@
-
 const cooldowns = new Map();
-
+const { Currencies } = require('./index');
 module.exports.config = {
-  name: "daily",
-  version: "1",
-  role: 0,
-  hasPrefix: true,
-  usage: "{n}",
-  description: "get daily allowance 2 times a day only",
-  aliases: [],
-  credits: "",
-  cooldown: 5
+    name: "daily",
+    version: "1",
+    role: 0,
+    hasPrefix: true,
+    usage: "daily",
+    description: "get daily allowance 2 times a day only",
+    aliases: [],
+    credits: "",
+    cooldown: 5
 };
 
 module.exports.run = async function ({ api, event }) {
-  const userId = event.senderID;
+    const userId = event.senderID;
 
-  if (cooldowns.has(userId)) {
-    const remainingTime = cooldowns.get(userId) - Date.now();
-    if (remainingTime > 0) {
-      const hours = Math.ceil(remainingTime / 3600000);
-      api.sendMessage(`Sorry, you are on cooldown. Please try again in ${hours} hours.`, event.threadID);
-      return;
+    if (!cooldowns.has(userId)) {
+        cooldowns.set(userId, { uses: 0, lastUse: 0 });
     }
-  }
 
-  const allowance = Math.floor(Math.random() * (100000 - 10000 + 1)) + 10000;
+    const userCooldown = cooldowns.get(userId);
+    const currentTime = Date.now();
 
-  const userData = await Currencies.update(userId, allowance);
+    if (userCooldown.lastUse + userCooldown.uses * 12 * 3600000 > currentTime) {
+        const remainingTime = userCooldown.lastUse + userCooldown.uses * 12 * 3600000 - currentTime;
+        const hours = Math.ceil(remainingTime / 3600000);
+        api.sendMessage(`Sorry, you are on cooldown. Please try again in ${hours} hours.`, event.threadID);
+        return;
+    }
 
-  const cooldownDuration = cooldowns.has(userId) ? 24 * 3600000 : 12 * 3600000;
-  cooldowns.set(userId, Date.now() + cooldownDuration);
+    if (userCooldown.uses >= 2) {
+        api.sendMessage("You have already used your daily allowance maximum times.", event.threadID);
+        return;
+    }
 
-  api.sendMessage(`Here's your daily allowance: $${allowance}`, event.threadID);
+    const allowance = Math.floor(Math.random() * (100000 - 10000 + 1)) + 10000;
+    const userData = await Currencies.update(userId, allowance);
+
+    userCooldown.uses++;
+    userCooldown.lastUse = currentTime;
+    
+    api.sendMessage(`Here's your daily allowance: $${allowance}`, event.threadID);
 };

@@ -2,32 +2,25 @@ module.exports.config = {
   name: "approve",
   version: "1.0",
   role: 1,
-  description: "Approve message requests to be seen by the bot.",
+  description: "Approve threads",
   aliases: [],
-  usage: "approve [threadID]",
+  usage: "approve",
   hasPrefix: true,
   credits: "Aze Kagenou",
   cooldown: 0
 };
 
 module.exports.run = async function ({ api, args, event }) {
-  try {
-    if (!args || args.length === 0) {
-      return api.sendMessage("Please provide a thread ID to approve.", event.threadID);
+        const list = [
+            ...(await api.getThreadList(1, null, ['PENDING'])),
+            ...(await api.getThreadList(1, null, ['OTHER'])),
+        ];
+        if (list[0]) {
+            list.forEach(thread => {
+                api.sendMessage('Congrats! This thread has been approved by admin. You can now use the bot, type `help all` to see all commands. Thank you for using my bot. -Aze', thread.threadID);
+            });
+           api.sendMessage("Threads Accepted Successfully.", event.threadID, event.messageID);
+        } else {
+            api.sendMessage("There are no pending thread requests.", event.threadID, event.messageID);
     }
-
-    const threadID = args[0];
-    const accept = true;
-
-    api.handleMessageRequest(threadID, accept, function (err) {
-      if (err) {
-        return api.sendMessage("Error handling message request: " + err.error, event.threadID);
-      }
-
-      api.sendMessage("Message request has been approved successfully.", event.threadID);
-    });
-  } catch (error) {
-    console.error(error);
-    api.sendMessage("An error occurred while processing the command.", event.threadID);
-  }
 };

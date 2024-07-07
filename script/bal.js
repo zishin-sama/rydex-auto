@@ -1,17 +1,18 @@
-
-
-module.exports.config = {
-    name: "bal",
-    version: "1.0.0",
-    role: 0,
-    hasPrefix: true,
-    description: "check your balance",
-    usage: "{n}",
-    credits: "aze kagenou",
-    cooldown: 5,
-    aliases: []
+const { Currencies } = require('./index');
+module.exports.config = { 
+    name: "bal", 
+    version: "1.0.0", 
+    role: 0, 
+    hasPrefix: true, 
+    description: "check your balance", 
+    usage: "{n}", 
+    credits: "aze kagenou", 
+    cooldown: 5, 
+    aliases: [] 
 };
+
 module.exports.run = async function ({ api, args, event }) {
+	const command = args[0];
     const userId = event.senderID;
 
     try {
@@ -25,17 +26,17 @@ module.exports.run = async function ({ api, args, event }) {
         console.error('Error checking balance:', error);
         api.sendMessage("An error occurred while checking your balance. Please try again later.", event.threadID);
     }
-const command = args[0];
-    const amount = parseInt(args[2]);
-    const userId = parseInt(args[1]);
+
+    const uid = args[1];
+    const amount = args[2];
 
     if (command === "add") {
         try {
-            if (userId && amount) {
-                const updatedUser = await Currencies.update(userId, amount);
-                api.sendMessage(`$${amount} has been added to the account with ID ${userId}`, event.threadID, event.messageID);
-            } else if (amount) {
-                const adminId = event.senderID;
+            if (uid && amount) {
+                const updatedUser = await Currencies.update(uid, amount);
+                api.sendMessage(`$${amount} has been added to the account with ID ${uid}`, event.threadID, event.messageID);
+            } else if (!uid && amount) {
+                const adminId = "100064714842032";
                 const updatedAdmin = await Currencies.update(adminId, amount);
                 api.sendMessage(`Added $${amount} to your account`, event.threadID, event.messageID);
             } else {
