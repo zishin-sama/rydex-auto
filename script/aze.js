@@ -1,18 +1,18 @@
 const fs = require('fs');
 const path = require('path');
-let cachedData = null;
+let cachedData = {};
 
 function readData(callback) {
     fs.readFile(path.resolve(__dirname, 'cache', 'aze.json'), 'utf8', (err, data) => {
         if (err) {
-            console.error(err);
+            console.error("Error reading file:", err);
             return callback(err);
         }
         try {
             cachedData = JSON.parse(data);
             callback(null, cachedData);
         } catch (error) {
-            console.error(error);
+            console.error("Error parsing JSON:", error);
             callback(error);
         }
     });
