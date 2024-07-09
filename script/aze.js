@@ -3,7 +3,7 @@ const path = require('path');
 let cachedData = {};
 
 function readData(callback) {
-    fs.readFile(path.resolve(__dirname, 'cache', 'aze.json'), 'utf8', (err, data) => {
+    fs.readFile(path.resolve(__dirname, '..', 'cache', 'aze.json'), 'utf8', (err, data) => {
         if (err) {
             console.error("Error reading file:", err);
             return callback(err);
