@@ -8,11 +8,11 @@ module.exports.config = {
     role: 0,
     description: 'fetch lyrics of music',
     hasPrefix: true,
-    aliases: [],
+    aliases: ['ly'],
     usage: ''
   };
 
-  module.exports.run = async function ({ api, event, args }) {
+module.exports.run = async function ({ api, event, args }) {
     const songName = args.join(" ").trim();
     if (!songName) {
       api.sendMessage("Please provide a song name!", event.threadID, event.messageID);
@@ -25,8 +25,7 @@ module.exports.config = {
       console.error(`Error fetching lyrics for "${songName}":`, error);
       api.sendMessage(`Sorry, there was an error getting the lyrics for "${songName}"!`, event.threadID, event.messageID);
     }
-  },
-};
+  }
 
 const apiConfigs = [
   {
@@ -45,7 +44,7 @@ const apiConfigs = [
     name: "Backup API 3",
     url: (artist, song) => `https://openapi-idk8.onrender.com/lyrical/find?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`,
     requiresArtistAndSong: true,
-  },
+  }
 ];
 
 async function fetchLyrics(api, event, songName, attempt) {
@@ -80,9 +79,9 @@ async function fetchLyrics(api, event, songName, attempt) {
     console.error(`Error fetching lyrics from ${name} for "${songName}":`, error.message || error);
     await fetchLyrics(api, event, songName, attempt + 1);
   }
-}
 
 function sendFormattedLyrics(api, event, title, artist, lyrics) {
   const formattedLyrics = `🎧 | Title: ${title}\n🎤 | Artist: ${artist}\n\n${lyrics}`;
   api.sendMessage(formattedLyrics, event.threadID, event.messageID);
-      }
+  }
+};
