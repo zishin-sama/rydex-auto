@@ -31,7 +31,7 @@ module.exports.run = async function ({ api, event, args }) {
 						debug: true,
 						proxy: ""
 				};
-				const response = await g4f.chatCompletio(messages, options);
+				const response = await g4f.chatCompletion(messages, options);
 				reply(response);
 		} catch (e) {
 				return reply(e.message);
