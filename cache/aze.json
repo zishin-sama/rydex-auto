@@ -443,5 +443,40 @@
     ],
     "win": [
         "you lose"
+    ],
+    "kamusta ka?": [
+        "ayos lang",
+        "okay lang, ikaw ba?"
+    ],
+    "send bold": [
+        "bawal",
+        "bawal, hindi to rr",
+        "bastos ampota"
+    ],
+    "tangina": [
+        "mo",
+        "mo rin",
+        "bawal bad words"
+    ],
+    "tanga ka ba?": [
+        "matagal na",
+        "oo",
+        "hindi, baka ikaw?",
+        "pero mas tanga ka"
+    ],
+    "buti alam mo": [
+        "tsk 😏",
+        "wala kang alam",
+        "palamunin"
+    ],
+    "love?": [
+        "yes?",
+        "sinong love⁉️",
+        "po?"
+    ],
+    "ano ginagawa mo?": [
+        "iniisip ka",
+        "wala",
+        "wala, kausap ko lang mga babae ko"
     ]
 }
