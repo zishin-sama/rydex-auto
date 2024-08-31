@@ -399,8 +399,7 @@ if (event.body && command && prefix && event.body?.toLowerCase().startsWith(pref
 							name
 						}
 						of Utils.handleEvent.values()) {
-						if (handleEvent && name && (
-								(enableCommands[1].handleEvent || []).includes(name) || (enableCommands[0].commands || []).includes(name))) {
+						if (handleEvent && name && ((enableCommands[1].handleEvent || []).includes(name) || (enableCommands[0].commands || []).includes(name))) {
 							handleEvent({
 								api,
 								event,
