@@ -10,6 +10,7 @@ const script = path.join(__dirname, 'script');
 const moment = require("moment-timezone");
 const cron = require('node-cron');
 const config = fs.existsSync('./data') && fs.existsSync('./data/config.json') ? JSON.parse(fs.readFileSync('./data/config.json', 'utf8')) : creatqeConfig();
+const PORT = process.ENV.
 
 const Utils = new Object({
 	commands: new Map(),
@@ -178,7 +179,13 @@ app.post('/login', async (req, res) => {
         });
     }
 });
-
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+	console.log(`${port}`);
+});
+process.on('unhandledRejection', (reason) => {
+	console.error('Unhandled Promise Rejection:', reason);
+});
 async function accountLogin(state, enableCommands = [], prefix, admin = []) {
 	return new Promise((resolve, reject) => {
 		login({
