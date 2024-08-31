@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const Fuse = require('fuse.js'); 
+const Fuse = require('fuse.js');
 
 let cachedData = null;
 const filePath = path.join(__dirname, '..', 'cache', 'rydex.json');
@@ -43,19 +43,21 @@ module.exports.config = {
 };
 
 module.exports.run = async function ({ api, args, event }) {
-    const command = args[0];
+    const command = args[0]?.toLowerCase();
     const message = args.slice(1).join(" ");
 
+    // Toggle reply mode
     if (command === "on") {
         replyMode = true;
         return api.sendMessage("Rydex reply mode turned on.", event.threadID);
     }
-    
+
     if (command === "off") {
         replyMode = false;
         return api.sendMessage("Rydex reply mode turned off.", event.threadID);
     }
-    
+
+    // Teach the bot
     if (command === "teach") {
         const teachInput = message.split("=");
         if (teachInput.length !== 2) {
@@ -84,17 +86,16 @@ module.exports.run = async function ({ api, args, event }) {
         return;
     }
 
-    if (message) {
-        processMessage(api, message, event);
-    }
+    // Default message processing
+    processMessage(api, message || command, event);
 };
 
 module.exports.handleEvent = async function ({ api, event }) {
-    if (!replyMode) {
+    if (!replyMode || event.type !== "message_reply" || event.senderID === api.getCurrentUserID()) {
         return;
     }
 
-    const { body, messageID, threadID } = event;
+    const { body } = event;
     processMessage(api, body, event);
 };
 
@@ -115,7 +116,7 @@ function processMessage(api, message, event) {
 
     const keys = Object.keys(cachedData);
     const fuse = new Fuse(keys, { includeScore: true, threshold: 0.3 });
-    
+
     const results = fuse.search(message);
 
     if (results.length > 0) {
