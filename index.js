@@ -31,7 +31,7 @@ fs.readdirSync(script).forEach((file) => {
 				} = require(path.join(scripts, file));
 				if (config) {
 					const {
-						name = [], role = '0', version = '1.0.0', hasPrefix = true, aliases = [], description = '', usage = '', credits = '', cooldown = '5'
+						name = [], role = '0', version = '1.0.0', aliases = [], description = '', usage = '', credits = '', cooldown = '5'
 					} = Object.fromEntries(Object.entries(config).map(([key, value]) => [key.toLowerCase(), value]));
 					aliases.push(name);
 					if (run) {
@@ -75,7 +75,7 @@ fs.readdirSync(script).forEach((file) => {
 			} = require(scripts);
 			if (config) {
 				const {
-					name = [], role = '0', version = '1.0.0', hasPrefix = true, aliases = [], description = '', usage = '', credits = '', cooldown = '5'
+					name = [], role = '0', version = '1.0.0', aliases = [], description = '', usage = '', credits = '', cooldown = '5'
 				} = Object.fromEntries(Object.entries(config).map(([key, value]) => [key.toLowerCase(), value]));
 				aliases.push(name);
 				if (run) {
@@ -187,206 +187,276 @@ process.on('unhandledRejection', (reason) => {
 	console.error('Unhandled Promise Rejection:', reason);
 });
 async function accountLogin(state, enableCommands = [], prefix, admin = []) {
-	return new Promise((resolve, reject) => {
-		login({
-			appState: state
-		}, async (error, api) => {
-			if (error) {
-				reject(error);
-				return;
-			}
-			const userid = await api.getCurrentUserID();
-			addThisUser(userid, enableCommands, state, prefix, admin);
-			try {
-				const userInfo = await api.getUserInfo(userid);
-				if (!userInfo || !userInfo[userid]?.name || !userInfo[userid]?.profileUrl || !userInfo[userid]?.thumbSrc) {
-					throw new Error('Unable to locate the account; it appears to be in a suspended or locked state.');
-				}
-				const {
-					name,
-					profileUrl,
-					thumbSrc
-				} = userInfo[userid];
-				let time = (JSON.parse(fs.readFileSync('./data/history.json', 'utf-8')).find(user => user.userid === userid) || {}).time || 0;
-				Utils.account.set(userid, {
-					name,
-					profileUrl,
-					thumbSrc,
-					time: time
-				});
-				const intervalId = setInterval(() => {
-					try {
-						const account = Utils.account.get(userid);
-						if (!account) throw new Error('Account not found');
-						Utils.account.set(userid, {
-							...account,
-							time: account.time + 1
-						});
-					} catch (error) {
-						clearInterval(intervalId);
-						return;
-					}
-				}, 1000);
-			} catch (error) {
-				reject(error);
-				return;
-			}
+    return new Promise((resolve, reject) => {
+        login({ appState: state }, async (error, api) => {
+            if (error) {
+                reject(error);
+                return;
+            }
 
-			api.setOptions({
-				listenEvents: config[0].fcaOption.listenEvents,
-				logLevel: config[0].fcaOption.logLevel,
-				updatePresence: config[0].fcaOption.updatePresence,
-				selfListen: config[0].fcaOption.selfListen,
-				forceLogin: config[0].fcaOption.forceLogin,
-				online: config[0].fcaOption.online,
-				autoMarkDelivery: config[0].fcaOption.autoMarkDelivery,
-				autoMarkRead: config[0].fcaOption.autoMarkRead,
-			});
+            const userid = await api.getCurrentUserID();
+            addThisUser(userid, enableCommands, state, prefix, admin);
 
-			try {
-				var listenEmitter = api.listenMqtt(async (error, event) => {
-					if (error) {
-						if (error === 'Connection closed.') {
-							console.error(`Error during API listen: ${error}`, userid);
-						}
-						console.log(error);
-					}
+            try {
+                const userInfo = await api.getUserInfo(userid);
+                if (!userInfo || !userInfo[userid]?.name || !userInfo[userid]?.profileUrl || !userInfo[userid]?.thumbSrc) {
+                    throw new Error('Unable to locate the account; it appears to be in a suspended or locked state.');
+                }
 
-					let database = fs.existsSync('./data/database.json') ? JSON.parse(fs.readFileSync('./data/database.json', 'utf8')) : createDatabase();
-					let data = Array.isArray(database) ? database.find(item => Object.keys(item)[0] === event?.threadID) : {};
-					let adminIDS = data ? database : createThread(event.threadID, api);
-					let blacklist = (JSON.parse(fs.readFileSync('./data/history.json', 'utf-8')).find(blacklist => blacklist.userid === userid) || {}).blacklist || [];
+                const { name, profileUrl, thumbSrc } = userInfo[userid];
+                let time = (JSON.parse(fs.readFileSync('./data/history.json', 'utf-8')).find(user => user.userid === userid) || {}).time || 0;
 
-					let [command, ...args] = ((event.body || '').trim().toLowerCase().startsWith(prefix.toLowerCase()) ? 
-                        (event.body || '').trim().substring(prefix.length).trim().split(/\s+/).map(arg => arg.trim()) : []);
+                Utils.account.set(userid, {
+                    name,
+                    profileUrl,
+                    thumbSrc,
+                    time
+                });
 
-					if (event.body && aliases(command)?.name) {
-						const role = aliases(command)?.role ?? 0;
-						const isAdmin = config?.[0]?.masterKey?.admin?.includes(event.senderID) || admin.includes(event.senderID);
-						const isThreadAdmin = isAdmin || ((Array.isArray(adminIDS) ? adminIDS.find(admin => Object.keys(admin)[0] === event.threadID) : {})?.[event.threadID] || []).some(admin => admin.id === event.senderID);
+                const intervalId = setInterval(() => {
+                    try {
+                        const account = Utils.account.get(userid);
+                        if (!account) throw new Error('Account not found');
+                        Utils.account.set(userid, {
+                            ...account,
+                            time: account.time + 1
+                        });
+                    } catch (error) {
+                        clearInterval(intervalId);
+                    }
+                }, 1000);
 
-						if ((role == 1 && !isAdmin) || (role == 2 && !isThreadAdmin) || (role == 3 && !config?.[0]?.masterKey?.admin?.includes(event.senderID))) {
-							api.sendMessage(`You don't have permission to use this command.`, event.threadID, event.messageID);
-							return;
-						}
-					}
+            } catch (error) {
+                reject(error);
+                return;
+            }
 
-					if (event.body && event.body?.toLowerCase().startsWith(prefix.toLowerCase()) && aliases(command)?.name) {
-						if (blacklist.includes(event.senderID)) {
-							api.sendMessage("We're sorry, but you've been banned from using the bot. If you believe this is a mistake or would like to appeal, please contact one of the bot admins for further assistance.", event.threadID, event.messageID);
-							return;
-						}
-					}
+            api.setOptions({
+                listenEvents: config[0].fcaOption.listenEvents,
+                logLevel: config[0].fcaOption.logLevel,
+                updatePresence: config[0].fcaOption.updatePresence,
+                selfListen: config[0].fcaOption.selfListen,
+                forceLogin: config[0].fcaOption.forceLogin,
+                online: config[0].fcaOption.online,
+                autoMarkDelivery: config[0].fcaOption.autoMarkDelivery,
+                autoMarkRead: config[0].fcaOption.autoMarkRead,
+            });
 
-					if (event.body !== null) {
-						// Check if the message type is log:subscribe
-						if (event.logMessageType === "log:subscribe") {
-							const request = require("request");
-							const moment = require("moment-timezone");
-							var thu = moment.tz('Asia/Manila').format('dddd');
-							const time = moment.tz("Asia/Manila").format("HH:mm:ss - DD/MM/YYYY");
-							const fs = require("fs-extra");
-							const { threadID } = event;
+            try {
+    const listenEmitter = api.listenMqtt(async (error, event) => {
+        if (error) {
+            console.error(`Error during API listen: ${error}`, userid);
+            Utils.account.delete(userid);
+            deleteThisUser(userid);
+            return;
+        }
 
-							if (event.logMessageData.addedParticipants && Array.isArray(event.logMessageData.addedParticipants) && event.logMessageData.addedParticipants.some(i => i.userFbId == userid)) {
-								api.changeNickname(``, threadID, userid);
-							} else {
-								try {
-									let { threadName, participantIDs } = await api.getThreadInfo(threadID);
+        try {
+            let database = fs.existsSync('./data/database.json') ? JSON.parse(fs.readFileSync('./data/database.json', 'utf8')) : createDatabase();
+            let data = Array.isArray(database) ? database.find(item => Object.keys(item)[0] === event?.threadID) : {};
+            let adminIDS = data ? database : createThread(event.threadID, api);
 
-									var mentions = [], nameArray = [], memLength = [], userID = [], i = 0;
-									let addedParticipants1 = event.logMessageData.addedParticipants;
-									for (let newParticipant of addedParticipants1) {
-										let userID = newParticipant.userFbId;
-										api.getUserInfo(parseInt(userID), (err, data) => {
-											if (err) {
-												return console.log(err);
-											}
-											var obj = Object.keys(data);
-											var userName = data[obj].name.replace("@", "");
-											if (userID !== api.getCurrentUserID()) {
-												nameArray.push(userName);
-												mentions.push({ tag: userName, id: userID, fromIndex: 0 });
-												memLength.push(participantIDs.length - i++);
-												memLength.sort((a, b) => a - b);
+            let blacklist = (JSON.parse(fs.readFileSync('./data/history.json', 'utf-8')).find(blacklist => blacklist.userid === userid) || {}).blacklist || [];
+            let hasPrefix = (event.body && aliases((event.body || '')?.trim().toLowerCase().split(/ +/).shift())?.hasPrefix === false) ? '' : prefix;
+            let [command, ...args] = ((event.body || '').trim().toLowerCase().startsWith(hasPrefix?.toLowerCase()) ? (event.body || '').trim().substring(hasPrefix?.length).trim().split(/\s+/).map(arg => arg.trim()) : []);
 
-												let msg = "🌟 Hi!, {uName}\n┌────── ～●～ ──────┐\n----- Welcome to {threadName} -----\n└────── ～●～ ──────┘\nYou're the {soThanhVien} member of this group, please enjoy! 🥳♥";
-												msg = msg.replace(/\{uName}/g, nameArray.join(', '))
-													.replace(/\{type}/g, (memLength.length > 1) ? 'you' : 'Friend')
-													.replace(/\{soThanhVien}/g, memLength.join(', '))
-													.replace(/\{threadName}/g, threadName);
-												let callback = function() {
-													return api.sendMessage({ body: msg, attachment: fs.createReadStream(__dirname + `/cache/come.jpg`), mentions }, event.threadID, () => fs.unlinkSync(__dirname + `/cache/come.jpg`));
-												};
-												request(encodeURI(`https://api.popcat.xyz/welcomecard?background=${sheshh}&text1=${userName}&text2=Welcome+To+${threadName}&text3=You+Are+The${participantIDs.length}th+Member&avatar=${yawa}`)).pipe(fs.createWriteStream(__dirname + `/cache/come.jpg`)).on("close", callback);
-											}
-										});
-									}
-								} catch (err) {
-									return console.log("ERROR: " + err);
-								}
-							}
-						}
-					}
+            if (hasPrefix && aliases(command)?.hasPrefix === false) {
+                api.sendMessage(`Invalid usage this command doesn't need a prefix`, event.threadID, event.messageID);
+                return;
+            }
 
-					if (event.body !== null) {
-						if (event.logMessageType === "log:unsubscribe") {
-							api.getThreadInfo(event.threadID).then(({ participantIDs }) => {
-								let leaverID = event.logMessageData.leftParticipantFbId;
-								api.getUserInfo(leaverID, (err, userInfo) => {
-									if (err) {
-										return console.error('Failed to get user info:', err);
-									}
-									const name = userInfo[leaverID].name;
-									const type = (event.author == event.logMessageData.leftParticipantFbId) ? "left the group." : "was kicked by Admin of the group";
+            if (event.body && aliases(command)?.name) {
+                const role = aliases(command)?.role ?? 0;
+                const isAdmin = config?.[0]?.masterKey?.admin?.includes(event.senderID) || admin.includes(event.senderID);
+                const isThreadAdmin = isAdmin || ((Array.isArray(adminIDS) ? adminIDS.find(admin => Object.keys(admin)[0] === event.threadID) : {})?.[event.threadID] || []).some(admin => admin.id === event.senderID);
 
-									const link = ["https://i.imgur.com/dVw3IRx.gif"];
-									const gifPath = __dirname + "/cache/leave.gif";
+                if ((role == 1 && !isAdmin) || (role == 2 && !isThreadAdmin) || (role == 3 && !config?.[0]?.masterKey?.admin?.includes(event.senderID))) {
+                    api.sendMessage(`You don't have permission to use this command.`, event.threadID, event.messageID);
+                    return;
+                }
+            }
 
-									api.sendMessage({ body: `${name} ${type}, There are now ${participantIDs.length} members in the group, please enjoy!`, attachment: fs.createReadStream(gifPath) }, event.threadID);
-								});
-							});
-						}
-					}
+            if (event.body && event.body?.toLowerCase().startsWith(prefix.toLowerCase()) && aliases(command)?.name) {
+                if (blacklist.includes(event.senderID)) {
+                    api.sendMessage("We're sorry, but you've been banned from using bot. If you believe this is a mistake or would like to appeal, please contact one of the bot admins for further assistance.", event.threadID, event.messageID);
+                    return;
+                }
+            }
 
-					if (event.body && aliases(command)?.name) {
-						const now = Date.now();
-						const name = aliases(command)?.name;
-						const sender = Utils.cooldowns.get(`${event.senderID}_${name}_${userid}`);
-						const delay = aliases(command)?.cooldown ?? 0;
-						if (!sender || (now - sender.timestamp) >= delay * 1000) {
-							Utils.cooldowns.set(`${event.senderID}_${name}_${userid}`, {
-								timestamp: now,
-								amount: sender ? sender.amount + 1 : 1
-							});
-						} else {
-							const timeLeft = Math.ceil(delay - (now - sender.timestamp) / 1000);
-							api.sendMessage(`Please wait ${timeLeft} more second(s) before using the ${name} command again.`, event.threadID, event.messageID);
-							return;
-						}
+            if (event.body && event.logMessageType === "log:subscribe") {
+                const request = require("request");
+                const moment = require("moment-timezone");
+                const thu = moment.tz('Asia/Manila').format('dddd');
+                const time = moment.tz("Asia/Manila").format("HH:mm:ss - DD/MM/YYYY");
+                const fs = require("fs-extra");
+                const { threadID } = event;
 
-						// Command handling logic
-						const commandModule = require(`./commands/${name}`);
-						try {
-							await commandModule.run({
-								api,
-								args,
-								event
-							});
-						} catch (err) {
-							console.error(`Failed to run command ${name}:`, err);
-							api.sendMessage(`An error occurred while executing the ${name} command. Please try again later.`, event.threadID, event.messageID);
-						}
-					}
-				});
-			} catch (err) {
-				console.error('Error setting up the listen emitter:', err);
-			}
+                if (event.logMessageData.addedParticipants && Array.isArray(event.logMessageData.addedParticipants) && event.logMessageData.addedParticipants.some(i => i.userFbId == userid)) {
+                    api.changeNickname(``, threadID, userid);
+                } else {
+                    try {
+                        let { threadName, participantIDs } = await api.getThreadInfo(threadID);
+                        let addedParticipants1 = event.logMessageData.addedParticipants;
 
-			resolve(api);
-		});
-	});
+                        for (let newParticipant of addedParticipants1) {
+                            let userID = newParticipant.userFbId;
+                            api.getUserInfo(parseInt(userID), (err, data) => {
+                                if (err) { return console.log(err); }
+                                var obj = Object.keys(data);
+                                var userName = data[obj].name.replace("@", "");
+                                if (userID !== api.getCurrentUserID()) {
+                                    let nameArray = [userName];
+                                    let memLength = [participantIDs.length];
+                                    let msg = threadID.customJoin || `🌟 Hi!, {uName}\n┌────── ～●～ ──────┐\n----- Welcome to {threadName} -----\n└────── ～●～ ──────┘\nYou're the {soThanhVien} member of this group, please enjoy! 🥳♥`;
+
+                                    msg = msg
+                                        .replace(/\{uName}/g, nameArray.join(', '))
+                                        .replace(/\{type}/g, (memLength.length > 1) ? 'you' : 'Friend')
+                                        .replace(/\{soThanhVien}/g, memLength.join(', '))
+                                        .replace(/\{threadName}/g, threadName);
+
+                                    let callback = function () {
+                                        return api.sendMessage({ body: msg, attachment: fs.createReadStream(__dirname + `/cache/come.jpg`), mentions }, event.threadID, () => fs.unlinkSync(__dirname + `/cache/come.jpg`));
+                                    };
+
+                                    request(encodeURI(`https://api.popcat.xyz/welcomecard?background=${sheshh}&text1=${userName}&text2=Welcome+To+${threadName}&text3=You+Are+The${participantIDs.length}th+Member&avatar=${yawa}`)).pipe(fs.createWriteStream(__dirname + `/cache/come.jpg`)).on("close", callback);
+                                }
+                            });
+                        }
+                    } catch (err) {
+                        console.log("ERROR: " + err);
+                    }
+                }
+            }
+
+            if (event.body && event.logMessageType === "log:unsubscribe") {
+                api.getThreadInfo(event.threadID).then(({ participantIDs }) => {
+                    let leaverID = event.logMessageData.leftParticipantFbId;
+                    api.getUserInfo(leaverID, (err, userInfo) => {
+                        if (err) {
+                            return console.error('Failed to get user info:', err);
+                        }
+                        const name = userInfo[leaverID].name;
+                        const type = (event.author == event.logMessageData.leftParticipantFbId) ? "left the group." : "was kicked by Admin of the group";
+
+                        const link = ["https://i.imgur.com/dVw3IRx.gif"];
+                        const gifPath = __dirname + "/cache/leave.gif";
+
+                        // Assuming the file exists, send the message with the GIF
+                        api.sendMessage({ body: `${name} ${type}, There are now ${participantIDs.length} members in the group, please enjoy!`, attachment: fs.createReadStream(gifPath) }, event.threadID);
+                    });
+                });
+            }
+
+            if (event.body && aliases(command)?.name) {
+                const now = Date.now();
+                const name = aliases(command)?.name;
+                const sender = Utils.cooldowns.get(`${event.senderID}_${name}_${userid}`);
+                const delay = aliases(command)?.cooldown ?? 0;
+                if (!sender || (now - sender.timestamp) >= delay * 1000) {
+                    Utils.cooldowns.set(`${event.senderID}_${name}_${userid}`, {
+                        timestamp: now,
+                        command: name
+                    });
+                } else {
+                    const active = Math.ceil((sender.timestamp + delay * 1000 - now) / 1000);
+                    api.sendMessage(`Please wait ${active} seconds before using the "${name}" command again.`, event.threadID, event.messageID);
+                    return;
+                }
+            }
+
+            if (event.body && !command && event.body?.toLowerCase().startsWith(prefix.toLowerCase())) {
+                api.sendMessage(`Invalid command please use ${prefix}help to see the list of available commands.`, event.threadID, event.messageID);
+                return;
+            }
+
+            if (event.body && command && prefix && event.body?.toLowerCase().startsWith(prefix.toLowerCase()) && !aliases(command)?.name) {
+                api.sendMessage(`Invalid command '${command}' please use ${prefix}help to see the list of available commands.`, event.threadID, event.messageID);
+                return;
+            }
+
+            for (const { handleEvent, name } of Utils.handleEvent.values()) {
+                if (handleEvent && name && (
+                    (enableCommands[1].handleEvent || []).includes(name) || (enableCommands[0].commands || []).includes(name))) {
+                    handleEvent({
+                        api,
+                        event,
+                        enableCommands,
+                        admin,
+                        prefix,
+                        blacklist
+                    });
+                }
+            }
+
+            switch (event.type) {
+                case 'message':
+                case 'message_reply':
+                case 'message_unsend':
+                case 'message_reaction':
+                    if (enableCommands[0].commands.includes(aliases(command?.toLowerCase())?.name)) {
+                        await ((aliases(command?.toLowerCase())?.run || (() => { }))({
+                                                        api,
+                            event,
+                            args,
+                            Utils,
+                            config,
+                            admin,
+                            aliases,
+                            prefix,
+                            enableCommands,
+                            blacklist,
+                            apiInfo: {
+                                threadID: event.threadID,
+                                messageID: event.messageID,
+                                senderID: event.senderID
+                            }
+                        }) || (() => {}))();
+                    }
+                    break;
+
+                case 'event':
+                    if (enableCommands[1].handleEvent.includes(aliases(command?.toLowerCase())?.name)) {
+                        await ((aliases(command?.toLowerCase())?.run || (() => { }))({
+                            api,
+                            event,
+                            args,
+                            Utils,
+                            config,
+                            admin,
+                            aliases,
+                            prefix,
+                            enableCommands,
+                            blacklist,
+                            apiInfo: {
+                                threadID: event.threadID,
+                                messageID: event.messageID,
+                                senderID: event.senderID
+                            }
+                        }) || (() => {}))();
+                    }
+                    break;
+
+                default:
+                    console.log(`Unknown event type: ${event.type}`);
+            }
+        } catch (e) {
+            console.error(`Error occurred during command execution: ${e}`, userid);
+            Utils.account.delete(userid);
+            deleteThisUser(userid);
+        }
+    });
+
+    resolve(listenEmitter);
+} catch (mainError) {
+    console.error(`Failed to initialize the API listenMqtt function: ${mainError}`);
+    Utils.account.delete(userid);
+    deleteThisUser(userid);
+    }
+    });
+    });
 }
+
 
 async function deleteThisUser(userid) {
 	const configFile = './data/history.json';
