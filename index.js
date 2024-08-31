@@ -11,12 +11,13 @@ const moment = require("moment-timezone");
 const cron = require('node-cron');
 const config = fs.existsSync('./data') && fs.existsSync('./data/config.json') ? JSON.parse(fs.readFileSync('./data/config.json', 'utf8')) : creatqeConfig();
 
-const Utils = new Object({
-	commands: new Map(),
-	handleEvent: new Map(),
-	account: new Map(),
-	cooldowns: new Map(),
-});
+const Utils = {
+  commands: new Map(),
+  handleEvent: new Map(),
+  account: new Map(),
+  cooldowns: new Map(),
+};
+
 fs.readdirSync(script).forEach((file) => {
 	const scripts = path.join(script, file);
 	const stats = fs.statSync(scripts);
