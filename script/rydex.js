@@ -3,7 +3,7 @@ const path = require('path');
 const Fuse = require('fuse.js'); 
 
 let cachedData = null;
-const filePath = path.join(__dirname, '..', '..', 'cache', 'rydex.json');
+const filePath = path.join(__dirname, '..', 'cache', 'rydex.json');
 
 function readData(callback) {
     fs.readFile(filePath, 'utf8', (err, data) => {
