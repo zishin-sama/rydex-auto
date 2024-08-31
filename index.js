@@ -10,7 +10,6 @@ const script = path.join(__dirname, 'script');
 const moment = require("moment-timezone");
 const cron = require('node-cron');
 const config = fs.existsSync('./data') && fs.existsSync('./data/config.json') ? JSON.parse(fs.readFileSync('./data/config.json', 'utf8')) : creatqeConfig();
-const PORT = process.ENV.
 
 const Utils = new Object({
 	commands: new Map(),
