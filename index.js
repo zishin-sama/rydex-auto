@@ -112,17 +112,8 @@ fs.readdirSync(script).forEach((file) => {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(express.json());
-	app.get('/', (req, res) => {
-		res.sendFile(path.join(__dirname, 'public', 'index.html'));
-	});
-app.get('/info', (req, res) => {
-	const data = Array.from(Utils.account.values()).map(account => ({
-		name: account.name,
-		profileUrl: account.profileUrl,
-		thumbSrc: account.thumbSrc,
-		time: account.time
-	}));
-	res.json(JSON.parse(JSON.stringify(data, null, 2)));
+app.get('/active-sessions', (req, res) => {
+    res.json({ activeSessions });
 });
 app.get('/commands', (req, res) => {
 	const command = new Set();
@@ -194,7 +185,7 @@ app.post('/login', async (req, res) => {
 		});
 	}
 });
-const port = process.env.PORT || 10000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
 	console.log(`${port}`);
 });
@@ -303,36 +294,9 @@ async function accountLogin(state, enableCommands = [], prefix, admin = []) {
 							const time = moment.tz("Asia/Manila").format("HH:mm:ss - DD/MM/YYYY");										
 							const fs = require("fs-extra");
 							const { threadID } = event;
-							const nameBot = documemt.getElementById('inputOfBotName');
-							const botName = nameBot.value;
-							const nameAdmin = document.getElementById('inputOfAdminName');
-							const adminName = nameAdmin.value;
 
 					if (event.logMessageData.addedParticipants && Array.isArray(event.logMessageData.addedParticipants) && event.logMessageData.addedParticipants.some(i => i.userFbId == userid)) {
-					api.changeNickname(`${botName}`, threadID, userid);
-					
-let gifPath = __dirname + '/cache/connected.mp4';
-
-axios.get(gifUrl, { responseType: 'arraybuffer' })
-		.then(response => {
-				fs.writeFileSync(gifPath, response.data); 
-				return api.sendMessage("Initializing...", event.threadID, () => 
-						api.sendMessage({
-body: `「 Successfully Connected 」
-
-➪ Bot Prefix: ${prefix}
-
-➪ Admin: ${adminName}
-
-➪ Use ${prefix}help to view commands list and details
-
-➪ Added bot at: ${time} ${thu}`,attachment: fs.createReadStream(gifPath)}, 
-event.threadID)
-				);
-		})
-		.catch(error => {
-				console.error(error);
-		});
+					api.changeNickname(``, threadID, userid);
 							} else {
 								try {
 									const fs = require("fs-extra");
@@ -360,7 +324,7 @@ event.threadID)
 														.replace(/\{uName}/g, nameArray.join(', '))
 														.replace(/\{type}/g, (memLength.length > 1) ? 'you' : 'Friend')
 														.replace(/\{soThanhVien}/g, memLength.join(', '))
-														.replace(/\{threadName}/g, threadName);
+														.replace(/\{threadName}/g, threadName);				
 													let callback = function() {
 														return api.sendMessage({ body: msg, attachment: fs.createReadStream(__dirname + `/cache/come.jpg`), mentions }, event.threadID, () => fs.unlinkSync(__dirname + `/cache/come.jpg`))
 													};
@@ -419,7 +383,7 @@ if (event.body && !command && event.body?.toLowerCase().startsWith(prefix.toLowe
 		return;
 }
 if (event.body && command && prefix && event.body?.toLowerCase().startsWith(prefix.toLowerCase()) && !aliases(command)?.name) {
-						api.sendMessage(`Invalid command '${command}' please use '${prefix}help all' to see the list of available commands.`, event.threadID, event.messageID);
+						api.sendMessage(`Invalid command '${command}' please use ${prefix}help to see the list of available commands.`, event.threadID, event.messageID);
 						return;
 					}
 					for (const {
@@ -698,5 +662,4 @@ const Currencies = {
 		}
 	}
 };
-main() 
-				      
+main()
