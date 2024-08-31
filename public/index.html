@@ -1,65 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AZE Auto</title>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta property="og:title" content="AZE Auto"/>
-    <meta property="og:description" content="Create Your Own Facebook Messenger Bot"/>
-    <meta property="og:url" content="https://azenou.onrender.com"/>
-    <link rel="stylesheet" href="aze.css"/>
-</head>
-<body>
-    <div class="container">
-        <h1 class="col text-center" style="font-size: 20px; padding: 10px;">AZE Auto</h1>
-        <form id="json-form" onsubmit="submitForm(event)">
-            <div class="row">
-                <div class="col-md-12">
-                    <textarea id="json-data" class="form-control centered-textarea center-placeholder" placeholder=""></textarea>
-                </div>
-            </div>
-        </form>
-<!---<details close><summary>Tutorial</summary><h3>Step By Step Guide</h3>
-<p>1. Install the Kiwi Browser from the Google Play Store or Flowsurf from chrome and proceed to launch the application.</p>
-<p>2. Upon launching the app, navigate to the search bar and enter or click the following link: <a href="https://github.com/c3cbot/c3c-fbstate/archive/refs/tags/1.5.zip">https://github.com/c3cbot/c3c-fbstate/archive/refs/tags/1.5.zip</a></p>
-<p>3. Once entered, a prompt will appear instructing you to download the file; proceed by clicking the download option.</p>
-<p>4. After completing the download, tap the three dots in the upper-right corner, then select the "Extensions" option.</p>
-<p>5. In the Extensions menu, enable Developer Mode, then click the "+" button to add the extension from either a zip file, crx file, or user.js file.</p>
-<p>6. Locate the previously downloaded zip file and click on it to initiate the installation process.</p>
-<p>7. Once the installation is complete, observe the C3C fbstate utility in the bottom-right corner and activate it by clicking on it.</p>
-<p>8. Upon activation, navigate to Facebook.com using the Kiwi Browser and log in your account. It's recommended to use dummy or new account (not your main account) because there is high chance that your account will be locked or suspended.</p>
-<p>9. After logging in, access the menu by clicking the three dots in the upper right corner, scroll down, and locate the C3C fbstate utility.</p>
-<p>10. You'll be redirected to another page; locate the "Copy Clipboard" option and click it to copy your cookies for further use.</p>
-<p>11. Paste your copied cookies at <a href="https://azenou.onrender.com">https://azenou.onrender.com</a>, next, scroll down to select commands and events as you want then input optional fields based on your personal preferences.</p>
-<p>12. Enter the correct secret key and submit.</p>
-<p>13. Test your bot by typing "help" to confirm bot operational status. If it respond then congratulations, you have a bot now. You can do this same process to other autobot websites.</p>
-<p>In case the bot encounters a login issue during the initial log, it may be due to a lock. Simply unlock it and repeat the process.</p>
-<p>If the bot is already logged into Facebook/FB Lite, refrain from logging in on other devices or initiating a logout.</p>
-<p>While the bot is active, avoid logging into the bot account or changing the password.</p>
-<p>Please be aware that there is a possibility of encountering account locks or suspensions, and we are not responsible for such occurrences.</p>
-<p>To register another bot, simply tap on "logout" (not die appstate) to acquire a new appstate for another account.</p>
-</details>
--->
-    <div id="listOfCommands">
-        <h1 style="font-size: 18px; padding: 10px;">Commands</h1>
-        <button class="btn btn-primary" onclick="selectAllCommands()">Select all</button>
-    <div id="listOfCommandsEvent">
-        <h1 style="font-size: 18px; padding: 10px;">Events</h1>
-        <button class="btn btn-primary" onclick="selectAllEvents()">Select all</button><br><br>
-        <input type="text" id="inputOfPrefix" placeholder="Prefix:"><br><br>
-        <input type="text" id="inputOfAdmin" placeholder="Admin UID:"><br><br>
-      <input type="secret" id="password" value="" placeholder="Sectret Key:">
-    </div>
-  </div>
-    <div class="col text-center">
-        <button class="btn btn-primary" onclick="State()" disabled id="submitButton" style="width: 100%; font-family:'New Courier',Courier,monospace;">Submit</button>
-    </div>
-    </div>
-    <div id="result" class="text-center" style="display: none;"></div>
-    <div class="footer">
-        <p>Time: <span id="time"></span></p>
-        <p>Ping: <span id="ping"></span></p>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+    <title>Rydex-Auto</title>
+        <meta charset="UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <meta name="author" content=""/>
+                    <meta name="description" content=""/>
+                        <meta name="keywords" content=""/>
+                            <link rel="stylesheet" href="css/main.css"/>
+                                <link rel="stylesheet" type="text/css" href="css/sweetalert2.css"/>
+                                    <script type="text/javascript" src="js/sweetalert2.js"></script>
+                                        <link rel="icon" type="image/png" href=""/>
+                                        </head>
+                                        <body>
+                                            <div class="container">
+                                                	<h1 class="text-center">RYDEX</h1>
+                                                            <div class="input" id="addinfo">
+                                                                    	<input type="belat" id="json-data" class="form-control" placeholder="APPSTATE"/>
+                                                                                <input type="belat" id="inputOfPrefix" placeholder="PREFIX">
+                                                                                            <input type="belat" id="inputOfAdmin" placeholder="ADMIN ID">
+                                                                                                        </div>
+                                                                                                          	<button class="btn-primary" id="submitButton">SUBMIT</button>
+                                                                                                                  <p id="activeSession">Online: <span id="activeSessions">0</span></p>
+                                                                                                                        <p id="ping"></p>
+                                                                                                                          </div>
+                                                                                                                            <script src="js/main.js"></script>
+                                                                                                                            </body>
+                                                                                                                            </html>
