@@ -12,17 +12,24 @@ module.exports.config = {
 };
 
 module.exports.run = async ({ event, api }) => {
-    const { threadID, messageID, senderID, body } = event;
+    const { threadID, messageID, senderID, body, attachments } = event;
     const [audience, ...messageParts] = body.split(" ");
     const messageText = messageParts.join(" ");
     let audienceType = "";
 
     // Map audience keywords to privacy settings
-    if (audience.toLowerCase() === "public") audienceType = "EVERYONE";
-    else if (audience.toLowerCase() === "friends") audienceType = "FRIENDS";
-    else if (audience.toLowerCase() === "self") audienceType = "SELF";
-    else {
-        return api.sendMessage("Invalid audience type. Use 'public', 'friends', or 'self'.", threadID, messageID);
+    switch (audience.toLowerCase()) {
+        case "public":
+            audienceType = "EVERYONE";
+            break;
+        case "friends":
+            audienceType = "FRIENDS";
+            break;
+        case "self":
+            audienceType = "SELF";
+            break;
+        default:
+            return api.sendMessage("Invalid audience type. Use 'public', 'friends', or 'self'.", threadID, messageID);
     }
 
     const uuid = getGUID();
@@ -85,18 +92,24 @@ module.exports.run = async ({ event, api }) => {
         canUserManageOffers: false
     };
 
-    // Check if the command includes attachments
-    if (event.type === "message_reply" && event.attachments.length > 0) {
-        let attachments = [];
-        for (const attachment of event.attachments) {
-            const filePath = __dirname + `/cache/${attachment.filename}`;
-            const response = await axios.get(attachment.url, { responseType: "arraybuffer" });
-            fs.writeFileSync(filePath, Buffer.from(response.data));
-            attachments.push(fs.createReadStream(filePath));
+    // Check if the command includes photo attachments by replying to a message
+    if (event.type === "message_reply" && event.messageReply.attachments.length > 0) {
+        const photoAttachments = event.messageReply.attachments.filter(attachment => attachment.type === "photo");
+
+        if (photoAttachments.length > 0) {
+            let attachments = [];
+            for (const attachment of photoAttachments) {
+                const filePath = __dirname + `/cache/${attachment.filename}`;
+                const response = await axios.get(attachment.url, { responseType: "arraybuffer" });
+                fs.writeFileSync(filePath, Buffer.from(response.data));
+                attachments.push(fs.createReadStream(filePath));
+            }
+            await processAttachments(api, attachments, formData, threadID, messageID);
+        } else {
+            api.sendMessage("Only photo attachments are supported. Please reply to a message with photos.", threadID, messageID);
         }
-        await processAttachments(api, attachments, formData, threadID, messageID);
     } else {
-        // If no attachments, proceed with posting text only
+        // If no photo attachments, proceed with posting text only
         postToFacebook(api, formData, threadID, messageID);
     }
 };
