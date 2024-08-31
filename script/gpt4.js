@@ -1,13 +1,13 @@
 module.exports.config = {
-		name: "gpt4",
+		name: "gpt",
 		version: "1.0.0",
 		role: 0,
-		credits: "Aze",
+		credits: "cliff",
 		hasPrefix: true,
-		description: "AI-powered responses GPT-4. by g4f lib",
-		usage: "[prompt]",
-		cooldown: 0,
-	    aliases: ["g4"]
+		description: "This module provides AI-powered responses using GPT-4.",
+		usage: "<question>",
+		cooldown: 5,
+	        aliases: ["gpt"]
 };
 
 module.exports.run = async function ({ api, event, args }) {
@@ -19,11 +19,11 @@ module.exports.run = async function ({ api, event, args }) {
 				}
 
 				const g4f = new G4F();
-				const input = args.join(' ');
-				if (!input) return reply('Please provide a prompt.');
+				const textInput = args.join(' ');
+				if (!textInput) return reply('Please provide a prompt.');
 
 				const messages = [
-						{ role: "user", content: input }
+						{ role: "user", content: textInput }
 				];
 				const options = {
 						provider: g4f.providers.GPT,
@@ -31,7 +31,7 @@ module.exports.run = async function ({ api, event, args }) {
 						debug: true,
 						proxy: ""
 				};
-				const response = await g4f.chatCompletion.then(messages, options);
+				const response = await g4f.chatCompletion(messages, options);
 				reply(response);
 		} catch (e) {
 				return reply(e.message);
