@@ -2,12 +2,12 @@ module.exports.config = {
 	name: "obfuscate",
 	version: "1.0.0",
 	role: 0,
-	credits: "cliff", 
+	credits: "cliff", //dont change the credits please, you can add modified by.....Remodified by.......converted by......
 	description: "Obfuscate JavaScript code",
-	aliases: ["obfus"],
+	aliases: ["obf"],
 	cooldown: 0,
-	hasPrefix: true,
-	usage: "obfuscate",
+	hasPrefix: false,
+	usage: "",
 };
 
 const JavaScriptObfuscator = require('javascript-obfuscator');
@@ -16,7 +16,7 @@ module.exports.run = async function ({ api, event, args }) {
 	const obfuscationResult = JavaScriptObfuscator.obfuscate(
 		args.join(" "),
 		{
-			compact: true,
+			compact: false,
 			controlFlowFlattening: true,
 			controlFlowFlatteningThreshold: 1,
 			deadCodeInjection: false,
@@ -30,14 +30,14 @@ module.exports.run = async function ({ api, event, args }) {
 			identifierNamesCache: null,
 			identifierNamesGenerator: 'hexadecimal',
 			identifiersDictionary: [],
-			identifiersPrefix: 'Rydex',
+			identifiersPrefix: '',
 			ignoreImports: false,
 			inputFileName: '',
 			log: false,
 			numbersToExpressions: true,
 			optionsPreset: 'default',
-			renameGlobals: true,
-			renameProperties: true,
+			renameGlobals: false,
+			renameProperties: false,
 			renamePropertiesMode: 'safe',
 			reservedNames: [],
 			reservedStrings: [],
@@ -65,7 +65,7 @@ module.exports.run = async function ({ api, event, args }) {
 			stringArrayWrappersType: 'variable',
 			stringArrayThreshold: 1,
 			target: 'browser',
-			transformObjectKeys: true,
+			transformObjectKeys: false,
 			unicodeEscapeSequence: false
 		}
 	);
