@@ -2,7 +2,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment-timezone');
-
+const admin = "100064714842032";
 const POST_INTERVAL = 10 * 60 * 1000; // 10 minutes in milliseconds
 const LAST_POST_FILE = path.join(__dirname, 'last_post_time.json'); // File to store last post time
 const STATE_FILE = path.join(__dirname, 'autopost_state.json'); // File to store auto-posting state
@@ -17,7 +17,7 @@ async function fetchQuote() {
     if (Array.isArray(data) && data.length > 0) {
       const quote = data[0].q;
       const author = data[0].a;
-      return `${quote}\n\n- ${author}`;
+      return `${quote}\n\n-${author}`;
     }
   } catch (error) {
     console.error("Error fetching quote:", error);
@@ -25,7 +25,7 @@ async function fetchQuote() {
   }
 }
 
-async function postToFacebook(api, message, threadID) {
+async function postToFacebook(api, message) {
   const formData = {
     input: {
       composer_entry_point: "inline_composer",
@@ -36,7 +36,7 @@ async function postToFacebook(api, message, threadID) {
       audience: {
         privacy: {
           allow: [],
-          base_state: "FRIENDS",
+          base_state: "EVERYONE",
           deny: [],
           tag_expansion_state: "UNSPECIFIED"
         }
@@ -50,33 +50,7 @@ async function postToFacebook(api, message, threadID) {
       tracking: [null],
       actor_id: api.getCurrentUserID(),
       client_mutation_id: Math.floor(Math.random() * 17)
-    },
-    displayCommentsFeedbackContext: null,
-    displayCommentsContextEnableComment: null,
-    displayCommentsContextIsAdPreview: null,
-    displayCommentsContextIsAggregatedShare: null,
-    feedLocation: "TIMELINE",
-    feedbackSource: 0,
-    focusCommentID: null,
-    gridMediaWidth: 230,
-    groupID: null,
-    scale: 3,
-    privacySelectorRenderLocation: "COMET_STREAM",
-    renderLocation: "timeline",
-    useDefaultActor: false,
-    inviteShortLinkKey: null,
-    isFeed: false,
-    isFundraiser: false,
-    isFunFactPost: false,
-    isGroup: false,
-    isTimeline: true,
-    isSocialLearning: false,
-    isPageNewsFeed: false,
-    isProfileReviews: false,
-    isWorkSharedDraft: false,
-    UFI2CommentsProvider_commentsKey: "ProfileCometTimelineRoute",
-    hashtag: null,
-    canUserManageOffers: false
+    }
   };
 
   const form = {
@@ -93,10 +67,10 @@ async function postToFacebook(api, message, threadID) {
     if (data.errors) throw new Error(JSON.stringify(data.errors));
     const postID = data.data.story_create.story.legacy_story_hideable_id;
     const urlPost = data.data.story_create.story.url;
-    api.sendMessage(`Auto posted quotes successful.\nUrl: ${urlPost}`, threadID);
+    api.sendMessage(`Auto post quote created successfully`, admin);
   } catch (error) {
     console.error("Error posting to Facebook:", error);
-    api.sendMessage("Failed to create post. Please try again later.", threadID);
+    api.sendMessage("Failed to auto post quote.", admin);
   }
 }
 
@@ -118,7 +92,7 @@ function readLastPostTime() {
   } catch (error) {
     console.error("Error reading last post time:", error);
   }
-  return null;
+  return new Date(0); // Return epoch time if no valid data found
 }
 
 function writeLastPostTime(date) {
@@ -149,39 +123,44 @@ function writeAutoPostState(enabled) {
   }
 }
 
-async function startAutoPosting(api, threadID) {
-  let lastPostTime = readLastPostTime();
-  if (!lastPostTime) {
-    lastPostTime = new Date();
-  }
+function startAutoPosting(api, threadID) {
+  const lastPostTime = readLastPostTime();
+  const now = new Date();
+  const timeSinceLastPost = now - lastPostTime;
+  
+  // Schedule the first post immediately if the last post was a while ago
+  const initialDelay = timeSinceLastPost >= POST_INTERVAL ? 0 : POST_INTERVAL - timeSinceLastPost;
 
-  while (autoPostingInterval) {
-    const now = new Date();
-    const timeSinceLastPost = now - lastPostTime;
+  autoPostingInterval = setInterval(async () => {
+    const quote = await fetchQuote();
+    if (quote) {
+      await postToFacebook(api, quote);
+      writeLastPostTime(new Date());
+    }
+  }, POST_INTERVAL);
 
-    if (timeSinceLastPost >= POST_INTERVAL) {
+  // Trigger the first post after the initial delay
+  setTimeout(() => {
+    clearInterval(autoPostingInterval);
+    autoPostingInterval = setInterval(async () => {
       const quote = await fetchQuote();
       if (quote) {
-        await postToFacebook(api, quote, threadID);
-        lastPostTime = new Date();
-        writeLastPostTime(lastPostTime);
+        await postToFacebook(api, quote);
+        writeLastPostTime(new Date());
       }
-    }
-
-    const timeUntilNextPost = POST_INTERVAL - (new Date() - lastPostTime);
-    await new Promise(resolve => setTimeout(resolve, timeUntilNextPost));
-  }
+    }, POST_INTERVAL);
+  }, initialDelay);
 }
 
 module.exports.config = {
   name: "autopostquotes",
   version: "1.1.0",
-  hasPrefix: true,
-  description: "Auto post quotes in Facebook",
   role: 0,
-  credits: "rydex",
+  description: "Auto post quote to facebook",
   aliases: ["apq"],
   usage: "on/off/status",
+  hasPrefix: true,
+  credits: "rydex",
   cooldown: 0
 };
 
@@ -189,7 +168,7 @@ module.exports.handleEvent = async function ({ api, event }) {
   const isEnabled = readAutoPostState();
   if (isEnabled) {
     if (!autoPostingInterval) {
-      autoPostingInterval = setInterval(() => startAutoPosting(api, event.threadID), POST_INTERVAL);
+      startAutoPosting(api, event.threadID);
     }
   } else if (autoPostingInterval) {
     clearInterval(autoPostingInterval);
@@ -201,6 +180,9 @@ module.exports.run = async function ({ api, args, event }) {
   try {
     if (args[0] === 'on') {
       writeAutoPostState(true);
+      if (!autoPostingInterval) {
+        startAutoPosting(api, event.threadID);
+      }
       api.sendMessage("Auto-posting enabled.", event.threadID);
     } else if (args[0] === 'off') {
       writeAutoPostState(false);
