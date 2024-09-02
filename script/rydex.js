@@ -3,8 +3,11 @@ const path = require('path');
 const Fuse = require('fuse.js');
 
 let cachedData = null;
+let replyMode = false; // Initial state for reply mode
 const filePath = path.join(__dirname, '..', 'cache', 'rydex.json');
+const stateFilePath = path.join(__dirname, '..', 'cache', 'rydex_state.json');
 
+// Function to read data from the cache file
 function readData(callback) {
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
@@ -21,6 +24,37 @@ function readData(callback) {
     });
 }
 
+// Function to read the state from the state file
+function readState(callback) {
+    fs.readFile(stateFilePath, 'utf8', (err, data) => {
+        if (err) {
+            if (err.code === 'ENOENT') {
+                return callback(null, false); // File not found, default to false
+            }
+            console.error(err);
+            return callback(err);
+        }
+        try {
+            const state = JSON.parse(data);
+            callback(null, state.replyMode);
+        } catch (error) {
+            console.error(error);
+            callback(error);
+        }
+    });
+}
+
+// Function to save the current state to the state file
+function saveState() {
+    const state = { replyMode };
+    fs.writeFile(stateFilePath, JSON.stringify(state, null, 2), (err) => {
+        if (err) {
+            console.error("Failed to save state:", err);
+        }
+    });
+}
+
+// Initial read of the data and state
 readData((err) => {
     if (err) {
         console.error("Failed to fetch response at initialization.");
@@ -29,7 +63,14 @@ readData((err) => {
     }
 });
 
-let replyMode = false;
+readState((err, state) => {
+    if (err) {
+        console.error("Failed to fetch state at initialization.");
+    } else {
+        replyMode = state;
+        console.log(`Rydex reply mode is ${replyMode ? 'ON' : 'OFF'} at initialization.`);
+    }
+});
 
 module.exports.config = {
     name: "rydex",
@@ -37,7 +78,7 @@ module.exports.config = {
     role: 0,
     description: "Talk to Rydex or toggle reply mode and teach",
     usage: "[message]",
-    aliases: [],
+    aliases: ["kazeu"],
     credits: "rydex",
     cooldown: 0
 };
@@ -49,12 +90,19 @@ module.exports.run = async function ({ api, args, event }) {
     // Toggle reply mode
     if (command === "on") {
         replyMode = true;
+        saveState();
         return api.sendMessage("Rydex reply mode turned on.", event.threadID);
     }
 
     if (command === "off") {
         replyMode = false;
+        saveState();
         return api.sendMessage("Rydex reply mode turned off.", event.threadID);
+    }
+
+    // Show the current status of reply mode
+    if (command === "status") {
+        return api.sendMessage(`Rydex reply mode is currently ${replyMode ? 'ON' : 'OFF'}.`, event.threadID);
     }
 
     // Teach the bot
