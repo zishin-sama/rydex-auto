@@ -1,5 +1,5 @@
 module.exports.config = {
-		name: "gpt",
+		name: "ai",
 		version: "1.0.0",
 		role: 0,
 		credits: "cliff",
@@ -7,7 +7,7 @@ module.exports.config = {
 		description: "This module provides AI-powered responses using GPT-4.",
 		usage: "<question>",
 		cooldown: 5,
-	        aliases: ["ai"]
+	        aliases: ["gpt"]
 };
 
 module.exports.run = async function ({ api, event, args }) {
