@@ -143,6 +143,13 @@ module.exports.handleEvent = async function ({ api, event }) {
         return;
     }
 
+    const botID = api.getCurrentUserID(); // Get the bot's ID
+
+    // Check if the message being replied to was sent by the bot
+    if (event.messageReply.senderID !== botID) {
+        return; // Do nothing if the original message wasn't sent by the bot
+    }
+
     const { body } = event;
     processMessage(api, body, event);
 };
