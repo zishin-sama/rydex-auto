@@ -14,7 +14,7 @@ module.exports.config = {
   cooldown: 3 
 };
 
-module.exports = async function ({api, args, event}) {
+module.exports.run = async function ({api, args, event}) {
   const threadUid = event.threadID;
 
   if (!rules[threadUid]) {
