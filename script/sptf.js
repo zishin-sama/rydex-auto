@@ -21,8 +21,8 @@ module.exports.run = async function ({ api, event, args }) {
 
 				api.sendMessage("[ 🔍 ] Searching for “" + q + "” ...", event.threadID, async (err, info) => {
 						try {
-								const r = await axios.get("https://lyrist.vercel.app/api/" + q);
-								const { lyrics, title } = r.data;
+								const r = await axios.get(`https:\/\/deku-rest-api.gleeze.com/search/lyrics?q=${q}`);
+								const { lyrics, title, artist } = r.data.result;
 								const results = await spotify(encodeURI(q));
 
 								let url = results.result.data[0].url;
