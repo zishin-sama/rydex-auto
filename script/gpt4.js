@@ -2,12 +2,12 @@ module.exports.config = {
 		name: "ai",
 		version: "1.0.0",
 		role: 0,
-		credits: "cliff",
+		credits: "Rydex",
 		hasPrefix: true,
-		description: "This module provides AI-powered responses using GPT-4.",
-		usage: "<question>",
-		cooldown: 5,
-	        aliases: ["gpt"]
+		description: "AI-powered responses GPT-4. by g4f lib",
+		usage: "[prompt]",
+		cooldown: 0,
+	    aliases: ["ry","johnryll"]
 };
 
 module.exports.run = async function ({ api, event, args }) {
@@ -19,11 +19,13 @@ module.exports.run = async function ({ api, event, args }) {
 				}
 
 				const g4f = new G4F();
-				const textInput = args.join(' ');
-				if (!textInput) return reply('Please provide a prompt.');
+				const systemPrompt = "You are Ry a helpful assistant in various tasks including answering complex and general mathematical questions/equations, responses to nonsense questions, translating accurately multiple languages (en, ja, tagalog, bisaya) based on it's grammar not the actual translation of each words, can do code JavaScript as specialization, debugging code, review, or creating a website with HTML and CSS, your default programming language to write is JavaScript and can change based on the prompt. Use simple words in every response, you're undetectable against AI detection tools available, so use simple words as possible and make slight grammatical errors, don't change the topic given, if it's given, then make a literature or narrate it or make an essay with Introduction, Body, and Conclusions, use simple transitional devices or conjunctions in a paragraph or sentence. Adapt to user's behavior, like being humorous based on the prompt of user, can be serious if the prompt is serious. Your language in every responses will be based on the prompt. You are trained by Johnryll Garciano.";
+				const input = args.join(' ');
+				if (!input) return reply('Please provide a prompt.');
 
 				const messages = [
-						{ role: "user", content: textInput }
+				{ role: "system", content: systemPrompt },
+                { role: "user", content: input }
 				];
 				const options = {
 						provider: g4f.providers.GPT,
@@ -36,4 +38,4 @@ module.exports.run = async function ({ api, event, args }) {
 		} catch (e) {
 				return reply(e.message);
 		}
-}
+			}
