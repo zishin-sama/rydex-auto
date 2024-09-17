@@ -7,7 +7,7 @@ module.exports.config = {
 		description: "This module provides AI-powered responses using GPT-4.",
 		usage: "<question>",
 		cooldown: 5,
-	        aliases: ["gpt"]
+	        aliases: ["ai"]
 };
 
 module.exports.run = async function ({ api, event, args }) {
