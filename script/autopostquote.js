@@ -155,7 +155,7 @@ function startAutoPosting(api, threadID) {
 module.exports.config = {
   name: "autopostquotes",
   version: "1.1.0",
-  role: 0,
+  role: 1,
   description: "Auto post quote to facebook",
   aliases: ["apq"],
   usage: "on/off/status",
