@@ -1,9 +1,9 @@
 module.exports.config = {
   name: "unsend",
   version: "1.0.0",
-  role: 0,
+  role: 1,
   hasPrefix: true,
-  aliases: ['unsent','un'],
+  aliases: ['unsent','un','rm'],
   usage: 'reply to bot message',
   description: "Unsend bot's message",
   credits: 'Deveploper',
