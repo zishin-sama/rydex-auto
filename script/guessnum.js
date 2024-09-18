@@ -12,33 +12,50 @@ module.exports.config = {
 
 let minNum, maxNum, randomNumber, attemptsLeft;
 
-module.exports.run = async function ({api, args, event}) {
+module.exports.run = async function ({ api, args, event }) {
+  function resetGame() {
+    minNum = null;
+    maxNum = null;
+    randomNumber = null;
+    attemptsLeft = null;
+  }
+
   if (args[0] === 'start') {
     minNum = Math.floor(Math.random() * 100);
-    maxNum = minNum + Math.floor(Math.random() * 100);
+    maxNum = minNum + Math.floor(Math.random() * 50) + 50; 
     randomNumber = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
-    attemptsLeft = 5; // Set the number of attempts available to the user
-    
-    api.sendMessage(`Guess the number range from ${minNum} to ${maxNum}. You have ${attemptsLeft} attempts.`, event.threadID);
-  } else if (isNaN(args[0])) {
-    api.sendMessage('Please input a valid number as your guess.', event.threadID);
+    attemptsLeft = 5;
+
+    return api.sendMessage(`🎲 Welcome to the Number Guessing Game! 🎲\nGuess the number between ${minNum} and ${maxNum}.\nYou have ${attemptsLeft} attempts. Good luck!`, event.threadID);
+  }
+
+  if (minNum == null || maxNum == null || randomNumber == null) {
+    return api.sendMessage('You need to start the game first by typing `!guessnum start`.', event.threadID);
+  }
+
+  if (isNaN(args[0])) {
+    return api.sendMessage('❌ Please enter a valid number as your guess.', event.threadID);
+  }
+
+  attemptsLeft--;
+  const guess = parseInt(args[0]);
+
+  if (guess === randomNumber) {
+    api.sendMessage(messages.correct[0].replace('${5 - attemptsLeft}', `${5 - attemptsLeft}`), event.threadID);
+    resetGame();
+  } else if (attemptsLeft === 0) {
+    api.sendMessage(messages.gameOver[0].replace('${randomNumber}', `${randomNumber}`), event.threadID);
+    resetGame();
   } else {
-    attemptsLeft--;
-    
-    if (parseInt(args[0]) === randomNumber) {
-      api.sendMessage(`Congratulations! You guessed the correct number in ${5 - attemptsLeft} attempts`, event.threadID);
-      minNum = null;
-      maxNum = null;
-      randomNumber = null;
-    } else if (attemptsLeft === 0) {
-      api.sendMessage(`Sorry, you have run out of attempts. The correct number was ${randomNumber}.`, event.threadID);
-      minNum = null;
-      maxNum = null;
-      randomNumber = null;
-    } else if (Math.abs(parseInt(args[0]) - randomNumber) > 10) {
-      api.sendMessage(`Your guess is too far. You have ${attemptsLeft} attempts left. Try again.`, event.threadID);
+    let feedback = '';
+    if (Math.abs(guess - randomNumber) > 20) {
+      feedback = messages.tooFar[Math.floor(Math.random() * messages.tooFar.length)];
+    } else if (Math.abs(guess - randomNumber) <= 5) {
+      feedback = messages.tooClose[Math.floor(Math.random() * messages.tooClose.length)];
     } else {
-      api.sendMessage(`You are almost correct. You have ${attemptsLeft} attempts left. Keep guessing!`, event.threadID);
+      feedback = messages.almost[Math.floor(Math.random() * messages.almost.length)];
     }
+
+    api.sendMessage(`${feedback} You have ${attemptsLeft} attempts left.`, event.threadID);
   }
 };
