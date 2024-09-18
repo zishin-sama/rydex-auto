@@ -1,11 +1,11 @@
 const axios = require('axios');
 
 module.exports.config = { 
-  name: "deepseekcoder", 
+  name: "dsc", 
   version: "1.0.0", 
   role: 0, 
   description: "Talk with DeepSeek AI (conversational)", 
-  aliases: ["dscode"], 
+  aliases: [""], 
   hasPrefix: true, 
   usage: "{n}prompt", 
   credits: "rydex|api by josh", 
