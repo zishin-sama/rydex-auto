@@ -1,28 +1,246 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rydex-Auto</title>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="author" content="Rydex"/>
-    <meta name="description" content="Simple Facebook Chatbot"/>
-    <meta name="keywords" content="rydex fb, rydex fb auto, rydex auto, rydex"/>
-    <link rel="stylesheet" href="css/main.css"/>
-    <link rel="stylesheet" type="text/css" href="css/sweetalert2.css"/>
-    <script type="text/javascript" src="js/sweetalert2.js"></script>
-    <link rel="icon" type="image/png" href=""/>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rydex</title>
+    <link rel="stylesheet" href="assets/css/iziToast.min.css">
+    <script defer src="assets/js/iziToast.min.js"></script>
+    <style>
+    	@font-face { 
+            src: url('assets/fonts/Poppins-ExtraBold.ttf'); 
+            font-family: Poppins; 
+        } 
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: Poppins, Arial;
+        } 
+        
+        body {
+        	overflow: hidden;
+        }
+        
+        section { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background: url('assets/images/bg4.jpg') no-repeat; 
+            background-size: cover; 
+            background-position: center;
+            animation: animateBg 2s linear infinite; 
+        } 
+        @keyframes animateBg { 
+            100% { 
+                filter: hue-rotate(360deg); 
+            } 
+        } 
+        .login-box { 
+            position: relative; 
+            width: 300px; 
+            height: 350px; 
+            background: transparent; 
+            border: 2px solid rgb(255, 255, 255, .5); 
+            border-radius: 20px; 
+            display: flex; 
+            justify-content: center; 
+            flex-direction: column; 
+            align-items: center; 
+            backdrop-filter: blur(15px); 
+        } 
+        
+        .input-box { 
+            position: relative;
+            width: 90%; 
+            margin: 10px 0px; 
+            border-bottom: 2px solid #CED1FF;
+        } 
+        .input-box label { 
+            position: absolute; 
+            top: 50%; 
+            left: 0px; 
+            transform: translateZ(-50%); 
+            font-size: .9em; 
+            color: #CED1FF; 
+            pointer-events: none; 
+            transition: 0.2s; 
+        } 
+        .input-box input:focus ~ label, 
+        .input-box input.valid ~ label {
+            top: -5px; 
+        }
+        
+        .input-box input { 
+            width: 100%; 
+            height: 50px; 
+            background: transparent; 
+            border: none; 
+            outline: none; 
+            font-size: .9em; 
+            color: #CED1FF; 
+        } 
+        
+        input[type="text"],
+        input[type="password"] {
+        	padding: 0 0 0 10px;
+            position: relative;
+            top: 13px;
+        }
+        button { 
+            width: 80%; 
+            margin: 20px 0 0 0;
+            padding: 10px;
+            background: transparent; 
+            border: 2px solid rgb(255,255,255, .5);; 
+            outline: none; 
+            border-radius: 40px; 
+            cursor: pointer; 
+            font-size: .9em; 
+            color: #CED1FF; 
+            font-weight: 500; 
+        }
+        
+        p {
+        	margin: 10px 0 0 0;
+            color: #fff;
+        }
+        #intro {
+        	font-size: .9em;
+            margin: 0 0 50px 0;
+            text-align: center;
+            color: #CED1FF;
+        }
+        
+        .key {
+        	margin: 30px 0 0 0;
+            font-size: .9em;
+            color: #CED1FF;
+        }
+        
+        #password-display {
+        	color: #CED1FF;
+        }
+        
+        #idenkey {
+        	color: #CED1FF;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-    	<h1 class="text-center">RYDEX</h1>
-        <div class="input" id="addinfo">
-        	<input type="belat" id="json-data" class="form-control" placeholder="APPSTATE"/>
-        <input type="belat" id="inputOfPrefix" placeholder="PREFIX">
-            <input type="belat" id="inputOfAdmin" placeholder="ADMIN ID">
-            </div>
-  	<button class="btn-primary" id="submitButton">SUBMIT</button>
-      <p id="ping"></p>
-  </div>
-  <script src="js/main.js"></script>
+	<section>
+    <div class="login-box">
+        <p id="intro">Enter the key given below to continue.</p>
+        <div class="input-box">
+        <input type="text" id="password">
+        <label>Passkey</label>
+        </div>
+        <button onclick="redirect()">Continue</button>
+        <div class="key">
+        	<p id="idenkey">Key:&nbsp;&nbsp;
+        <span id="password-display"></span>
+        </p>
+        </div>
+    </div>
+    </section>
+
+    <script>
+    	document.querySelectorAll('.input-box input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.classList.add('valid');
+            });
+            input.addEventListener('blur', () => {
+                if (!input.value) {
+                    input.classList.remove('valid');
+                }
+            });
+        });
+        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/\\@#&$-+(){}";
+        const password = chars;
+        let generatedPassword = '';
+
+        function generateRandomPassword() {
+            let passwordLength = 10;
+            generatedPassword = '';
+            for (let i = 0; i < passwordLength; i++) {
+                generatedPassword += password.charAt(Math.floor(Math.random() * password.length));
+            }
+            document.getElementById("password-display").innerText = generatedPassword;
+        }
+
+        generateRandomPassword();
+        setInterval(() => {
+            generateRandomPassword();
+        }, 3600000);
+
+        function redirect() {
+            const inputPassword = document.getElementById('password').value.trim();
+            if (inputPassword === generatedPassword) {
+                window.location = 'index0.html';
+            } else if (inputPassword === '' || inputPassword.includes(' ')) {
+            	iziToast.show({
+            title: '',
+            message: 'Passkey cannot be empty.',
+            timeout: 3000,
+            position: 'bottomCenter',
+            color: 'red',
+            background: 'transparent',
+            close: false
+        });
+            } else {
+            	iziToast.show({
+            title: '',
+            message: 'Incorrect key. Please try again.',
+            timeout: 3000,
+            position: 'bottomCenter',
+            color: 'red',
+            background: 'transparent',
+            close: false
+        });
+            }
+        }
+        
+        document.getElementById('password-display').oncontextmenu = () => {
+    let messages = ['Oops!...', 'Just type it...', 'Lazy?']; 
+    let randomIndex = Math.floor(Math.random() * messages.length);
+    
+    iziToast.show({
+        title: '',
+        message: messages[randomIndex],
+        timeout: 4000,
+        position: 'topCenter',
+        color: 'blue',
+        background: 'transparent',
+        close: false
+    });
+
+    return false;
+}
+
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+});
+
+document.addEventListener('copy', function(e) {
+    e.preventDefault();
+});
+
+document.addEventListener('cut', function(e) {
+    e.preventDefault();
+});
+
+document.addEventListener('paste', function(e) {
+    e.preventDefault();
+});
+    </script>
 </body>
 </html>
+
+

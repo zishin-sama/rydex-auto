@@ -1,0 +1,306 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head> 
+    <title>RYDEX</title> 
+    <meta charset="UTF-8"/> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+    <meta name="author" content="Rydex"/> 
+    <meta name="description" content="Rydex"/> 
+    <meta name="keywords" content="Rydex"/> 
+    <link rel="stylesheet" href="assets/css/iziToast.min.css">
+    <script src="assets/js/iziToast.min.js"></script>
+    <style> 
+        @font-face { 
+            src: url('assets/fonts/Poppins-ExtraBold.ttf'); 
+            font-family: Poppins; 
+        } 
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: Poppins, Arial;
+        } 
+        
+        body {
+        	overflow: hidden;
+            background: dark;
+        }
+        
+        section { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background: url('assets/images/bg4.jpg') no-repeat; 
+            background-size: cover; 
+            background-position: center;
+            animation: animateBg 2s linear infinite; 
+        } 
+        @keyframes animateBg { 
+            100% { 
+                filter: hue-rotate(360deg); 
+            } 
+        } 
+        .login-box { 
+            position: relative; 
+            width: 300px; 
+            height: 450px; 
+            background: transparent; 
+            border: 2px solid rgb(255, 255, 255, .5); 
+            border-radius: 20px; 
+            display: flex; 
+            justify-content: center; 
+            flex-direction: column; 
+            align-items: center; 
+            backdrop-filter: blur(15px); 
+        } 
+        h2 { 
+            font-size: 1.5em; 
+            color: #CED1FF;
+            text-align: center; 
+        } 
+        .input-box { 
+            position: relative;
+            width: 90%; 
+            margin: 10px 0px; 
+            border-bottom: 2px solid #CED1FF;
+        } 
+        .input-box label { 
+            position: absolute; 
+            top: 50%; 
+            left: 0px; 
+            transform: translateZ(-50%); 
+            font-size: .9em; 
+            color: #CED1FF; 
+            pointer-events: none; 
+            transition: 0.2s; 
+        } 
+        .input-box input:focus ~ label, 
+        .input-box input.valid ~ label {
+            top: -5px; 
+        }
+        
+        .input-box input { 
+            width: 100%; 
+            height: 50px; 
+            background: transparent; 
+            border: none; 
+            outline: none; 
+            font-size: .9em; 
+            color: #CED1FF; 
+        } 
+        
+        input[type="text"] {
+        	padding: 0 0 0 10px;
+            position: relative;
+            top: 13px;
+        }
+        button { 
+            width: 80%; 
+            margin: 20px 0 0 0;
+            padding: 10px;
+            background: transparent; 
+            border: 2px solid rgb(255,255,255, .5);; 
+            outline: none; 
+            border-radius: 40px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            color: #CED1FF; 
+            font-weight: 500; 
+        }
+        
+        .getCookie p {
+        	margin: 15px 0 0 0;
+            font-size: 0.8em;
+            color: #CED1FF;
+        }
+        
+        .getCookie span {
+        	font-size: 1em;
+            text-decoration: none;
+            color: #3871F0;
+        }
+        
+        .footer, #foot {
+        	position: relative;
+        	top: 10%;
+            font-size: 0.9em;
+            color: #CED1FF;
+        }
+        @keyframes slideIn {
+        	0% {
+        	    left: 0px;
+        	}
+            100% {
+            	left: 
+            }
+        }
+    </style> 
+</head> 
+<body> 
+    <section> 
+        <div class="login-box"> 
+            <h2>Rydex Bot</h2> 
+            <div class="input-box"> 
+                <input type="text" id="json-data"> 
+                <label for="appState">App State</label> 
+            </div> 
+            <div class="input-box"> 
+                <input type="text" id="inputOfPrefix"> 
+                <label for="inputOfPrefix">Bot Prefix</label> 
+            </div> 
+            <div class="input-box"> 
+                <input type="text" id="inputOfAdmin"> 
+                <label for="inputOfAdmin">Admin ID</label> 
+            </div> 
+            <div class="input-box"> 
+                <input type="text" id="botName"> 
+                <label for="botName">Bot Name</label> 
+            </div> 
+            <button id="submitButton">Submit</button>
+            <div class="getCookie">
+            	<p>No appstate?<span id="click">&nbsp;Click here</span></p>
+            </div>
+        </div>
+        <div class="footer">
+        	<p id="foot"></p>
+        </div>
+    </section>
+    
+    
+
+    <script>
+    	document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.input-box input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.classList.add('valid');
+            });
+            input.addEventListener('blur', () => {
+                if (!input.value) {
+                    input.classList.remove('valid');
+                }
+            });
+        });
+
+	const click = document.getElementById('click');
+	click.addEventListener('click', function() {
+		window.location = `index.html`;
+	});
+	const footer = document.getElementById('foot');
+	const year = new Date(Date.now()).getUTCFullYear();
+	footer.textContent = `Copyright © Rydex ${year}`;
+    const submitButton = document.getElementById('submitButton');
+
+    submitButton.addEventListener('click', () => {
+        State();
+    });
+    
+    let Commands = [{
+        'commands': []
+    }, {
+        'handleEvent': []
+    }];
+    
+    async function fetchCommands() {
+    try {
+        const response = await fetch('/commands');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        Commands[0].commands = data.commands || [];
+        Commands[1].handleEvent = data.handleEvent || [];
+    } catch (error) {
+        console.error('Error fetching commands:', error);
+    }
+}
+
+    async function State() {
+    const jsonInput = document.getElementById('json-data');
+    const prefix = document.getElementById('inputOfPrefix').value;
+    const admin = document.getElementById('inputOfAdmin').value.trim().split(/\s+/);
+    const botName = document.getElementById('botName').value.trim().split(/\s+/);
+
+    if (jsonInput.value === '') {
+        showResult('Missing appstate data');
+        return;
+    }
+
+    try {
+        const state = JSON.parse(jsonInput.value);
+        if (state && typeof state === 'object') {
+            await fetchCommands();
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        state: state,
+                        commands: Commands,
+                        prefix: prefix,
+                        admin: admin,
+                    }),
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    jsonInput.value = '';
+                    showResult(data.message, true);
+                } else {
+                    jsonInput.value = '';
+                    showResult(data.message);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                showResult('Failed to fetch commands from server');
+            }
+        } else {
+            jsonInput.value = '';
+            showResult('Invalid JSON data. Please check your input.');
+        }
+    } catch (parseError) {
+        jsonInput.value = '';
+        console.error('Error parsing JSON:', parseError);
+        showResult('Error parsing JSON. Please check your input');
+    }
+}
+
+    function showResult(message, isSuccess = false) {
+        iziToast.show({
+            title: '',
+            message: message,
+            timeout: 3000,
+            position: 'bottomCenter',
+            color: 'red',
+            background: 'transparent',
+            close: false
+        });
+    }
+});
+
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+});
+
+document.addEventListener('copy', function(e) {
+    e.preventDefault();
+});
+
+document.addEventListener('cut', function(e) {
+    e.preventDefault();
+});
+
+document.addEventListener('paste', function(e) {
+    e.preventDefault();
+});
+    </script>
+</body> 
+</html>
