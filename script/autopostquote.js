@@ -17,7 +17,7 @@ async function fetchQuote() {
     if (Array.isArray(data) && data.length > 0) {
       const quote = data[0].q;
       const author = data[0].a;
-      return `${quote}\n\n-${author}`;
+      return `${quote}\n\n— ${author}`;
     }
   } catch (error) {
     console.error("Error fetching quote:", error);
