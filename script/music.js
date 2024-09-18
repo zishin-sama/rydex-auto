@@ -1,6 +1,5 @@
 const axios = require('axios');
 const fs = require('fs');
-const ytdl = require('ytdl-core');
 const { exec } = require('child_process');
 
 module.exports.config = {
@@ -28,6 +27,9 @@ module.exports.run = async function ({ api, args, event }) {
         // Fetch music and lyrics data
         const musicResponse = await axios.get(musicUrl);
         const lyricsResponse = await axios.get(lyricsUrl);
+
+        console.log('Music Response:', musicResponse.data);
+        console.log('Lyrics Response:', lyricsResponse.data);
 
         if (!musicResponse.data.result.length || !lyricsResponse.data.result) {
             return api.sendMessage("No music or lyrics found for your query.", event.threadID, event.messageID);
@@ -57,9 +59,9 @@ module.exports.run = async function ({ api, args, event }) {
         writer.on('finish', async () => {
             message.attachment.push(fs.createReadStream(imagePath));
 
-            // Download and convert SoundCloud audio using ytdl-core
+            // Download and convert audio
             const audioFilePath = __dirname + `/song_audio_${event.senderID}.mp3`;
-            downloadAndConvertAudio(audioUrl, audioFilePath, async (err) => {
+            exec(`ffmpeg -i "${audioUrl}" -q:a 0 -map a "${audioFilePath}"`, (err) => {
                 if (err) {
                     return api.sendMessage("Error downloading or converting audio.", event.threadID, event.messageID);
                 }
@@ -80,17 +82,3 @@ module.exports.run = async function ({ api, args, event }) {
         api.sendMessage("An error occurred while processing your request.", event.threadID, event.messageID);
     }
 };
-
-// Helper function to download and convert SoundCloud audio using ytdl-core
-function downloadAndConvertAudio(audioUrl, filePath, callback) {
-    const stream = ytdl(audioUrl, { filter: 'audioonly' });
-    const writeStream = fs.createWriteStream(filePath);
-
-    stream.pipe(writeStream);
-    writeStream.on('finish', () => {
-        callback(null);
-    });
-    writeStream.on('error', (err) => {
-        callback(err);
-    });
-}
