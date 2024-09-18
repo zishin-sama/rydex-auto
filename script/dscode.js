@@ -5,7 +5,7 @@ module.exports.config = {
   version: "1.0.0", 
   role: 0, 
   description: "Talk with DeepSeek AI (conversational)", 
-  aliases: [""], 
+  aliases: [], 
   hasPrefix: true, 
   usage: "{n}prompt", 
   credits: "rydex|api by josh", 
