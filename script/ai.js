@@ -7,7 +7,7 @@ module.exports.config = {
 		description: "AI-powered responses GPT-4. by g4f lib",
 		usage: "[prompt]",
 		cooldown: 0,
-	    aliases: ["ry","johnryll"]
+	        aliases: ["ry"]
 };
 
 module.exports.run = async function ({ api, event, args }) {
