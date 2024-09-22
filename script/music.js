@@ -1,84 +1,59 @@
-const axios = require('axios');
-const fs = require('fs');
-const { exec } = require('child_process');
-
+const path = require('path');
 module.exports.config = {
-    name: "music",
-    version: "1.0.0",
-    description: "Fetch lyrics, song, and audio.",
-    role: 0,
-    credits: "Rydex",
-    usage: "songname",
-    hasPrefix: true,
-    aliases: ["sc"],
-    cooldown: 5,
+	name: "music",
+	version: "1.0.0",
+	credits: "cliff",
+	role: 0,
+	aliases: ['m'],
+	cooldown: 0,
+	hasPrefix: false,
+	usage: "",
 };
-
-module.exports.run = async function ({ api, args, event }) {
-    try {
-        if (args.length < 1) {
-            return api.sendMessage("Please provide a song name.", event.threadID, event.messageID);
-        }
-
-        const query = args.join(' ');
-        const musicUrl = `https://deku-rest-api.gleeze.com/api/scsearch?q=${encodeURIComponent(query)}`;
-        const lyricsUrl = `https://deku-rest-api.gleeze.com/search/lyrics?q=${encodeURIComponent(query)}`;
-
-        // Fetch music and lyrics data
-        const musicResponse = await axios.get(musicUrl);
-        const lyricsResponse = await axios.get(lyricsUrl);
-
-        console.log('Music Response:', musicResponse.data);
-        console.log('Lyrics Response:', lyricsResponse.data);
-
-        if (!musicResponse.data.result.length || !lyricsResponse.data.result) {
-            return api.sendMessage("No music or lyrics found for your query.", event.threadID, event.messageID);
-        }
-
-        const song = musicResponse.data.result[0]; // First song result
-        const lyricsData = lyricsResponse.data.result; // Lyrics data
-
-        const title = song.title;
-        const artist = lyricsData.artist;
-        const lyrics = lyricsData.lyrics;
-        const imageUrl = lyricsData.image; // Cover image
-        const audioUrl = song.link;
-
-        // Send Title, Artist, and Lyrics message with image
-        const message = {
-            body: `Title: ${title}\n\nArtist: ${artist}\n\nLyrics:\n\n${lyrics}`,
-            attachment: []
-        };
-
-        // Fetch and attach image
-        const imageResponse = await axios.get(imageUrl, { responseType: 'stream' });
-        const imagePath = __dirname + `/song_cover_${event.senderID}.jpg`;
-        const writer = fs.createWriteStream(imagePath);
-        imageResponse.data.pipe(writer);
-
-        writer.on('finish', async () => {
-            message.attachment.push(fs.createReadStream(imagePath));
-
-            // Download and convert audio
-            const audioFilePath = __dirname + `/song_audio_${event.senderID}.mp3`;
-            exec(`ffmpeg -i "${audioUrl}" -q:a 0 -map a "${audioFilePath}"`, (err) => {
-                if (err) {
-                    return api.sendMessage("Error downloading or converting audio.", event.threadID, event.messageID);
-                }
-
-                // Attach audio to the message
-                message.attachment.push(fs.createReadStream(audioFilePath));
-
-                // Send the message with image and audio
-                api.sendMessage(message, event.threadID, event.messageID);
-
-                // Clean up files after sending
-                fs.unlinkSync(imagePath);
-                fs.unlinkSync(audioFilePath);
-            });
-        });
-    } catch (error) {
-        console.error(error);
-        api.sendMessage("An error occurred while processing your request.", event.threadID, event.messageID);
-    }
+module.exports.run = async function({
+	api,
+	event,
+	args
+}) {
+	const fs = require("fs-extra");
+	const ytdl = require("ytdl-core");
+	const yts = require("yt-search");
+	const musicName = args.join(' ');
+	if (!musicName) {
+		api.sendMessage(`To get started, type music and the title of the song you want.`, event.threadID, event.messageID);
+		return;
+	}
+	try {
+		api.sendMessage(`Searching for "${musicName}"...`, event.threadID, event.messageID);
+		const searchResults = await yts(musicName);
+		if (!searchResults.videos.length) {
+			return api.sendMessage("Can't find the search.", event.threadID, event.messageID);
+		} else {
+			const music = searchResults.videos[0];
+			const musicUrl = music.url;
+			const stream = ytdl(musicUrl, {
+				filter: "audioonly"
+			});
+			const time = new Date();
+			const timestamp = time.toISOString().replace(/[:.]/g, "-");
+			const filePath = path.join(__dirname, 'cache', `${timestamp}_music.mp3`);
+			stream.pipe(fs.createWriteStream(filePath));
+			stream.on('response', () => {});
+			stream.on('info', (info) => {});
+			stream.on('end', () => {
+				if (fs.statSync(filePath).size > 26214400) {
+					fs.unlinkSync(filePath);
+					return api.sendMessage('The file could not be sent because it is larger than 25MB.', event.threadID);
+				}
+				const message = {
+					body: `${music.title}`,
+					attachment: fs.createReadStream(filePath)
+				};
+				api.sendMessage(message, event.threadID, () => {
+					fs.unlinkSync(filePath);
+				}, event.messageID);
+			});
+		}
+	} catch (error) {
+		api.sendMessage('An error occurred while processing your request.', event.threadID, event.messageID);
+	}
 };
