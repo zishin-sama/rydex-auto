@@ -5,10 +5,10 @@
     <meta charset="UTF-8"/> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
     <meta name="author" content="Rydex"/> 
-    <meta name="description" content="Rydex"/> 
-    <meta name="keywords" content="Rydex"/> 
-    <link rel="stylesheet" href="assets/css/iziToast.min.css">
-    <script src="assets/js/iziToast.min.js"></script>
+    <meta name="description" content="Simple Autobot"/> 
+    <meta name="keywords" content="Rydex,rydexbot,rydex, rydexauto, rydex bot, bot rydex"/> 
+    <link rel="stylesheet" href="assets/css/sweetalert2.css">
+    <script src="assets/js/sweetalert2.js"></script>
     <style> 
         @font-face { 
             src: url('assets/fonts/Poppins-ExtraBold.ttf'); 
@@ -136,6 +136,46 @@
             	left: 
             }
         }
+        
+        @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+}
+
+.swal2-custom-popup {
+    backdrop-filter: blur(15px); /* Blur effect */
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    font-family: Poppins, Arial;
+    animation-duration: 0.5s; /* Set a duration for smoothness */
+}
+
+.animate__fadeInUp {
+    animation: fadeInUp 0.5s forwards;
+}
+
+.animate__fadeOutDown {
+    animation: fadeOutDown 0.5s forwards;
+}
+
+
     </style> 
 </head> 
 <body> 
@@ -153,15 +193,8 @@
             <div class="input-box"> 
                 <input type="text" id="inputOfAdmin"> 
                 <label for="inputOfAdmin">Admin ID</label> 
-            </div> 
-            <div class="input-box"> 
-                <input type="text" id="botName"> 
-                <label for="botName">Bot Name</label> 
-            </div> 
-            <button id="submitButton">Submit</button>
-            <div class="getCookie">
-            	<p>No appstate?<span id="click">&nbsp;Click here</span></p>
             </div>
+            <button id="submitButton">Submit</button>
         </div>
         <div class="footer">
         	<p id="foot"></p>
@@ -183,13 +216,9 @@
             });
         });
 
-	const click = document.getElementById('click');
-	click.addEventListener('click', function() {
-		window.location = `index.html`;
-	});
 	const footer = document.getElementById('foot');
 	const year = new Date(Date.now()).getUTCFullYear();
-	footer.textContent = `Copyright © Rydex ${year}`;
+	footer.textContent = `Copyright © Rydex ${year} | All rights reserved.`;
     const submitButton = document.getElementById('submitButton');
 
     submitButton.addEventListener('click', () => {
@@ -220,7 +249,6 @@
     const jsonInput = document.getElementById('json-data');
     const prefix = document.getElementById('inputOfPrefix').value;
     const admin = document.getElementById('inputOfAdmin').value.trim().split(/\s+/);
-    const botName = document.getElementById('botName').value.trim().split(/\s+/);
 
     if (jsonInput.value === '') {
         showResult('Missing appstate data');
@@ -269,21 +297,31 @@
     }
 }
 
-    function showResult(message, isSuccess = false) {
-        iziToast.show({
-            title: '',
-            message: message,
-            timeout: 3000,
-            position: 'bottomCenter',
-            color: 'red',
-            background: 'transparent',
-            close: false
-        });
-    }
+    // SweetAlert2 toast configuration
+function showResult(message, isSuccess = false) {
+    Swal.fire({
+    toast: true,
+    position: 'bottom-center',
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    background: 'rgba(0,0,0,0.7)', // Transparent background matching your theme
+    color: '#CED1FF', // Text color matching your theme
+    icon: isSuccess ? 'success' : 'error', // Icon for success or error
+    title: message,
+    customClass: {
+        popup: 'swal2-custom-popup', // Custom class for additional styling
+    },
+    showClass: {
+        popup: 'animate__animated animate__fadeInUp', // Entry animation
+    },
+    hideClass: {
+        popup: 'animate__animated animate__fadeOutDown', // Exit animation
+    },
 });
 
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
+}
+
 });
 
 document.addEventListener('selectstart', function(e) {
@@ -295,10 +333,6 @@ document.addEventListener('copy', function(e) {
 });
 
 document.addEventListener('cut', function(e) {
-    e.preventDefault();
-});
-
-document.addEventListener('paste', function(e) {
     e.preventDefault();
 });
     </script>
