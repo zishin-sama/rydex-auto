@@ -1,13 +1,13 @@
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const cron = require('node-cron');
 const moment = require('moment-timezone');
 const admin = "100064714842032";
-const POST_INTERVAL = 10 * 60 * 1000; // 10 minutes in milliseconds
 const LAST_POST_FILE = path.join(__dirname, 'last_post_time.json'); // File to store last post time
 const STATE_FILE = path.join(__dirname, 'autopost_state.json'); // File to store auto-posting state
 
-let autoPostingInterval = null;
+let cronJob = null;
 
 async function fetchQuote() {
   const api_url = "https://zenquotes.io/api/quotes/";
@@ -67,7 +67,6 @@ async function postToFacebook(api, message) {
     if (data.errors) throw new Error(JSON.stringify(data.errors));
     const postID = data.data.story_create.story.legacy_story_hideable_id;
     const urlPost = data.data.story_create.story.url;
-    api.sendMessage(`Auto post quote created successfully`, admin);
   } catch (error) {
     console.error("Error posting to Facebook:", error);
     api.sendMessage("Failed to auto post quote.", admin);
@@ -123,34 +122,25 @@ function writeAutoPostState(enabled) {
   }
 }
 
-function startAutoPosting(api, threadID) {
-  const lastPostTime = readLastPostTime();
-  const now = new Date();
-  const timeSinceLastPost = now - lastPostTime;
-  
-  // Schedule the first post immediately if the last post was a while ago
-  const initialDelay = timeSinceLastPost >= POST_INTERVAL ? 0 : POST_INTERVAL - timeSinceLastPost;
-
-  autoPostingInterval = setInterval(async () => {
-    const quote = await fetchQuote();
-    if (quote) {
-      await postToFacebook(api, quote);
-      writeLastPostTime(new Date());
-    }
-  }, POST_INTERVAL);
-
-  // Trigger the first post after the initial delay
-  setTimeout(() => {
-    clearInterval(autoPostingInterval);
-    autoPostingInterval = setInterval(async () => {
+function startAutoPosting(api) {
+  if (!cronJob) {
+    cronJob = cron.schedule('0 */10 * * * *', async () => {
+      const now = moment().tz('Asia/Manila'); // Get current time in Philippine timezone
+      console.log(`Auto-posting job running at: ${now.format('YYYY-MM-DD HH:mm:ss')}`);
+      
       const quote = await fetchQuote();
       if (quote) {
         await postToFacebook(api, quote);
         writeLastPostTime(new Date());
       }
-    }, POST_INTERVAL);
-  }, initialDelay);
+    }, {
+      timezone: "Asia/Manila" // Set the cron job to use Philippine timezone
+    });
+
+    cronJob.start(); // Start the cron job
+  }
 }
+
 
 module.exports.config = {
   name: "autopostquotes",
@@ -167,34 +157,37 @@ module.exports.config = {
 module.exports.handleEvent = async function ({ api, event }) {
   const isEnabled = readAutoPostState();
   if (isEnabled) {
-    if (!autoPostingInterval) {
-      startAutoPosting(api, event.threadID);
+    if (!cronJob) {
+      startAutoPosting(api);
     }
-  } else if (autoPostingInterval) {
-    clearInterval(autoPostingInterval);
-    autoPostingInterval = null;
+  } else if (cronJob) {
+    cronJob.stop();
+    cronJob = null;
   }
 };
 
 module.exports.run = async function ({ api, args, event }) {
   try {
+    if (!args[0]) {
+    	api.sendMessage('Invalid usage!', event.threadID);
+    }
     if (args[0] === 'on') {
       writeAutoPostState(true);
-      if (!autoPostingInterval) {
-        startAutoPosting(api, event.threadID);
+      if (!cronJob) {
+        startAutoPosting(api);
       }
-      api.sendMessage("Auto-posting enabled.", event.threadID);
+      api.sendMessage("Autopost—quotes enabled.", event.threadID);
     } else if (args[0] === 'off') {
       writeAutoPostState(false);
-      if (autoPostingInterval) {
-        clearInterval(autoPostingInterval);
-        autoPostingInterval = null;
+      if (cronJob) {
+        cronJob.stop();
+        cronJob = null;
       }
-      api.sendMessage("Auto-posting disabled.", event.threadID);
+      api.sendMessage("Autopost—quotes disabled.", event.threadID);
     } else if (args[0] === 'status') {
       const isEnabled = readAutoPostState();
       const status = isEnabled ? "enabled" : "disabled";
-      api.sendMessage(`Auto-posting is currently ${status}.`, event.threadID);
+      api.sendMessage(`Autopost—quotes is currently ${status}.`, event.threadID);
     } else {
       api.sendMessage("Usage:\n- autopost on\n- autopost off\n- autopost status", event.threadID);
     }
