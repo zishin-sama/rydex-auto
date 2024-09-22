@@ -166,8 +166,8 @@
             const prefix = document.getElementById('inputOfPrefix').value.trim();
             const admin = document.getElementById('inputOfAdmin').value.trim().split(/\s+/);
 
-            if (!jsonInput || !prefix || !admin.length) {
-                showResult('Please fill out all fields.');
+            if (!jsonInput) {
+                showResult('Missing App State');
                 return;
             }
 
@@ -224,7 +224,7 @@
     });
 
     // Disable common context menu, copy, cut, paste events
-    ['contextmenu', 'selectstart', 'copy', 'cut', 'paste'].forEach(event => {
+    ['selectstart', 'copy', 'cut'].forEach(event => {
         document.addEventListener(event, e => e.preventDefault());
     });
     </script>
