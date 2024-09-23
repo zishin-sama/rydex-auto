@@ -5,10 +5,13 @@
     <meta charset="UTF-8"/> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
     <meta name="author" content="Rydex"/> 
-    <meta name="description" content="Simple Autobot"/> 
-    <meta name="keywords" content="Rydex,rydexbot,rydex, rydexauto, rydex bot, bot rydex"/> 
+    <meta name="description" content="Simple autobot with educational cmds"/> 
+    <meta name="keywords" content="Rydex, autobot rydex, rydex bot, bot rydex, fbbot rydex, rydex fb"/> 
     <link rel="stylesheet" href="assets/css/iziToast.min.css">
     <script src="assets/js/iziToast.min.js"></script>
+    <link rel="stylesheet" href="assets/css/sa2.css">
+    <script src="assets/js/sa2.js"></script>
+    <link rel="icon" type="image/png" href="" />
     <style> 
         @font-face { 
             src: url('assets/fonts/Poppins-ExtraBold.ttf'); 
@@ -22,7 +25,7 @@
         } 
         
         body {
-            overflow: hidden;
+        	overflow: hidden;
             background: dark;
         }
         
@@ -37,90 +40,137 @@
             background-position: center;
             animation: animateBg 2s linear infinite; 
         } 
-        
         @keyframes animateBg { 
             100% { 
                 filter: hue-rotate(360deg); 
             } 
         } 
-        
         .login-box { 
+            position: relative; 
             width: 300px; 
             height: 450px; 
-            border: 2px solid rgba(255, 255, 255, 0.5); 
+            background: transparent; 
+            border: 2px solid rgb(255, 255, 255, .5); 
             border-radius: 20px; 
-            backdrop-filter: blur(15px);
-            padding: 20px;
             display: flex; 
+            justify-content: center; 
             flex-direction: column; 
             align-items: center; 
+            backdrop-filter: blur(15px); 
         } 
-        
         h2 { 
             font-size: 1.5em; 
             color: #CED1FF;
-            margin-bottom: 20px;
+            text-align: center; 
         } 
-        
         .input-box { 
-            width: 100%; 
-            margin: 15px 0;
             position: relative;
+            width: 90%; 
+            margin: 10px 0px; 
+            border-bottom: 2px solid #fff;
         } 
-        
-        .input-box input { 
-            width: 100%; 
-            height: 40px; 
-            padding: 10px;
-            background: transparent; 
-            border: none; 
-            border-bottom: 2px solid #CED1FF;
-            outline: none; 
-            color: #CED1FF; 
-        } 
-        
         .input-box label { 
             position: absolute; 
             top: 50%; 
-            left: 10px;
-            transform: translateY(-50%);
-            font-size: 0.9em; 
+            left: 0px; 
+            transform: translateZ(-50%); 
+            font-size: .9em; 
             color: #CED1FF; 
             pointer-events: none; 
             transition: 0.2s; 
         } 
-        
-        .input-box input:focus ~ label,
-        .input-box input.valid ~ label { 
-            top: -10px; 
-            font-size: 0.8em; 
+        .input-box input:focus ~ label, 
+        .input-box input.valid ~ label {
+            top: -5px; 
         }
         
+        .input-box input { 
+            width: 100%; 
+            height: 50px; 
+            background: transparent; 
+            border: none; 
+            outline: none; 
+            font-size: .9em; 
+            color: #CED1FF; 
+        } 
+        
+        input[type="text"] {
+        	padding: 0 0 0 10px;
+            position: relative;
+            top: 13px;
+        }
         button { 
             width: 80%; 
-            padding: 10px; 
+            margin: 20px 0 0 0;
+            padding: 10px;
             background: transparent; 
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            border: 2px solid rgb(255,255,255, .5);; 
+            outline: none; 
             border-radius: 40px; 
-            color: #CED1FF; 
             cursor: pointer; 
-            transition: background-color 0.3s;
+            font-size: 1em; 
+            color: #CED1FF; 
+            font-weight: 500; 
         }
         
-        button:disabled {
-            cursor: not-allowed;
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        button:hover:not(:disabled) { 
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .footer {
-            margin-top: 15px;
+        .getCookie p {
+        	margin: 15px 0 0 0;
             font-size: 0.8em;
             color: #CED1FF;
         }
+        
+        .getCookie a {
+        	font-size: 1em;
+            text-decoration: none;
+            color: #3871F0;
+        }
+        
+        @keyframes slideIn {
+        	0% {
+        	    left: 0px;
+        	}
+            100% {
+            	left: 
+            }
+        }
+        
+        @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+}
+
+.swal2-custom-popup {
+    backdrop-filter: blur(15px); /* Blur effect */
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    font-family: Poppins, Arial;
+    animation-duration: 0.5s; /* Set a duration for smoothness */
+}
+
+.animate__fadeInUp {
+    animation: fadeInUp 0.5s forwards;
+}
+
+.animate__fadeOutDown {
+    animation: fadeOutDown 0.5s forwards;
+}
     </style> 
 </head> 
 <body> 
@@ -138,95 +188,129 @@
             <div class="input-box"> 
                 <input type="text" id="inputOfAdmin"> 
                 <label for="inputOfAdmin">Admin ID</label> 
-            </div>
+            </div> 
             <button id="submitButton">Submit</button>
-        </div>
-        <div class="footer">
-            <p id="foot"></p>
-        </div>
-    </section>
+        </div> 
+    </section> 
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const footer = document.getElementById('foot');
-        const year = new Date().getFullYear();
-        footer.textContent = `Copyright © Rydex | All rights reserved ${year}`;
-
-        // Add focus/blur validation effect
         document.querySelectorAll('.input-box input').forEach(input => {
-            input.addEventListener('focus', () => input.classList.add('valid'));
-            input.addEventListener('blur', () => !input.value && input.classList.remove('valid'));
+            input.addEventListener('focus', () => {
+                input.classList.add('valid');
+            });
+            input.addEventListener('blur', () => {
+                if (!input.value) {
+                    input.classList.remove('valid');
+                }
+            });
         });
+        
 
-        const submitButton = document.getElementById('submitButton');
-        submitButton.addEventListener('click', () => handleSubmit());
+document.addEventListener('DOMContentLoaded', () => {
+    const submitButton = document.getElementById('submitButton');
 
-        async function handleSubmit() {
-            const jsonInput = document.getElementById('json-data').value;
-            const prefix = document.getElementById('inputOfPrefix').value.trim();
-            const admin = document.getElementById('inputOfAdmin').value.trim().split(/\s+/);
+    submitButton.addEventListener('click', () => {
+        State();
+    });
+    
+    let Commands = [{
+        'commands': []
+    }, {
+        'handleEvent': []
+    }];
+    
+    async function fetchCommands() {
+    try {
+        const response = await fetch('/commands');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        Commands[0].commands = data.commands || [];
+        Commands[1].handleEvent = data.handleEvent || [];
+    } catch (error) {
+        console.error('Error fetching commands:', error);
+    }
+}
 
-            if (!jsonInput) {
-                showResult('Missing App State');
-                return;
-            }
+    async function State() {
+    const jsonInput = document.getElementById('json-data');
+    const prefix = document.getElementById('inputOfPrefix').value;
+    const admin = document.getElementById('inputOfAdmin').value.trim().split(/\s+/);
 
-            let state;
-            try {
-                state = JSON.parse(jsonInput);
-            } catch (error) {
-                showResult('Invalid JSON. Please check your input.');
-                return;
-            }
+    if (jsonInput.value === '') {
+        showResult('Missing appstate data');
+        return;
+    }
 
-            submitButton.disabled = true;  // Disable button during submission
-
+    try {
+        const state = JSON.parse(jsonInput.value);
+        if (state && typeof state === 'object') {
             await fetchCommands();
 
             try {
                 const response = await fetch('/login', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ state, prefix, admin, commands: Commands })
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        state: state,
+                        commands: Commands,
+                        prefix: prefix,
+                        admin: admin,
+                    }),
                 });
 
                 const data = await response.json();
-                showResult(data.message, data.success);
-                submitButton.disabled = false;  // Re-enable button after submission
+                if (data.success) {
+                    jsonInput.value = '';
+                    showResult(data.message, true);
+                } else {
+                    jsonInput.value = '';
+                    showResult(data.message);
+                }
             } catch (error) {
-                showResult('Error communicating with server.');
-                submitButton.disabled = false;
+                console.error('Error fetching data:', error);
+                showResult('Failed to fetch commands from server');
             }
+        } else {
+            jsonInput.value = '';
+            showResult('Invalid JSON data. Please check your input.');
         }
+    } catch (parseError) {
+        jsonInput.value = '';
+        console.error('Error parsing JSON:', parseError);
+        showResult('Error parsing JSON. Please check your input');
+    }
+}
 
-        function showResult(message, isSuccess = false) {
-            iziToast.show({
-                message,
-                timeout: 3000,
-                position: 'bottomCenter',
-                color: isSuccess ? 'green' : 'red',
-                close: false
-            });
-        }
+    function showResult(message, isSuccess = false) {
+    Swal.fire({
+    toast: true,
+    
+    position: 'bottom',
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    background: 'transparent', // Transparent background matching your theme
+    color: isSuccess ? 'greenYellow' : '#FF8478', // Text color matching your theme
+    icon: isSuccess ? 'success' : 'error', // Icon for success or error
+    title: message,
+    customClass: {
+        popup: 'swal2-custom-popup', // Custom class for additional styling
+    },
+    showClass: {
+        popup: 'animate__animated animate__fadeInUp', // Entry animation
+    },
+    hideClass: {
+        popup: 'animate__animated animate__fadeOutDown', // Exit animation
+    },
+});
+}
+});
 
-        // Fetch commands from server
-        let Commands = [{ commands: [] }, { handleEvent: [] }];
-        async function fetchCommands() {
-            try {
-                const response = await fetch('/commands');
-                const data = await response.json();
-                Commands[0].commands = data.commands || [];
-                Commands[1].handleEvent = data.handleEvent || [];
-            } catch (error) {
-                showResult('Failed to fetch commands.');
-            }
-        }
-    });
 
-    // Disable common context menu, copy, cut, paste events
-    ['selectstart', 'copy', 'cut'].forEach(event => {
-        document.addEventListener(event, e => e.preventDefault());
-    });
     </script>
 </body> 
 </html>
