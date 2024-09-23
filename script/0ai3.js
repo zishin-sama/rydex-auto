@@ -7,8 +7,8 @@ module.exports.config = {
   description: "Talk with DeepSeek AI (conversational)", 
   aliases: [], 
   hasPrefix: true, 
-  usage: "{n}prompt", 
-  credits: "rydex|api by josh", 
+  usage: "prompt", 
+  credits: "Rydex", 
   cooldown: 5 
 };
 
@@ -23,16 +23,18 @@ module.exports.run = async ({api, args, event}) => {
   if (!prompt) return reply("Please provide a prompt.");
 
   try {
-    if (prompt) { 
-      reply("Processing your prompt..."); 
+    await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
+    
+    api.sendTypingIndicator(event.threadID, true);  
       
-      const url = `https:\/\/deku-rest-api.gleeze.com/ai/deepseek-coder?q=${prompt}&uid=${uid}`;
-      const response = await axios.get(url);
+      const response = await axios.get(`https://deku-rest-api.gleeze.com/ai/deepseek-coder?q=${prompt}&uid=${uid}`);
+      
       const data = response.data.result;
+      await api.setMessageReaction("✅", event.messageID, (err) => {}, true);
       return reply(data);
-    }
   } 
   catch (e) { 
+  	await api.setMessageReaction("❌", event.messageID, (err) => {}, true);
     return reply(`An error occurred : ${e.message}`); 
   }
 }
