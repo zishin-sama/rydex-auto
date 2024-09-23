@@ -8,7 +8,7 @@ module.exports.config = {
   aliases: ["ly"], 
   hasPrefix: true, 
   usage: "{n}prompt", 
-  credits: "rydex|api by josh", 
+  credits: "Rydex", 
   cooldown: 5 
 };
 
@@ -24,6 +24,8 @@ module.exports.run = async ({api, args, event}) => {
 
   try {
     if (songTitle) { 
+      await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
+    
       reply("Finding lyrics, please wait for a moment"); 
       
       const url = `https:\/\/deku-rest-api.gleeze.com/search/lyrics?q=${songTitle}`;
@@ -32,7 +34,7 @@ module.exports.run = async ({api, args, event}) => {
       const title = res.data.result.title;
       const artist = res.data.result.artist;
 
-      return reply(`Title : ${title}\n\nArtist : ${artist}\n\nLyrics :\n${lyrics}`);
+      return reply(`Title : ${title}\n\nArtist : ${artist}\n\nLyrics :\n\n${lyrics}`);
     }
   } 
   catch (e) { 
