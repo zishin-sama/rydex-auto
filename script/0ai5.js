@@ -9,7 +9,7 @@ module.exports.config = {
     role: 0, 
     credits: "Rydex",
     usage: "gemini",
-    aliases: ["ai3"],
+    aliases: [],
     cooldown: 5,
 };
 module.exports.run = async function ({ api, event, args }) {
@@ -20,6 +20,10 @@ module.exports.run = async function ({ api, event, args }) {
       if (!text) {
         return api.sendMessage("Please provide a question or query.", event.threadID, event.messageID);
       }
+      
+      await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
+    
+    api.sendTypingIndicator(event.threadID, true); 	
 
       let imageBase64Array = [];
 
@@ -40,11 +44,12 @@ module.exports.run = async function ({ api, event, args }) {
       });
 
       const data = response.data.content;
+      await api.setMessageReaction("✅", event.messageID, (err) => {}, true);
 
       api.sendMessage(data, event.threadID, event.messageID);
     } catch (error) {
-      console.error(error);
-      api.sendMessage("An error occurred while processing the command.", event.threadID);
+    	a
+      api.sendMessage("An error occurred while processing your request.", event.threadID);
     }
 };
 
