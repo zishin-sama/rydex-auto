@@ -183,12 +183,10 @@ module.exports = function (defaultFuncs, api, ctx) {
     if (utils.getType(threadID) === "Array") {
       sendContent(form, threadID, false, messageAndOTID, callback);
     } else {
-      if (utils.getType(isGroup) != "Boolean") {
-        // Removed the use of api.getUserInfo() in the old version to reduce account lockout
-				sendContent(form, threadID, threadID.toString().length < 16, messageAndOTID, callback);
-      } else {
+      if (utils.getType(isGroup) != "Boolean")
+        sendContent(form, threadID, threadID.length <= 15, messageAndOTID, callback);
+      else
         sendContent(form, threadID, !isGroup, messageAndOTID, callback);
-      }
     }
   }
 
@@ -306,7 +304,9 @@ module.exports = function (defaultFuncs, api, ctx) {
         }
 
         const id = mention.id || 0;
-        form["profile_xmd[" + i + "][offset]"] = offset;
+        const emptyChar = '\u200E';
+        form["body"] = emptyChar + msg.body;
+        form["profile_xmd[" + i + "][offset]"] = offset + 1;
         form["profile_xmd[" + i + "][length]"] = tag.length;
         form["profile_xmd[" + i + "][id]"] = id;
         form["profile_xmd[" + i + "][type]"] = "p";
@@ -329,22 +329,20 @@ module.exports = function (defaultFuncs, api, ctx) {
       utils.getType(callback) === "String"
     ) {
       replyToMessage = callback;
-      callback = function () { };
+      callback = undefined;
     }
 
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () { };
+    var rejectFunc = function () { };
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
     });
 
     if (!callback) {
-      callback = function (err, friendList) {
-        if (err) {
-          return rejectFunc(err);
-        }
-        resolveFunc(friendList);
+      callback = function (err, data) {
+        if (err) return rejectFunc(err);
+        resolveFunc(data);
       };
     }
 

@@ -3,22 +3,6 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-
-function getExtension(original_extension, filename = "") {
-	if (original_extension) {
-		return original_extension;
-	}
-	else {
-		const extension = filename.split(".").pop();
-		if (extension === filename) {
-			return "";
-		}
-		else {
-			return extension;
-		}
-	}
-}
-
 function formatAttachmentsGraphQLResponse(attachment) {
   switch (attachment.__typename) {
     case "MessageImage":
@@ -26,7 +10,6 @@ function formatAttachmentsGraphQLResponse(attachment) {
         type: "photo",
         ID: attachment.legacy_attachment_id,
         filename: attachment.filename,
-				original_extension: getExtension(attachment.original_extension, attachment.filename),
         thumbnailUrl: attachment.thumbnail.uri,
 
         previewUrl: attachment.preview.uri,
@@ -74,7 +57,6 @@ function formatAttachmentsGraphQLResponse(attachment) {
         type: "animated_image",
         ID: attachment.legacy_attachment_id,
         filename: attachment.filename,
-				original_extension: getExtension(attachment.original_extension, attachment.filename),
 
         previewUrl: attachment.preview_image.uri,
         previewWidth: attachment.preview_image.width,
@@ -105,10 +87,8 @@ function formatAttachmentsGraphQLResponse(attachment) {
     case "MessageVideo":
       return {
         type: "video",
-        ID: attachment.legacy_attachment_id,
         filename: attachment.filename,
-				original_extension: getExtension(attachment.original_extension, attachment.filename),
-				duration: attachment.playable_duration_in_ms,
+        ID: attachment.legacy_attachment_id,
 
         thumbnailUrl: attachment.large_image.uri, // @Legacy
 
@@ -120,14 +100,14 @@ function formatAttachmentsGraphQLResponse(attachment) {
         width: attachment.original_dimensions.x,
         height: attachment.original_dimensions.y,
 
+        duration: attachment.playable_duration_in_ms,
         videoType: attachment.video_type.toLowerCase()
       };
     case "MessageFile":
       return {
         type: "file",
-        ID: attachment.message_file_fbid,
         filename: attachment.filename,
-				original_extension: getExtension(attachment.original_extension, attachment.filename),
+        ID: attachment.message_file_fbid,
 
         url: attachment.url,
         isMalicious: attachment.is_malicious,
@@ -140,12 +120,11 @@ function formatAttachmentsGraphQLResponse(attachment) {
     case "MessageAudio":
       return {
         type: "audio",
-        ID: attachment.url_shimhash, // Not fowardable
         filename: attachment.filename,
-				original_extension: getExtension(attachment.original_extension, attachment.filename),
+        ID: attachment.url_shimhash, // Not fowardable
 
-				duration: attachment.playable_duration_in_ms,
         audioType: attachment.audio_type,
+        duration: attachment.playable_duration_in_ms,
         url: attachment.playable_url,
 
         isVoiceMail: attachment.is_voicemail
@@ -391,7 +370,7 @@ function formatMessagesGraphQLResponse(data) {
               ID: d.sticker.id,
               url: d.sticker.url,
 
-              packID: d.sticker.pack ? d.sticker.pack.id : null,
+              packID: d.sticker.pack.id,
               spriteUrl: d.sticker.sprite_image,
               spriteUrl2x: d.sticker.sprite_image_2x,
               width: d.sticker.width,
