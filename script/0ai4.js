@@ -26,7 +26,7 @@ module.exports.run = async ({ api, args, event }) => {
     // Set the initial reaction (⏳) indicating the process has started
     await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
     
-    api.sendTypingIndicator(event.threadID, true); 
+    await api.sendTypingIndicator(event.threadID, true); 
       
     const url = `https://deku-rest-api.gleeze.com/ai/wizardlm?q=${prompt}&uid=${uid}`;
     const response = await axios.get(url);
