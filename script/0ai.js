@@ -23,7 +23,11 @@ module.exports.run = async function ({ api, event, args }) {
         const input = args.join(' ');
         if (!input) return reply('Please provide a prompt.');
 
-        const messages = { role: "user", content: input };
+        // The messages array for the conversation
+        const messages = [
+            { role: "user", content: input }
+        ];
+        
         const options = {
             provider: g4f.providers.GPT,
             model: "gpt-4",
@@ -33,9 +37,15 @@ module.exports.run = async function ({ api, event, args }) {
 
         // Await the AI response
         const response = await g4f.chatCompletion(messages, options);
-        reply(response);
+
+        // Check if a valid response is received
+        if (response && response.content) {
+            reply(response.content); // Send the content of the AI response
+        } else {
+            reply("No response received from GPT-4.");
+        }
         
     } catch (e) {
-        return reply(e.message);
+        return reply(`Error: ${e.message}`);
     }
 };
