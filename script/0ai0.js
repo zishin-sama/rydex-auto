@@ -11,7 +11,7 @@ module.exports.config = {
 	cooldown: 5
 }
 module.exports.run = async ({api, args, event}) => {
-	function reply(a) {
+	async function reply(a) {
 		api.sendMessage(a, event.threadID, event.messageID);
 	}
 	const uid = event.senderID;
