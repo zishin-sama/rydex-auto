@@ -20,8 +20,6 @@ module.exports.run = async ({api, args, event}) => {
 	if (!prompt) return reply("Please provide a prompt");
 	
 	try {
-		await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
-  
 		const res = await ax.get(`https://deku-rest-api.gleeze.com/gpt4?prompt=${prompt}&uid=${uid}`);
 		const d = res.data.gpt4;
 		await api.setMessageReaction("✅", event.messageID, (err) => {}, true);
@@ -29,7 +27,6 @@ module.exports.run = async ({api, args, event}) => {
 		
 	}
 	catch (e) {
-		await api.setMessageReaction("❌", event.messageID, (err) => {}, true);
 		return reply(e.message);
 	}
 }
