@@ -11,7 +11,7 @@ module.exports.config = {
 	cooldown: 5
 }
 module.exports.run = async ({api, args, event}) => {
-	async function reply(a) {
+	function reply(a) {
 		api.sendMessage(a, event.threadID, event.messageID);
 	}
 	const uid = event.senderID;
@@ -22,7 +22,6 @@ module.exports.run = async ({api, args, event}) => {
 	try {
 		const res = await ax.get(`https://deku-rest-api.gleeze.com/gpt4?prompt=${prompt}&uid=${uid}`);
 		const d = res.data.gpt4;
-		await api.setMessageReaction("✅", event.messageID, (err) => {}, true);
 		return reply(d);
 		
 	}
