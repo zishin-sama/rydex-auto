@@ -13,7 +13,7 @@ module.exports.config = {
 };
 
 module.exports.run = async ({api, args, event}) => {
-  async function reply(a) { 
+  function reply(a) { 
     api.sendMessage(a, event.threadID, event.messageID); 
   }
 
@@ -23,16 +23,11 @@ module.exports.run = async ({api, args, event}) => {
   if (!prompt) return reply("Please provide a prompt.");
 
   try {
-    await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
-      
       const response = await axios.get(`https://deku-rest-api.gleeze.com/ai/deepseek-coder?q=${prompt}&uid=${uid}`);
-      
       const data = response.data.result;
-      await api.setMessageReaction("✅", event.messageID, (err) => {}, true);
       return reply(data);
   } 
-  catch (e) { 
-  	await api.setMessageReaction("❌", event.messageID, (err) => {}, true);
+  catch (e) {
     return reply(`An error occurred : ${e.message}`); 
   }
 }
