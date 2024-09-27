@@ -21,8 +21,6 @@ module.exports.run = async function ({ api, event, args }) {
         return api.sendMessage("Please provide a question or query.", event.threadID, event.messageID);
       }
       
-      api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
-
       let imageBase64Array = [];
 
       if (event.type === "message_reply" && event.messageReply.attachments && event.messageReply.attachments.length > 0) {
@@ -42,11 +40,8 @@ module.exports.run = async function ({ api, event, args }) {
       });
 
       const data = response.data.content;
-      await api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-
       api.sendMessage(data, event.threadID, event.messageID);
     } catch (error) {
-    	a
       api.sendMessage("An error occurred while processing your request.", event.threadID);
     }
 };
