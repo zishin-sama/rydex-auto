@@ -23,13 +23,9 @@ module.exports.run = async ({api, args, event}) => {
   if (!songTitle) return reply("Please provide a song title to find lyrics...");
 
   try {
-    if (songTitle) { 
-      await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
-    
-      reply("Finding lyrics, please wait for a moment"); 
+    if (songTitle)  return reply("Finding lyrics, please wait for a moment"); 
       
-      const url = `https:\/\/deku-rest-api.gleeze.com/search/lyrics?q=${songTitle}`;
-      const res = await axios.get(url);
+      const res = await axios.get(`https:\/\/deku-rest-api.gleeze.com/search/lyrics?q=${songTitle}`);
       const lyrics = res.data.result.lyrics;
       const title = res.data.result.title;
       const artist = res.data.result.artist;
