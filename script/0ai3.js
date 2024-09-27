@@ -24,8 +24,6 @@ module.exports.run = async ({api, args, event}) => {
 
   try {
     await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
-    
-   await api.sendTypingIndicator(event.threadID, true);  
       
       const response = await axios.get(`https://deku-rest-api.gleeze.com/ai/deepseek-coder?q=${prompt}&uid=${uid}`);
       
