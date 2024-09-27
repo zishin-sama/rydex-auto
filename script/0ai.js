@@ -24,8 +24,6 @@ module.exports.run = async function ({ api, event, args }) {
 				if (!input) return reply('Please provide a prompt.');
 				
 				await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
-    
-   await api.sendTypingIndicator(event.threadID, true); 
 
 				const messages = 
                 { role: "user", content: input }
