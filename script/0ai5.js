@@ -23,7 +23,7 @@ module.exports.run = async function ({ api, event, args }) {
       
       await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
     
-    api.sendTypingIndicator(event.threadID, true); 	
+    await api.sendTypingIndicator(event.threadID, true); 	
 
       let imageBase64Array = [];
 
