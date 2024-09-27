@@ -13,7 +13,7 @@ module.exports.config = {
 };
 
 module.exports.run = async ({api, args, event}) => {
-  function reply(a) { 
+  async function reply(a) { 
     api.sendMessage(a, event.threadID, event.messageID); 
   }
 
