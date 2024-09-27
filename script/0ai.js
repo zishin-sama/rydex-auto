@@ -14,7 +14,7 @@ module.exports.run = async function ({ api, event, args }) {
 		try {
 				const { G4F } = require("g4f");
 
-				function reply(a) {
+				async function reply(a) {
 						api.sendMessage(a, event.threadID, event.messageID);
 				}
 
