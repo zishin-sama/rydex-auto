@@ -3,7 +3,7 @@ module.exports.config = {
 	name: "gpt4",
 	version: "1.0.0",
 	role: 0,
-	description: "Chat with BlackboxAI (Conversational)",
+	description: "Chat with ChatGPT4 (Conversational)",
 	aliases: [],
 	hasPrefix: true,
 	usage: "{n}prompt",
@@ -23,7 +23,7 @@ module.exports.run = async ({api, args, event}) => {
 		await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
   
 		const res = await ax.get(`https://deku-rest-api.gleeze.com/gpt4?prompt=${prompt}&uid=${uid}`);
-		const d = res.data.result;
+		const d = res.data.gpt4;
 		await api.setMessageReaction("✅", event.messageID, (err) => {}, true);
 		return reply(d);
 		
