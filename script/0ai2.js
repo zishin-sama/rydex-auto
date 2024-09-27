@@ -11,7 +11,7 @@ module.exports.config = {
 	cooldown: 5
 }
 module.exports.run = async ({api, args, event}) => {
-	async function reply(a) {
+	function reply(a) {
 		api.sendMessage(a, event.threadID, event.messageID);
 	}
 	const uid = event.senderID;
@@ -20,17 +20,11 @@ module.exports.run = async ({api, args, event}) => {
 	if (!prompt) return reply("Please provide a prompt");
 	
 	try {
-		await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
-    
-		const url = `https:\/\/deku-rest-api.gleeze.com/api/blackboxai?q=${prompt}&uid=${uid}`;
-		const res = await ax.get(url);
+		const res = await ax.get(`https:\/\/deku-rest-api.gleeze.com/api/blackboxai?q=${prompt}&uid=${uid}`);
 		const d = res.data.result;
-		await api.setMessageReaction("✅", event.messageID, (err) => {}, true);
 		return reply(d);
-		
 	}
 	catch (e) {
-		await api.setMessageReaction("❌", event.messageID, (err) => {}, true);
 		return reply(e.message);
 	}
 }
