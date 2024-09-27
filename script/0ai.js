@@ -37,14 +37,7 @@ module.exports.run = async function ({ api, event, args }) {
 
         // Await the AI response
         const response = await g4f.chatCompletion(messages, options);
-
-        // Check if a valid response is received
-        if (response && response.content) {
-            reply(response.content); // Send the content of the AI response
-        } else {
-            reply("No response received from GPT-4.");
-        }
-        
+        return reply(response);
     } catch (e) {
         return reply(`Error: ${e.message}`);
     }
