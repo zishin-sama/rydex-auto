@@ -21,7 +21,7 @@ module.exports.run = async function ({ api, event, args }) {
         return api.sendMessage("Please provide a question or query.", event.threadID, event.messageID);
       }
       
-      await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
+      api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
 
       let imageBase64Array = [];
 
