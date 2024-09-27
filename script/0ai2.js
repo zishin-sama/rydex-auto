@@ -22,8 +22,6 @@ module.exports.run = async ({api, args, event}) => {
 	try {
 		await api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
     
-    await api.sendTypingIndicator(event.threadID, true); 
-    
 		const url = `https:\/\/deku-rest-api.gleeze.com/api/blackboxai?q=${prompt}&uid=${uid}`;
 		const res = await ax.get(url);
 		const d = res.data.result;
