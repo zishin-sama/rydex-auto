@@ -25,13 +25,11 @@ module.exports.run = async ({api, args, event}) => {
   try {
     if (songTitle)  return reply("Finding lyrics, please wait for a moment"); 
       
-      const res = await axios.get(`https:\/\/deku-rest-api.gleeze.com/search/lyrics?q=${songTitle}`);
+      const res = await axios.get(`https://deku-rest-api.gleeze.com/search/lyrics?q=${songTitle}`);
       const lyrics = res.data.result.lyrics;
       const title = res.data.result.title;
       const artist = res.data.result.artist;
-
       return reply(`Title : ${title}\n\nArtist : ${artist}\n\nLyrics :\n\n${lyrics}`);
-    }
   } 
   catch (e) { 
     return reply(e.message); 
